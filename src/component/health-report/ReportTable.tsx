@@ -46,7 +46,7 @@ const ReportTable = () => {
             <TableRow className="tableHeader">
               <TableCell padding="checkbox"><Checkbox /></TableCell>
               <TableCell>보고서 번호</TableCell>
-              <TableCell>보고서 종류</TableCell>
+              <TableCell>보고서 이름</TableCell>
               <TableCell>진단일</TableCell>
               <TableCell>결과</TableCell>
               <TableCell></TableCell>
