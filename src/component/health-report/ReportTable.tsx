@@ -11,7 +11,7 @@ import {
   TablePagination,
 } from '@mui/material';
 import ReportRow from './ReportRow';
-import styles from "./ReportTable.css";
+import styles from "./ReportTable";
 
 const reports = [
   {
@@ -43,7 +43,7 @@ const ReportTable = () => {
       <TableContainer component={Paper} elevation={1}>
         <Table>
           <TableHead>
-            <TableRow className={styles.tableHeader}>
+            <TableRow className="tableHeader">
               <TableCell padding="checkbox"><Checkbox /></TableCell>
               <TableCell>보고서 번호</TableCell>
               <TableCell>보고서 종류</TableCell>

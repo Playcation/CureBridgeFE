@@ -3,17 +3,17 @@ import { Box, Container, Typography, Paper, TextField, Button } from '@mui/mater
 import Header from '../../component/layout/Header';
 import Sidebar from '../../component/layout/NavBar';
 import ReportTable from '../../component/health-report/ReportTable';
-import styles from './HealthReportPage.css';
+import styles from './HealthReportPage';
 
 const HealthReportPage = () => {
   return (
-    <Box className={styles.pageWrapper}>
+    <Box className="pageWrapper">
       <Header />
       <Sidebar />
-      <Box component="main" className={styles.mainContent}>
+      <Box component="main" className="pageWrapper">
         <Container maxWidth="lg">
           <Typography variant="h4" gutterBottom>건강 보고서 조회</Typography>
-          <Paper elevation={0} className={styles.searchPaper}>
+          <Paper elevation={0} className="pageWrapper">
             <TextField
               type="date"
               variant="outlined"
@@ -24,11 +24,6 @@ const HealthReportPage = () => {
           </Paper>
           <ReportTable />
         </Container>
-      </Box>
-      <Box className={styles.footer}>
-        <Typography variant="body2">
-          회원 혜택
-        </Typography>
       </Box>
     </Box>
   );
