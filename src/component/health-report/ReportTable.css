@@ -1,0 +1,4 @@
+.tableHeader {
+    /* backgroundColor: 'action.hover' from MUI default theme */
+    background-color: rgba(0, 0, 0, 0.04);
+}
