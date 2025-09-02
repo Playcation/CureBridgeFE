@@ -6,7 +6,7 @@ import axios, {
 } from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // 또는 배포용 주소
+  baseURL: 'http://localhost:8082', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -93,5 +93,9 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
 );
+
+export const getOcr = async (id:number) => {
+  return await axiosInstance.get(`/api/health-report/user/${id}`);
+}
 
 export default axiosInstance;
