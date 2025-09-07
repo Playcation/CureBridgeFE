@@ -1,0 +1,92 @@
+/* src/component/layout/Footer.module.css */
+
+.footerContainer {
+  position: relative; /* 장식 아이콘들의 기준점 */
+  width: 100vw;
+  height: 160px;
+  background: linear-gradient(225.92deg, #3D68DE 39.42%, #9845E8 96.75%);
+  
+  /* 내부 콘텐츠를 중앙 정렬하기 위한 Flexbox 설정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  overflow: hidden; /* 장식 아이콘이 영역을 벗어나지 않도록 */
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px; /* 제목과 버튼 사이의 간격 */
+  z-index: 1; /* 장식 아이콘보다 위에 있도록 */
+}
+
+.title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 36px;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.qnaButton {
+  width: 200px;
+  height: 50px;
+  background: #FFFFFF;
+  border-radius: 18px;
+  border: none;
+
+  /* 버튼 안의 텍스트를 중앙 정렬 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  color: #0B0D10;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.qnaButton:hover {
+  transform: scale(1.05); /* 마우스를 올리면 약간 커지는 효과 */
+  color: #3D68DE;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+
+/* --- 장식용 아이콘 스타일 --- */
+/* 각 아이콘을 개별적으로 위치 */
+.decoIcon {
+  position: absolute;
+  user-select: none; /* 드래그 방지 */
+  pointer-events: none; /* 클릭 방지 */
+}
+
+.decoIcon1 {
+  height: 33px;
+  left: 19.79%;
+  top: 0px;
+}
+
+.decoIcon2 {
+  height: 33px;
+  left: 73.17%;
+  top: 0px;
+}
+
+.decoIcon3 {
+  height: 99px;
+  left: 57.29%;
+  bottom: 0px;
+}
+
+.decoIcon4 {
+  height: 61px;
+  left: 78.64%;
+  bottom: 0px;
+}
