@@ -1,0 +1,12 @@
+/* src/component/layout/Layout.module.css */
+
+.layoutContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 화면 전체 높이를 최소 높이로 설정 */
+}
+
+.mainContent {
+  flex: 1; /* Header와 Footer를 제외한 모든 남는 공간을 차지 */
+  /* padding: 20px; */
+}
