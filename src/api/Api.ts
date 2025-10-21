@@ -1,6 +1,6 @@
 import axios, {
-  AxiosRequestConfig,
   AxiosError,
+  AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
@@ -65,7 +65,7 @@ axiosInstance.interceptors.response.use(
             const response = await axios.post<{ token: string }>(
                 '/refresh',
                 {},
-                { withCredentials: true }
+                {withCredentials: true}
             );
             const newToken = response.data.token;
             localStorage.setItem('Authorization', newToken);
@@ -94,8 +94,16 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-export const getOcr = async (id:number) => {
+export const getOcr = async (id: number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);
 }
+
+export const getNews = async (page = 0, size = 10, sort = 'id,desc') => {
+  const resp = await axiosInstance.get(`/api/news`, {
+    params: {page, size, sort},
+  });
+  return resp.data; // 컨트롤러에서 반환한 PagingDto<NewsResponseDto>
+};
+
 
 export default axiosInstance;
