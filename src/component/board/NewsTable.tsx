@@ -1,6 +1,7 @@
 // src/component/board/NewsTable.tsx
 import React from 'react';
 import {
+  Link as MuiLink,
   Paper,
   Table,
   TableBody,
@@ -8,7 +9,7 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  TableRow
+  TableRow,
 } from '@mui/material';
 
 interface News {
@@ -50,11 +51,25 @@ const NewsTable: React.FC<Props> = ({
               {news.map((n) => (
                   <TableRow key={n.id}>
                     <TableCell>{n.id}</TableCell>
-                    <TableCell>{n.title}</TableCell>
-                    <TableCell>{n.publishedAt ?? '-'}</TableCell>
+                    <TableCell>
+                      {n.link ? (
+                          <MuiLink
+                              href={n.link}
+                              target="_blank" // 새 탭에서 열기
+                              rel="noopener noreferrer" // 보안을 위해 추가
+                              style={{cursor: 'pointer'}} // 클릭 가능한 모양으로
+                          >
+                            {n.title}
+                          </MuiLink>
+                      ) : (
+                          n.title
+                      )}
+                    </TableCell>
+                    <TableCell>{n.publishedAt ? n.publishedAt.replace('T', ' ') : '-'}</TableCell>
                   </TableRow>
               ))}
             </TableBody>
+
           </Table>
         </TableContainer>
 

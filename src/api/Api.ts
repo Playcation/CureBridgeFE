@@ -6,7 +6,7 @@ import axios, {
 } from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8082', // 또는 배포용 주소
+  baseURL: 'http://localhost:8081', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -98,12 +98,10 @@ export const getOcr = async (id: number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);
 }
 
-export const getNews = async (page = 0, size = 10, sort = 'id,desc') => {
-  const resp = await axiosInstance.get(`/api/news`, {
-    params: {page, size, sort},
-  });
-  return resp.data; // 컨트롤러에서 반환한 PagingDto<NewsResponseDto>
+export const getNews = (page: number, size: number, sort: string, query?: string) => {
+  const params: any = {page, size, sort};
+  if (query) params.query = query; // 검색어 추가
+  return axiosInstance.get('/api/news', {params}).then(res => res.data);
 };
-
 
 export default axiosInstance;
