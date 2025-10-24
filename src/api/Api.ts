@@ -1,12 +1,12 @@
 import axios, {
-  AxiosRequestConfig,
   AxiosError,
+  AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8082', // 또는 배포용 주소
+  baseURL: 'http://localhost:8081', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -65,7 +65,7 @@ axiosInstance.interceptors.response.use(
             const response = await axios.post<{ token: string }>(
                 '/refresh',
                 {},
-                { withCredentials: true }
+                {withCredentials: true}
             );
             const newToken = response.data.token;
             localStorage.setItem('Authorization', newToken);
@@ -94,8 +94,14 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-export const getOcr = async (id:number) => {
+export const getOcr = async (id: number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);
 }
+
+export const getNews = (page: number, size: number, sort: string, query?: string) => {
+  const params: any = {page, size, sort};
+  if (query) params.query = query; // 검색어 추가
+  return axiosInstance.get('/api/news', {params}).then(res => res.data);
+};
 
 export default axiosInstance;
