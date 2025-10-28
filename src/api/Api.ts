@@ -4,6 +4,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
+import {UserLogin} from "../common/UserTypes";
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8081', // 또는 배포용 주소
@@ -29,7 +30,7 @@ axiosInstance.interceptors.request.use(
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
         '/users/sign-in',
-        '/api/core/login',
+        '/api/anonymous/user/auth/login',
         '/api/core/users/sign-in',
         '/token/refresh',
         '/refresh',
@@ -103,5 +104,9 @@ export const getNews = (page: number, size: number, sort: string, query?: string
   if (query) params.query = query; // 검색어 추가
   return axiosInstance.get('/api/news', {params}).then(res => res.data);
 };
+
+export const userLogin=async (loginData: UserLogin)=>{
+  return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
+}
 
 export default axiosInstance;
