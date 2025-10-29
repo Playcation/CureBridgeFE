@@ -8,7 +8,10 @@ import KakaoIcon from '../../asset/kakao.png';
 import GoogleIcon from '../../asset/google.png';
 import NaverIcon from '../../asset/naver.png';
 import EyeIcon from '../../asset/eye-icon.png';
-import {UserLogin} from "../../common/UserTypes";
+import {LoginType} from "../../common/UserTypes";
+
+// api
+import {userLogin} from "../../api/Api"
 
 const LoginPage: React.FC = () => {
   // 이메일과 비밀번호 입력을 관리하기 위한 state
@@ -21,24 +24,9 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     alert(`이메일: ${email}, 비밀번호: ${password}`);
-    let apiEndpoint = '';
 
-    const loginData: UserLogin = { email, password };
-
-    switch (userType) {
-      case 'user':
-        apiEndpoint = '/api/auth/login/user';
-        break;
-      case 'manager':
-        apiEndpoint = '/api/auth/login/manager';
-        break;
-      case 'organization':
-        apiEndpoint = '/api/auth/login/company';
-        break;
-      default:
-        alert('올바르지 않은 사용자 유형입니다.');
-        return;
-    }
+    const loginData: LoginType = { email, password, role:userType.toString() };
+    await userLogin(loginData);
   };
 
     return (
