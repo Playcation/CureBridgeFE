@@ -26,7 +26,24 @@ const LoginPage: React.FC = () => {
     alert(`이메일: ${email}, 비밀번호: ${password}`);
 
     const loginData: LoginType = { email, password, role:userType.toString() };
-    await userLogin(loginData);
+
+    try {
+      const response = await userLogin(loginData);
+
+      const accessToken = response.data.accessToken;
+
+      if (accessToken) {
+        localStorage.setItem('Authorization', accessToken);
+
+        alert('로그인되었습니다.');
+        window.location.href = '/';
+      } else {
+        throw new Error('로그인에 성공했으나 토큰을 받지 못했습니다.');
+      }
+
+    } catch (error) {
+      console.error('로그인 실패:', error);
+    }
   };
 
     return (
@@ -38,7 +55,7 @@ const LoginPage: React.FC = () => {
               <label></label>
               <input
                   type={"radio"}
-                  value={"user"}
+                  value={"USER"}
                   name={"login"}
                   defaultChecked={true}
                   onChange={(e) => setUserType(e.target.value)}
@@ -47,7 +64,7 @@ const LoginPage: React.FC = () => {
               <input
                   type={"radio"}
                   id={"managerLogin"}
-                  value={"manager"}
+                  value={"ORG_MANAGER"}
                   name={"login"}
                   onChange={(e) => setUserType(e.target.value)}
                       />
@@ -55,7 +72,7 @@ const LoginPage: React.FC = () => {
               <input
                   type={"radio"}
                   id={"companyLogin"}
-                  value={"organization"}
+                  value={"ORG_ADMIN"}
                   name={"login"}
                   onChange={(e) => setUserType(e.target.value)}
                       />

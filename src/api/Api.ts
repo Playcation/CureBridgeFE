@@ -7,7 +7,7 @@ import axios, {
 import {LoginType} from "../common/UserTypes";
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8081', // 또는 배포용 주소
+  baseURL: 'http://localhost:8080', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -107,14 +107,6 @@ export const getNews = (page: number, size: number, sort: string, query?: string
 
 export const userLogin=async (loginData: LoginType)=>{
   return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
-}
-
-export const managerLogin=async (loginData: LoginType)=>{
-  return axiosInstance.post('/api/anonymous/manager/auth/login', loginData);
-}
-
-export const organizationLogin=async (loginData: LoginType)=>{
-  return axiosInstance.post('/api/anonymous/organization/auth/login', loginData);
 }
 
 export default axiosInstance;
