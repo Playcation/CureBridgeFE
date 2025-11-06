@@ -160,4 +160,12 @@ export const getOcr = async (id:number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);
 };
 
+export const getManagerInfo = async (id: number) => {
+    return await axiosInstance.get(`/api/manager/${id}`);
+};
+
+export const getOrganizationInfo = async (id: number) => {
+    return await axiosInstance.get(`/api/organization/${id}`);
+};
+
 export default axiosInstance;

@@ -11,6 +11,8 @@ import NoticeDetailPage from './pages/notice/NoticeDetailPage';
 import NoticeListPage from './pages/notice/NoticeListPage';
 import NoticeCreatePage from './pages/notice/NoticeCreatePage'; 
 import NoticeEditPage from './pages/notice/NoticeEditPage'; 
+import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
+import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
 
 function App() {
   return (
@@ -28,6 +30,9 @@ function App() {
                 <Route path="/notice/create" element={<NoticeCreatePage />} />
                 <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
 
+                {/* 마이페이지 */}
+                <Route path="/mypage/manager" element={<ManagerMyPage />} />
+                <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
 
             </Routes>
         </Layout>
