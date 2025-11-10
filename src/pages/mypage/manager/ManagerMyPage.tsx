@@ -30,12 +30,12 @@ function ManagerMyPage() {
     }, [userId]);
 
     return (
-        <Container maxWidth="md">
+        <div style={{ maxWidth: '960px', margin: '0 auto' }}>
             <div style={{marginTop: '32px', marginBottom: '32px'}}>
-                <Typography variant="h4" component="h1" gutterBottom>
+                <h1 style={{ marginBottom: '0.35em' }}>
                     마이페이지
-                </Typography>
-                <Paper elevation={3} sx={{p: 4}}>
+                </h1>
+                <div style={{ padding: '32px', boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)' }}>
                     {managerInfo ? (
                         <div>
                             <Typography variant="h6" gutterBottom>
