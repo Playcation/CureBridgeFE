@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {useSelector} from "react-redux";
 import {getOrganizationInfo} from "../../../api/Api";
 import {selectCurrentUserId} from "../../../store/slices/authSlice";
+import "./OrgAdminMyPage.css";
 
 
 interface OrganizationInfo {
@@ -32,27 +33,27 @@ function OrgAdminMyPage() {
   }, [userId]);
 
   return (
-      <div style={{ maxWidth: '960px', margin: '0 auto' }}>
-        <div style={{marginTop: '32px', marginBottom: '32px'}}>
-          <h1 style={{ marginBottom: '0.35em' }}>
+      <div className="org-admin-container">
+        <div className="org-admin-content">
+          <h1 className="org-admin-title">
             마이페이지
           </h1>
-          <div style={{ padding: '32px', boxShadow: '0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12)' }}>
+          <div className="org-admin-paper">
             {organizationInfo ? (
                 <div>
-                  <h6 style={{ marginBottom: '0.35em' }}>
+                  <h6 className="org-admin-info-item">
                     회사명: {organizationInfo.orgName}
                   </h6>
-                  <h6 style={{ marginBottom: '0.35em' }}>
+                  <h6 className="org-admin-info-item">
                     회사 전화번호: {organizationInfo.orgNumber}
                   </h6>
-                  <h6 style={{ marginBottom: '0.35em' }}>
+                  <h6 className="org-admin-info-item">
                     대표자명: {organizationInfo.ownerName}
                   </h6>
-                  <h6 style={{ marginBottom: '0.35em' }}>
+                  <h6 className="org-admin-info-item">
                     대표자 연락처: {organizationInfo.ownerNumber}
                   </h6>
-                  <h6 style={{ marginBottom: '0.35em' }}>
+                  <h6 className="org-admin-info-item">
                     주소: {organizationInfo.orgAddress}
                   </h6>
         </div>
@@ -62,7 +63,8 @@ function OrgAdminMyPage() {
                 </p>
             )}
           </div>
-                        </div>      </div>
+        </div>
+      </div>
   );
 }
 
