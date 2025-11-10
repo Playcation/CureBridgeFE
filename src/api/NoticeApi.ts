@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
-import { mockFetchBoardList, mockFetchBoardDetail } from './mockData';
+
 
 const API_BASE_URL = 'http://localhost:8081/api/notice'; 
 

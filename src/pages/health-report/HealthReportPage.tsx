@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Paper, TextField, Button } from '@mui/material';
+import { Container, Typography, Paper, TextField, Button } from '@mui/material';
 import Header from '../../component/layout/Header';
 import Sidebar from '../../component/layout/NavBar';
 import ReportTable from '../../component/health-report/ReportTable';
@@ -34,10 +34,10 @@ const HealthReportPage = () => {
   }, []);
 
   return (
-      <Box className="pageWrapper">
+      <div className="pageWrapper">
         <Header />
         <Sidebar />
-        <Box component="main" className="pageWrapper">
+        <main className="pageWrapper">
           <Container maxWidth="lg">
             <Typography variant="h4" gutterBottom>건강 보고서 조회</Typography>
             <Paper elevation={0} className="pageWrapper">
@@ -51,8 +51,8 @@ const HealthReportPage = () => {
             </Paper>
             <ReportTable reports={reports} />
           </Container>
-        </Box>
-      </Box>
+        </main>
+      </div>
   );
 };
 

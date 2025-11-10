@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Container, Paper, Typography} from "@mui/material";
+import {Container, Paper, Typography} from "@mui/material";
 import {getManagerInfo} from "../../../api/Api";
 import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../../store/slices/authSlice";
@@ -31,13 +31,13 @@ function ManagerMyPage() {
 
     return (
         <Container maxWidth="md">
-            <Box sx={{my: 4}}>
+            <div style={{marginTop: '32px', marginBottom: '32px'}}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     마이페이지
                 </Typography>
                 <Paper elevation={3} sx={{p: 4}}>
                     {managerInfo ? (
-                        <Box>
+                        <div>
                             <Typography variant="h6" gutterBottom>
                                 이름: {managerInfo.name}
                             </Typography>
@@ -47,15 +47,14 @@ function ManagerMyPage() {
                             <Typography variant="h6" gutterBottom>
                                 전화번호: {managerInfo.number}
                             </Typography>
-                        </Box>
+                        </div>
                     ) : (
                         <Typography>
                             직원 정보를 불러오는 중입니다...
                         </Typography>
                     )}
                 </Paper>
-            </Box>
-        </Container>
+                                    </div>        </Container>
     );
 }
 

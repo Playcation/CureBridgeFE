@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Modal,
-  Box,
   Typography,
   Grid,
   List,
@@ -47,7 +46,19 @@ const OcrDetailModal: React.FC<OcrDetailModalProps> = ({ open, onClose, ocrResul
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <Box sx={style}>
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 600,
+        backgroundColor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: '24px',
+        padding: '32px',
+        maxHeight: '90vh',
+        overflowY: 'auto',
+      }}>
         <Typography id="modal-title" variant="h6" component="h2">
           세부 OCR 정보
         </Typography>
@@ -83,7 +94,7 @@ const OcrDetailModal: React.FC<OcrDetailModalProps> = ({ open, onClose, ocrResul
             세부 정보가 없습니다.
           </Typography>
         )}
-      </Box>
+      </div>
     </Modal>
   );
 };
