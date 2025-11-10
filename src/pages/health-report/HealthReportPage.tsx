@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Paper, TextField, Button } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import Header from '../../component/layout/Header';
 import Sidebar from '../../component/layout/NavBar';
 import ReportTable from '../../component/health-report/ReportTable';
@@ -38,9 +38,9 @@ const HealthReportPage = () => {
         <Header />
         <Sidebar />
         <main className="pageWrapper">
-          <Container maxWidth="lg">
-            <Typography variant="h4" gutterBottom>건강 보고서 조회</Typography>
-            <Paper elevation={0} className="pageWrapper">
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <h4 style={{ marginBottom: '0.35em' }}>건강 보고서 조회</h4>
+            <div className="pageWrapper">
               <TextField
                   type="date"
                   variant="outlined"
@@ -48,9 +48,9 @@ const HealthReportPage = () => {
                   defaultValue="2025-08-20"
               />
               <Button variant="contained">검색</Button>
-            </Paper>
+            </div>
             <ReportTable reports={reports} />
-          </Container>
+          </div>
         </main>
       </div>
   );

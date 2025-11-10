@@ -1,13 +1,11 @@
 import React from 'react';
 import {
-  TableContainer,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
   Checkbox,
-  Paper,
   TablePagination,
 } from '@mui/material';
 import ReportRow from './ReportRow';
@@ -35,7 +33,7 @@ interface Report {
 const ReportTable = ({ reports }: { reports: Report[] }) => {
   return (
       <>
-        <TableContainer component={Paper} elevation={1}>
+        <div style={{ boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)' }}>
           <Table>
             <TableHead>
               <TableRow className="tableHeader">
@@ -53,7 +51,7 @@ const ReportTable = ({ reports }: { reports: Report[] }) => {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </div>
         <TablePagination
             component="div"
             count={reports.length} // 데이터 길이에 따라 동적으로 변경
