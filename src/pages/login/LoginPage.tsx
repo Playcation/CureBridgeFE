@@ -1,111 +1,150 @@
 // src/pages/login/LoginPage.tsx
-
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { fetchLogin } from '../../api/Api'; // 💡 api.ts 파일에서 fetchLogin만 임포트
-import { login as loginAction } from '../../store/slices/authSlice'; // Redux login 액션
+import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
 
-// asset 폴더에 아이콘 (경로는 필요에 따라 수정하세요)
+// asset 폴더에 아이콘
+import KakaoIcon from '../../asset/kakao.png';
+import GoogleIcon from '../../asset/google.png';
+import NaverIcon from '../../asset/naver.png';
 import EyeIcon from '../../asset/eye-icon.png';
-// ... (KakaoIcon, GoogleIcon, NaverIcon 등 유지) ...
+import {LoginType} from "../../common/UserTypes";
+
+// api
+import {userLogin} from "../../api/Api"
 
 const LoginPage: React.FC = () => {
-    // 💡 테스트 계정으로 기본값 설정
-    const [email, setEmail] = useState('admin@test.com'); 
-    const [password, setPassword] = useState('12345678!');
-    const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+  // 이메일과 비밀번호 입력을 관리하기 위한 state
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // 비밀번호 보이기/숨기기 토글을 위한 state
+  const [showPassword, setShowPassword] = useState(false);
+  const [userType, setUserType] = useState('user');
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(`이메일: ${email}, 비밀번호: ${password}`);
 
-    // 💡 로그인 처리 및 Redux 상태 업데이트 함수
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault(); 
-        setLoading(true);
-        setError(null);
+    const loginData: LoginType = { email, password, role:userType.toString() };
 
-        try {
-            // 1. API 호출: fetchLogin이 토큰, ID, Role을 모두 반환합니다.
-            const { token, userId, userRole } = await fetchLogin({ email, password });
+    try {
+      const response = await userLogin(loginData);
 
-            // 2. Redux 상태 업데이트: 3가지 정보를 바로 전달하여 로그인 상태와 권한을 설정
-            dispatch(loginAction({ token, userId, userRole }));
+      const accessToken = response.data.accessToken;
 
-            // 3. 성공 알림 및 공지사항 목록으로 이동
-            alert(`로그인 성공! (${userRole} 권한으로 접속)`);
-            navigate('/notice'); 
+      if (accessToken) {
+        localStorage.setItem('Authorization', accessToken);
 
-        } catch (err: any) {
-            console.error("로그인 중 오류 발생:", err);
-            // API가 반환한 오류 메시지를 사용자에게 표시
-            const errorMessage = err.message || "로그인 요청 처리 중 오류가 발생했습니다. 서버 상태를 확인하세요.";
-            setError(errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
+        alert('로그인되었습니다.');
+        window.location.href = '/';
+      } else {
+        throw new Error('로그인에 성공했으나 토큰을 받지 못했습니다.');
+      }
+
+    } catch (error) {
+      console.error('로그인 실패:', error);
+    }
+  };
 
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.loginForm}>
-                <h1 className={styles.title}>로그인</h1>
-                
-                {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+          <div className={styles.loginForm}>
+            <h1 className={styles.title}>로그인</h1>
 
-                <form className={styles.form} onSubmit={handleLogin}>
-                    {/* 아이디(이메일) 입력 그룹 */}
-                    <div className={styles.inputGroup}>
-                        <label htmlFor="email" className={styles.label}>아이디</label>
-                        <input
-                            id="email"
-                            type="email"
-                            className={styles.input}
-                            placeholder="이메일 형식으로 입력하세요."
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            disabled={loading}
-                        />
-                    </div>
-
-                    {/* 비밀번호 입력 그룹 */}
-                    <div className={styles.inputGroup}>
-                        <label htmlFor="password" className={styles.label}>비밀번호</label>
-                        <div className={styles.passwordInputWrapper}>
-                            <input
-                                id="password"
-                                type={showPassword ? 'text' : 'password'}
-                                className={styles.passwordInput}
-                                placeholder="비밀번호를 입력하세요."
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                disabled={loading}
-                            />
-                            <img
-                                src={EyeIcon}
-                                alt="show password"
-                                className={styles.eyeIcon}
-                                onClick={() => setShowPassword(!showPassword)}
-                            />
-                        </div>
-                    </div>
-                    
-                    <button type="submit" className={styles.loginButton} disabled={loading}>
-                        {loading ? '로그인 중...' : '로그인'}
-                    </button>
-                </form>
-
-                {/* ... (소셜 로그인 및 하단 링크 영역 유지) ... */}
-                <div className={styles.linksContainer}>
-                    <Link to="/find-password" className={styles.link}>비밀번호를 잊으셨나요?</Link>
-                    <Link to="/signup" className={styles.link}>회원가입</Link>
-                </div>
+            <div className={styles.togleContainer}>
+              <label></label>
+              <input
+                  type={"radio"}
+                  value={"USER"}
+                  name={"login"}
+                  defaultChecked={true}
+                  onChange={(e) => setUserType(e.target.value)}
+                      />
+              <label>사용자</label>
+              <input
+                  type={"radio"}
+                  id={"managerLogin"}
+                  value={"ORG_MANAGER"}
+                  name={"login"}
+                  onChange={(e) => setUserType(e.target.value)}
+                      />
+              <label>직원</label>
+              <input
+                  type={"radio"}
+                  id={"companyLogin"}
+                  value={"ORG_ADMIN"}
+                  name={"login"}
+                  onChange={(e) => setUserType(e.target.value)}
+                      />
+              <label>기업</label>
             </div>
+
+            <form className={styles.form} onSubmit={handleLogin}>
+              {/* 아이디(이메일) 입력 그룹 */}
+              <div className={styles.inputGroup}>
+                <label htmlFor="email" className={styles.label}>아이디</label>
+                <input
+                    id="email"
+                    type="email"
+                    className={styles.input}
+                    placeholder="이메일 형식으로 입력하세요."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+              </div>
+
+              {/* 비밀번호 입력 그룹 */}
+              <div className={styles.inputGroup}>
+                <label htmlFor="password" className={styles.label}>비밀번호</label>
+                <div className={styles.passwordInputWrapper}>
+                  <input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'} // showPassword 값에 따라 타입 변경
+                      className={styles.passwordInput}
+                      placeholder="비밀번호를 입력하세요."
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                  />
+                  <img
+                      src={EyeIcon}
+                      alt="show password"
+                      className={styles.eyeIcon}
+                      onClick={() => setShowPassword(!showPassword)} // 클릭 시 상태 토글
+                  />
+                </div>
+              </div>
+
+              <button type="submit" className={styles.loginButton}>로그인</button>
+            </form>
+
+            {/* 소셜 로그인 버튼 영역 */}
+            <div className={styles.socialLoginContainer}>
+              <button className={`${styles.socialButton} ${styles.kakaoButton}`}>
+                <img src={KakaoIcon} alt="kakao login" className={styles.socialIcon}/>
+                카카오 로그인
+              </button>
+              <button className={`${styles.socialButton} ${styles.googleButton}`}>
+                <img src={GoogleIcon} alt="google login" className={styles.socialIcon}/>
+                구글 로그인
+              </button>
+              <button className={`${styles.socialButton} ${styles.naverButton}`}>
+                <img src={NaverIcon} alt="naver login" className={styles.socialIcon}/>
+                네이버 로그인
+              </button>
+            </div>
+
+            {/* 하단 링크 영역 */}
+            <div className={styles.linksContainer}>
+              <Link to="/find-password" className={`${styles.link} ${styles.forgotPasswordLink}`}>
+                비밀번호를 잊으셨나요?
+              </Link>
+              <Link to="/signup" className={`${styles.link} ${styles.signupLink}`}>
+                회원가입
+              </Link>
+            </div>
+          </div>
         </div>
     );
 };

@@ -7,16 +7,16 @@ import Layout from './component/layout/Layout';
 import HealthReportPage from './pages/health-report/HealthReportPage'
 import LoginPage from './pages/login/LoginPage';
 import SignupPage from './pages/sign-up/SignUpPage';
-import NoticeDetailPage from './pages/notice/NoticeDetailPage'; 
+import NoticeDetailPage from './pages/notice/NoticeDetailPage';
 import NoticeListPage from './pages/notice/NoticeListPage';
-import NoticeCreatePage from './pages/notice/NoticeCreatePage'; 
-import NoticeEditPage from './pages/notice/NoticeEditPage'; 
+import NoticeCreatePage from './pages/notice/NoticeCreatePage';
+import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
 
 function App() {
   return (
-        <Layout> 
+        <Layout>
             <Routes>
                 <Route path="/health-report" element={<HealthReportPage />} />
 
@@ -25,8 +25,8 @@ function App() {
                 <Route path="/signup" element={<SignupPage />} />
 
                 {/* 공지사항 목록,상세,등록,수정 페이지 */}
-                <Route path="/notice" element={<NoticeListPage />} /> 
-                <Route path="/notice/:noticeId" element={<NoticeDetailPage />} /> 
+                <Route path="/notice" element={<NoticeListPage />} />
+                <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
                 <Route path="/notice/create" element={<NoticeCreatePage />} />
                 <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
 
