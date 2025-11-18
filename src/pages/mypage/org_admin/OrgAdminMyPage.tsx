@@ -19,14 +19,12 @@ function OrgAdminMyPage() {
 
   useEffect(() => {
     const fetchOrganizationInfo = async () => {
-      if (userId) {
         try {
-          const response = await getOrganizationInfo(userId);
+          const response = await getOrganizationInfo();
           setOrganizationInfo(response.data);
         } catch (error) {
           console.error("Failed to fetch organization info:", error);
         }
-      }
     };
 
     fetchOrganizationInfo();

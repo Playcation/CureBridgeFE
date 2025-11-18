@@ -14,7 +14,7 @@ import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/bo
 
 
 // ------------------- API 기본 설정 -------------------
-const BASE_URL = 'http://localhost:8081';
+const BASE_URL = 'http://localhost:8080';
 const LOGIN_URL = '/api/core/login';
 const NOTICE_API_BASE = '/api/notice';
 
@@ -167,12 +167,12 @@ export const getOcr = async (id: number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);
 };
 
-export const getManagerInfo = async (id: number) => {
-    return await axiosInstance.get(`/api/manager/${id}`);
+export const getManagerInfo = async () => {
+    return await axiosInstance.get(`/api/org-manager/org-manager`);
 };
 
-export const getOrganizationInfo = async (id: number) => {
-    return await axiosInstance.get(`/api/organization/${id}`);
+export const getOrganizationInfo = async () => {
+    return await axiosInstance.get(`/api/organization/organization`);
 };
 
 export const getNews = (page: number, size: number, sort: string, query?: string) => {
@@ -183,6 +183,7 @@ export const getNews = (page: number, size: number, sort: string, query?: string
 
 export const userLogin=async (loginData: LoginType)=>{
   return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
+  // return axiosInstance.post('/user/auth/login', loginData);
 }
 
 export default axiosInstance;

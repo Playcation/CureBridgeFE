@@ -16,14 +16,12 @@ function ManagerMyPage() {
 
     useEffect(() => {
         const fetchManagerInfo = async () => {
-            if (userId) {
                 try {
-                    const response = await getManagerInfo(userId);
+                    const response = await getManagerInfo();
                     setManagerInfo(response.data);
                 } catch (error) {
                     console.error("Failed to fetch manager info:", error);
                 }
-            }
         };
 
         fetchManagerInfo();
