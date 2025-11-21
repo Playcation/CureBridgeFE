@@ -1,0 +1,101 @@
+/* src/pages/NoticeListPage.module.css (80% 축소) */
+
+/* --- 1. 페이지 전체 컨테이너 및 제목 --- */
+.noticeListContainer {
+    max-width: 1192px; /* 1490px * 0.8 */
+    margin: 40px auto 80px; /* 50px * 0.8, 100px * 0.8 */
+    padding: 16px; /* 20px * 0.8 */
+    background: #FFFFFF;
+}
+
+.pageMainTitle {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 33.6px; /* 42px * 0.8 */
+    line-height: 110%;
+    color: #000000;
+    margin-bottom: 40px; /* 50px * 0.8 */
+}
+
+
+/* --- 3. 글쓰기 버튼 및 목록 헤더 --- */
+
+.listHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px; /* 15px * 0.8 */
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px; /* 20px * 0.8 */
+    font-weight: 600;
+}
+
+.writeButtonLink {
+    width: 80px; 
+    height: 25px;
+    padding: 8px 16px; /* 10px * 0.8, 20px * 0.8 */
+    text-align: center;
+    line-height: 24.8px; /* (height - 2*padding) 에 맞춰 텍스트 중앙 정렬 */
+    background: linear-gradient(223.53deg, #6671E5 3.65%, #4852D9 102.22%);
+    border-radius: 11.2px; /* 14px * 0.8 */
+    border: none;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 16px; /* 20px * 0.8 */
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+.writeButtonLink:hover {
+    opacity: 0.9;
+}
+
+/* --- 4. 게시판 테이블 --- */
+
+.noticeTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Poppins', sans-serif;
+}
+
+.noticeTable th {
+    color: #373F41;
+    font-weight: 600;
+    font-size: 16px; /* 20px * 0.8 */
+    line-height: 14.4px; /* 18px * 0.8 */
+    padding: 12px 0; /* 15px * 0.8 */
+    text-align: center;
+    border-top: 1px solid #616CE3;
+    border-bottom: 1px solid #616CE3;
+    height: 38.4px; /* 48px * 0.8 */
+}
+
+.noticeTable td {
+    padding: 12.8px 6.4px; /* 16px * 0.8, 8px * 0.8 */
+    text-align: center;
+    color: #737B7D;
+    font-weight: 500;
+    font-size: 12.8px; /* 16px * 0.8 */
+    border-bottom: 1px solid #E0E0E0;
+}
+
+/* 제목 셀 */
+.titleCell {
+    text-align: left;
+    padding-left: 16px; /* 20px * 0.8 */
+}
+
+.titleCell a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+/* --- 5. 상태/메시지 --- */
+.statusMessage {
+    text-align: center;
+    padding: 40px; /* 50px * 0.8 */
+    font-size: 14.4px; /* 18px * 0.8 */
+    color: #6c757d;
+}

@@ -5,7 +5,6 @@ import {
   Checkbox,
   IconButton,
   Typography,
-  Box,
   Collapse,
   Button
 } from '@mui/material';
@@ -66,8 +65,8 @@ const ReportRow: React.FC<ReportRowProps> = ({ report }) => {
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1, p: 2, backgroundColor: 'grey.50' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ margin: '8px', padding: '16px', backgroundColor: '#fafafa' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <Typography variant="h6" gutterBottom component="div">
                     요약 정보
                   </Typography>
@@ -77,9 +76,9 @@ const ReportRow: React.FC<ReportRowProps> = ({ report }) => {
                       더보기
                     </Button>
                   )}
-                </Box>
+                </div>
                 <Typography variant="body2">{report.summery}</Typography>
-              </Box>
+              </div>
             </Collapse>
           </TableCell>
         </TableRow>

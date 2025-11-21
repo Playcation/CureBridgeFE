@@ -1,0 +1,158 @@
+/* src/pages/NoticeCreatePage.module.css (80% 축소) */
+
+/* --- 1. 페이지 전체 컨테이너 및 메인 제목 --- */
+.createContainer {
+    /* 와이어프레임 width: 1265px 에 맞춰 중앙 정렬 및 80% 축소 */
+    max-width: 1012px; /* 1265px * 0.8 */
+    margin: 40px auto 80px;
+    padding: 20px;
+    background: #FFFFFF;
+}
+
+.pageTitle {
+    /* 42px -> 33.6px */
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 33.6px;
+    line-height: 110%;
+    color: #000000;
+    margin-bottom: 50px; /* 큰 제목 아래 여백 유지 */
+}
+
+/* --- 2. 섹션 타이틀 (소제목) --- */
+.sectionTitle {
+    /* 24px -> 19.2px */
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 19.2px;
+    line-height: 110%;
+    color: #21272A;
+    
+    padding-bottom: 12px; /* 15px * 0.8 */
+    margin-bottom: 24px;
+    border-bottom: 1px solid #616CE3;
+    width: 100%;
+}
+
+/* --- 3. 폼 행(Row) 및 레이블 --- */
+.formRow {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px; /* 25px * 0.8 */
+}
+
+.formLabel {
+    /* 94px -> 75.2px */
+    width: 75.2px; 
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 12.8px; /* 16px * 0.8 */
+    color: #000000;
+    flex-shrink: 0;
+    padding-top: 10px; /* 레이블 상단 정렬 */
+}
+
+/* --- 4. 입력 필드 --- */
+.inputField {
+    box-sizing: border-box;
+    width: 100%;
+    /* 55px -> 44px */
+    height: 44px;
+    padding: 9.6px 12.8px; /* 12px * 0.8, 16px * 0.8 */
+    
+    background: #FFFFFF;
+    border: 1px solid #D0D5DD;
+    border-radius: 6.4px; /* 8px * 0.8 */
+    
+    font-family: 'Poppins', sans-serif;
+    font-size: 12.8px;
+    color: #98A2B3;
+}
+
+.textareaField {
+    box-sizing: border-box;
+    width: 100%;
+    /* 469px -> 375.2px */
+    height: 375.2px;
+    padding: 12.8px 12.8px;
+    
+    background: #FFFFFF;
+    border: 1px solid #D0D5DD;
+    border-radius: 6.4px;
+    
+    font-family: 'Poppins', sans-serif;
+    font-size: 12.8px;
+    line-height: 1.5;
+    resize: none;
+    
+    color: #98A2B3;
+}
+.textareaField::placeholder {
+    color: #98A2B3;
+}
+
+/* --- 5. 파일 첨부 영역 --- */
+.fileAttachGroup {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* 20px * 0.8 */
+}
+
+.fileAttachButton {
+    /* 161px * 54px -> 128.8px * 43.2px */
+    width: 128.8px;
+    height: 43.2px;
+    
+    background: #ECECEF;
+    border-radius: 11.2px; /* 14px * 0.8 */
+    border: none;
+    
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 12.8px; /* 16px * 0.8 */
+    color: #000000;
+}
+
+.fileHelpText {
+    /* 14px -> 11.2px */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 11.2px;
+    line-height: 19.2px; /* 24px * 0.8 */
+    color: #737B7D;
+}
+
+.maxSizeText {
+    /* (최대 1개, 30MB) */
+    margin-left: 16px; 
+    font-size: 11.2px;
+    color: #737B7D;
+}
+
+/* --- 6. 폼 액션 (버튼) --- */
+.formActions {
+    display: flex;
+    justify-content: center; /* 버튼 그룹 중앙 정렬 */
+    gap: 16px; /* 20px * 0.8 */
+    margin-top: 50px; /* 60px * 0.8 */
+}
+
+.submitButton {
+    /* 338px * 47px -> 270.4px * 37.6px */
+    width: 270.4px;
+    height: 37.6px;
+    
+    background: #3D68DE;
+    border-radius: 11.2px;
+    color: #FFFFFF;
+    
+    font-weight: 600;
+    font-size: 16px; /* 20px * 0.8 */
+    border: none;
+    cursor: pointer;
+}
+
+/* .cancelButton {
+    /* 취소 버튼 스타일 (필요시 추가) 
+} */

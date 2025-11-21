@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Paper, TextField, Button } from '@mui/material';
-import Header from '../../component/layout/Header';
-import Sidebar from '../../component/layout/NavBar';
+import { TextField, Button } from '@mui/material';
 import ReportTable from '../../component/health-report/ReportTable';
-import styles from './HealthReportPage';
 import { getOcr } from '../../api/Api'; // 이 API 함수가 실제로는 getHealthReports를 호출한다고 가정합니다.
 
 const HealthReportPage = () => {
@@ -34,13 +31,11 @@ const HealthReportPage = () => {
   }, []);
 
   return (
-      <Box className="pageWrapper">
-        <Header />
-        <Sidebar />
-        <Box component="main" className="pageWrapper">
-          <Container maxWidth="lg">
-            <Typography variant="h4" gutterBottom>건강 보고서 조회</Typography>
-            <Paper elevation={0} className="pageWrapper">
+      <div className="pageWrapper">
+        <main className="pageWrapper">
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <h4 style={{ marginBottom: '0.35em' }}>건강 보고서 조회</h4>
+            <div className="pageWrapper">
               <TextField
                   type="date"
                   variant="outlined"
@@ -48,11 +43,11 @@ const HealthReportPage = () => {
                   defaultValue="2025-08-20"
               />
               <Button variant="contained">검색</Button>
-            </Paper>
+            </div>
             <ReportTable reports={reports} />
-          </Container>
-        </Box>
-      </Box>
+          </div>
+        </main>
+      </div>
   );
 };
 

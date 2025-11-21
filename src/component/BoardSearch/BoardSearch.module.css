@@ -1,0 +1,83 @@
+.searchSection {
+    background: rgba(232, 231, 231, 0.26);
+    border-top: 1px solid #616CE3;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    padding: 20px 0;
+    margin-bottom: 25px;
+    gap: 8px; 
+    
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- 2. 검색 드롭다운 (.searchSelect - '전체' 버튼) --- */
+.searchSelect {
+    box-sizing: border-box;
+    width: 160px; 
+    height: 43.2px; 
+    
+    padding: 9.6px 12.8px;
+    border: 1px solid #D0D5DD;
+    border-radius: 6.4px; 
+    
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 14px; 
+    color: #000000;
+    
+    /* '더보기 화살표'와 텍스트를 Flex로 정렬하는 것을 흉내 */
+    display: flex; 
+    align-items: center;
+    justify-content: space-between; /* 화살표와 텍스트 분리 */
+}
+
+/* --- 3. 검색 입력 필드 (.searchInput) --- */
+.searchInput {
+    box-sizing: border-box;
+    width: 477.6px; 
+    height: 43.2px; 
+    flex-grow: 0;
+    
+    padding: 9.6px 12.8px; 
+    border: 1px solid #D0D5DD;
+    border-radius: 6.4px;
+    
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 13px; 
+    
+    color: #98A2B3;
+}
+
+/* --- 4. 검색 버튼 (.searchButton) --- */
+.searchButton {
+    width: 100px;
+    height: 40.8px;
+    
+    background: linear-gradient(223.53deg, #6671E5 3.65%, #4852D9 102.22%);
+    border-radius: 7.2px; 
+    border: none;
+    color: #FFFFFF;
+    
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    
+    /* 텍스트 중앙 정렬 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 7px; 
+    
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.searchButton:hover {
+    opacity: 0.9;
+}
