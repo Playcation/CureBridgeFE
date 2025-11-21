@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Button } from '@mui/material';
-import Header from '../../component/layout/Header';
-import Sidebar from '../../component/layout/NavBar';
 import ReportTable from '../../component/health-report/ReportTable';
-import styles from './HealthReportPage';
 import { getOcr } from '../../api/Api'; // 이 API 함수가 실제로는 getHealthReports를 호출한다고 가정합니다.
 
 const HealthReportPage = () => {
@@ -35,8 +32,6 @@ const HealthReportPage = () => {
 
   return (
       <div className="pageWrapper">
-        <Header />
-        <Sidebar />
         <main className="pageWrapper">
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h4 style={{ marginBottom: '0.35em' }}>건강 보고서 조회</h4>

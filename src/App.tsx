@@ -1,8 +1,15 @@
+// src/App.tsx
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+// ✅ 추가: Redux Provider와 PersistGate
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './store/store';
+
 // layout 컴포넌트 안에, 헤더 푸터 포함되어있음
-import Layout from './component/layout/Layout'; 
+import Layout from './component/layout/Layout';
 
 import HealthReportPage from './pages/health-report/HealthReportPage'
 import LoginPage from './pages/login/LoginPage';
@@ -16,8 +23,10 @@ import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
 
 function App() {
   return (
-        <Layout>
-            <Routes>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <Layout>
+              <Routes>
                 <Route path="/health-report" element={<HealthReportPage />} />
 
                 {/* 로그인 */}
@@ -33,9 +42,10 @@ function App() {
                 {/* 마이페이지 */}
                 <Route path="/mypage/manager" element={<ManagerMyPage />} />
                 <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
-
-            </Routes>
-        </Layout>
+              </Routes>
+            </Layout>
+        </PersistGate>
+      </Provider>
   );
 }
 
