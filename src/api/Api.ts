@@ -116,7 +116,7 @@ axiosInstance.interceptors.response.use(
  */
 export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
 
-  const response = await axiosInstance.get<PagingDto<BoardListItem>>(NOTICE_API_BASE, {
+  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notice${NOTICE_API_BASE}`, {
     params: { page, size, sort: 'id,desc' }
   });
   return response.data;
