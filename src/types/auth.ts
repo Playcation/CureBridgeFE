@@ -1,5 +1,6 @@
 /** 백엔드 User Role ENUM */
-export type UserRole = 'ADMIN' | 'USER';
+export type UserRole = 'ADMIN' | 'USER' | 'ORG_MANAGER' | 'ORG_ADMIN';
+
 
 /** 로그인 요청 DTO */
 export interface LoginRequest {
