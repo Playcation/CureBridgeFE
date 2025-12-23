@@ -187,3 +187,30 @@ export const userLogin=async (loginData: LoginType)=>{
 }
 
 export default axiosInstance;
+
+// ==========================================================
+//                 2. 채팅 API
+// ==========================================================
+
+/**
+ * 7. 회원 목록조회 (GET /api/user/list)
+ */
+
+export const fetchMemberList = async () => {
+  const res = await axiosInstance.get("/user/list"); // baseURL이 맞다면
+  return res.data;
+};
+
+/**
+ * 7. 개인 채팅방 생성 (POST /api/chat/room/private/create?otherUserId=${otherUserId})
+ */
+
+export const createPrivateRoom = async (otherUserId: number) => {
+  const res = await axiosInstance.post(
+      `/chat/room/private/create?otherUserId=${otherUserId}`
+  );
+  return res.data; // roomId
+};
+
+
+
