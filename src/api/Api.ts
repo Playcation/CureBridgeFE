@@ -9,6 +9,7 @@ import {LoginType} from "../common/UserTypes";
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
 import { LoginRequest } from '../types/auth';
 import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
+import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
 
 
 
@@ -185,5 +186,26 @@ export const userLogin=async (loginData: LoginType)=>{
   return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
   // return axiosInstance.post('/user/auth/login', loginData);
 }
+
+export const getMonthlySchedules = async (date: string): Promise<ScheduleResponseDto[]> => {
+  const response = await axiosInstance.get<ScheduleResponseDto[]>('/api/content/calendar/monthly', {
+    params: { date }
+  });
+  return response.data;
+};
+
+export const createSchedule = async (data: CreateScheduleRequestDto): Promise<ScheduleResponseDto> => {
+  const response = await axiosInstance.post<any>('/api/content/calendar', data);
+  return response.data;
+};
+
+export const signup = async (data: FormData): Promise<any> => {
+  const response = await axiosInstance.post('/api/anonymous/user/auth/signup', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
 
 export default axiosInstance;
