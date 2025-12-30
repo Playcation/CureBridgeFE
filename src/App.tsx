@@ -3,6 +3,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+// ✅ 추가: Redux Provider와 PersistGate
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store/store';
@@ -23,6 +24,7 @@ import SupportListPage from "./pages/support/SupportListPage";
 import SupportDetailPage from "./pages/support/SupportDetailPage";
 import SupportCreatePage from "./pages/support/SupportCreatePage";
 import SupportEditPage from "./pages/support/SupportEditPage";
+import Calendar from './pages/calendar/Calendar';
 
 function App() {
   return (
@@ -42,19 +44,22 @@ function App() {
                 <Route path="/notice/create" element={<NoticeCreatePage />} />
                 <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
 
-                {/* 문의하기 목록,상세,등록,수정 페이지 */}
-                <Route path="/support" element={<SupportListPage />} />
-                <Route path="/support/create" element={<SupportCreatePage />} />
-                <Route path="/support/:supportId" element={<SupportDetailPage />} />
-                <Route path="/support/edit/:supportId" element={<SupportEditPage />} />
+                {/* 캘린더 */}
+                <Route path="/calendar" element={<Calendar />} />
 
                 {/* 마이페이지 */}
                 <Route path="/mypage/manager" element={<ManagerMyPage />} />
                 <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
-              </Routes>
-            </Layout>
-        </PersistGate>
-      </Provider>
+
+                  {/* 문의하기 목록,상세,등록,수정 페이지 */}
+                <Route path="/support" element={<SupportListPage />} />
+                <Route path="/support/create" element={<SupportCreatePage />} />
+                <Route path="/support/:supportId" element={<SupportDetailPage />} />
+                <Route path="/support/edit/:supportId" element={<SupportEditPage />} />
+          </Routes>
+        </Layout>
+      </PersistGate>
+    </Provider>
   );
 }
 
