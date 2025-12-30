@@ -24,7 +24,7 @@ import SupportListPage from "./pages/support/SupportListPage";
 import SupportDetailPage from "./pages/support/SupportDetailPage";
 import SupportCreatePage from "./pages/support/SupportCreatePage";
 import SupportEditPage from "./pages/support/SupportEditPage";
-import Calendar from './pages/calendar/Calendar';
+// import Calendar from "./pages/calendar/Calendar";
 
 function App() {
   return (
@@ -45,7 +45,7 @@ function App() {
                 <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
 
                 {/* 캘린더 */}
-                <Route path="/calendar" element={<Calendar />} />
+                {/*<Route path="/calendar" element={<Calendar />} />*/}
 
                 {/* 마이페이지 */}
                 <Route path="/mypage/manager" element={<ManagerMyPage />} />
