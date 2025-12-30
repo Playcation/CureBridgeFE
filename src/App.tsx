@@ -3,7 +3,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-// ✅ 추가: Redux Provider와 PersistGate
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store/store';
@@ -20,6 +19,10 @@ import NoticeCreatePage from './pages/notice/NoticeCreatePage';
 import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
+import SupportListPage from "./pages/support/SupportListPage";
+import SupportDetailPage from "./pages/support/SupportDetailPage";
+import SupportCreatePage from "./pages/support/SupportCreatePage";
+import SupportEditPage from "./pages/support/SupportEditPage";
 
 function App() {
   return (
@@ -38,6 +41,12 @@ function App() {
                 <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
                 <Route path="/notice/create" element={<NoticeCreatePage />} />
                 <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
+
+                {/* 문의하기 목록,상세,등록,수정 페이지 */}
+                <Route path="/support" element={<SupportListPage />} />
+                <Route path="/support/create" element={<SupportCreatePage />} />
+                <Route path="/support/:supportId" element={<SupportDetailPage />} />
+                <Route path="/support/edit/:supportId" element={<SupportEditPage />} />
 
                 {/* 마이페이지 */}
                 <Route path="/mypage/manager" element={<ManagerMyPage />} />
