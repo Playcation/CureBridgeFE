@@ -1,0 +1,87 @@
+/* --- 1. 폼 전체 컨테이너 --- */
+.editContainer {
+    /* 목록/상세 페이지와 일관된 최대 너비 설정 (921px) 및 중앙 정렬 */
+    max-width: 921px; 
+    margin: 40px auto 80px; 
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.formTitle {
+    /* 페이지 제목 */
+    font-weight: 700;
+    font-size: 24px; /* 30px * 0.8 */
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #1f2937; /* 제목 아래 굵은 밑줄 */
+}
+
+/* --- 2. 폼 그룹 및 레이블 --- */
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #495057;
+}
+
+/* --- 3. 입력 필드 (Input/Textarea) --- */
+.inputField,
+.textareaField {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #374151;
+}
+
+.textareaField {
+    resize: vertical;
+    min-height: 200px;
+}
+
+/* --- 4. 액션 버튼 --- */
+.formActions {
+    display: flex;
+    justify-content: flex-end; /* 버튼 오른쪽 정렬 */
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb; /* 상단 약한 구분선 */
+}
+
+.btnAction {
+    /* 취소, 수정 완료 버튼 공통 스타일 */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.btnCancel {
+    background-color: #f1f1f1;
+    color: #495057;
+    border-color: #ccc;
+}
+
+.btnPrimary {
+    /* 수정 완료 버튼 */
+    background-color: #4852D9;
+    color: white;
+    border-color: #4852D9;
+}
+.btnPrimary:hover:not(:disabled) {
+    background-color: #4852D9;
+}

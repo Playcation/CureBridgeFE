@@ -18,7 +18,7 @@ const navItems = [
   { name: '공지사항', path: '/notice' },
   { name: '의학뉴스', path: '/news' },
   { name: '상담하기', path: '/consult' },
-  { name: '문의하기', path: '/contact' },
+  { name: '문의하기', path: '/support' },
   { name: '마이페이지', path: '/mypage' },
 ];
 
