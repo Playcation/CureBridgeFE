@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import styles from './SignUp.module.css';
 import EyeIcon from '../../asset/eye-icon.png';
+import {signup} from '../../api/Api';
 
 const SignupPage: React.FC = () => {
   // 각 입력 필드의 상태를 관리합니다.
@@ -30,12 +31,36 @@ const SignupPage: React.FC = () => {
   };
 
   // 폼 제출 시 실행될 함수
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('회원가입 정보:', formData);
-    // TODO: 비밀번호와 비밀번호 확인이 일치하는지 검증
-    // TODO: 서버로 회원가입 API 요청 보내기
-    alert('회원가입 정보가 콘솔에 출력되었습니다.');
+
+    const birthDateStr = `${formData.birthYear}-${formData.birthMonth.toString().padStart(2, '0')}-${formData.birthDay.toString().padStart(2, '0')}`;
+
+    const signupDto = {
+      email: formData.email,
+      password: formData.password,
+      name: formData.name,
+      phoneNumber: formData.phone,
+      birthDate: new Date(birthDateStr),
+    };
+
+    const formDataToSend = new FormData();
+
+    const jsonBlob = new Blob([JSON.stringify(signupDto)], {
+      type: 'application/json',
+    });
+    formDataToSend.append('data', jsonBlob);
+
+    const emptyFile = new File([""], "empty.jpg", {type: "image/jpeg"});
+    formDataToSend.append('profile', emptyFile);
+
+    try {
+      await signup(formDataToSend);
+      alert('회원가입 성공!');
+    } catch (error) {
+      console.error(error);
+      alert('회원가입 실패');
+    }
   };
 
   // 생년월일 드롭다운 옵션 생성
