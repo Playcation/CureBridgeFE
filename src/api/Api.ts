@@ -165,7 +165,7 @@ export const deleteBoard = async (noticeId: number): Promise<void> => {
 };
 
 export const getOcr = async (id: number) => {
-  return await axiosInstance.get(`/api/health-report/user/${id}`);
+  return await axiosInstance.get(`/api/content/api/health-report/user/${id}`);
 };
 
 export const getManagerInfo = async () => {
@@ -207,5 +207,14 @@ export const signup = async (data: FormData): Promise<any> => {
   });
   return response.data;
 };
+
+export const inviteUser = async (data: Object): Promise<any> => {
+  const response = await axiosInstance.post(`/api/org-manager/org-manager/invite`, data)
+  return response.data;
+};
+
+export const getOrgUser = async ():Promise<any>=>{
+  return await axiosInstance.get('/api/org-manager/org-manager/list');
+}
 
 export default axiosInstance;

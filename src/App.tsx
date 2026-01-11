@@ -21,6 +21,7 @@ import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
 import Calendar from './pages/calendar/Calendar';
+import ManagerHealthReportPage from "./pages/health-report/manager/ManagerHealthReportPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/health-report" element={<HealthReportPage />} />
+            <Route path="/manager/health-report" element={<ManagerHealthReportPage />} />
 
             {/* 로그인 */}
             <Route path="/login" element={<LoginPage />} />
@@ -46,6 +48,9 @@ function App() {
             {/* 마이페이지 */}
             <Route path="/mypage/manager" element={<ManagerMyPage />} />
             <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
+
+            {/* OCR/보고서 페이지 */}
+            {/*<Route path="/ocr" element={<Ocr />} />*/}
           </Routes>
         </Layout>
       </PersistGate>
