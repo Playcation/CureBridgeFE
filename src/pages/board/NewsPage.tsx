@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {Container, Typography} from '@mui/material';
 import NewsTable from '../../component/board/NewsTable';
-import {getNews} from '../../api/Api';
+import {getNews} from '../../api/ContentApi';
 
 type NewsItem = {
   id: number;
