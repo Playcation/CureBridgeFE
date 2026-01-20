@@ -20,6 +20,8 @@ import NoticeCreatePage from './pages/notice/NoticeCreatePage';
 import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
+import AdminMainPage from "./pages/admin/AdminMainPage";
+import AdminCompanyListPage from "./pages/admin/AdminCompanyListPage";
 
 function App() {
   return (
@@ -41,7 +43,12 @@ function App() {
 
                 {/* 마이페이지 */}
                 <Route path="/mypage/manager" element={<ManagerMyPage />} />
-                <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
+                <Route path="/mypage/org-admin" element={<OrgAdminMyPage />}/>
+
+                {/* 어드민 페이지 */}
+                <Route path="/admin" element={<AdminMainPage />} />
+                <Route path="/admin/list" element={<AdminCompanyListPage />} />
+                <Route path="/admin/create" element={<AdminCompanyListPage />} />
               </Routes>
             </Layout>
         </PersistGate>
