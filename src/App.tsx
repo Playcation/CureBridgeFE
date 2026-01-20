@@ -22,6 +22,7 @@ import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
 import Calendar from './pages/calendar/Calendar';
 import ManagerHealthReportPage from "./pages/health-report/manager/ManagerHealthReportPage";
+import OcrPage from './pages/ocr/OcrPage';
 
 function App() {
   return (
@@ -50,7 +51,8 @@ function App() {
             <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
 
             {/* OCR/보고서 페이지 */}
-            {/*<Route path="/ocr" element={<Ocr />} />*/}
+            <Route path="/ocr" element={<OcrPage />} />
+            <Route path="/ocr/:reportId" element={<OcrPage />} />
           </Routes>
         </Layout>
       </PersistGate>

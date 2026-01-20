@@ -164,7 +164,7 @@ export const deleteBoard = async (noticeId: number): Promise<void> => {
   await axiosInstance.delete(`${NOTICE_API_BASE}/${noticeId}`);
 };
 
-export const getOcr = async (id: number) => {
+export const getHealthReportsByUserId = async (id: number) => {
   return await axiosInstance.get(`/api/content/api/health-report/user/${id}`);
 };
 
