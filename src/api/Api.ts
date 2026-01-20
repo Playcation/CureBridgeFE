@@ -43,7 +43,7 @@ axiosInstance.interceptors.request.use(
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
         '/users/sign-in',
-        '/api/anonymous/user/auth/login',
+        '/api/anonymous/user/login',
         '/api/core/users/sign-in',
         '/token/refresh',
         '/refresh',
@@ -173,7 +173,7 @@ export const getManagerInfo = async () => {
 };
 
 export const getOrganizationInfo = async () => {
-    return await axiosInstance.get(`/api/organization/organization`);
+    return await axiosInstance.get(`/api/admin/member/organization/all`);
 };
 
 export const getNews = (page: number, size: number, sort: string, query?: string) => {
@@ -183,7 +183,7 @@ export const getNews = (page: number, size: number, sort: string, query?: string
 };
 
 export const userLogin=async (loginData: LoginType)=>{
-  return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
+  return axiosInstance.post('/api/anonymous/member/user/login', loginData);
   // return axiosInstance.post('/user/auth/login', loginData);
 }
 
