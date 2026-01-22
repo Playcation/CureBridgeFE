@@ -43,9 +43,9 @@ axiosInstance.interceptors.request.use(
 
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
-        '/member/sign-in',
-        '/member/login',
-        '/member/auth/refresh'
+        '/user/sign-in',
+        '/user/login',
+        '/auth/refresh'
       ];
 
       if (skipAuth.some(path => url.endsWith(path))) {
@@ -76,7 +76,7 @@ axiosInstance.interceptors.response.use(
 
           try {
             const response = await axios.post<{ token: string }>(
-                '/member/auth/refresh',
+                '/auth/refresh',
                 {},
                 {withCredentials: true}
             );
