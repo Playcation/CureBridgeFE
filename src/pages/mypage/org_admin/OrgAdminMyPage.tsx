@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {useSelector} from "react-redux";
-import {getOrganizationInfo} from "../../../api/Api";
+import {getOrganizationInfo} from "../../../api/MemberApi";
 import {selectCurrentUserId} from "../../../store/slices/authSlice";
 import "./OrgAdminMyPage.css";
 
