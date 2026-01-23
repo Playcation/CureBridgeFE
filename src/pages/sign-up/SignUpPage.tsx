@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import styles from './SignUp.module.css';
 import EyeIcon from '../../asset/eye-icon.png';
+import {signUp} from "../../api/AuthApi";
+import {SignUpRequestDto} from "../../types/auth";
 import {signup} from '../../api/Api';
 
 const SignupPage: React.FC = () => {
