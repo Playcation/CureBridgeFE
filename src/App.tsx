@@ -22,6 +22,7 @@ import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
 import AdminMainPage from "./pages/admin/AdminMainPage";
 import AdminCompanyListPage from "./pages/admin/AdminCompanyListPage";
+import AdminCompanyCreatePage from "./pages/admin/AdminCompanyCreatePage";
 import Calendar from './pages/calendar/Calendar';
 import ManagerHealthReportPage from "./pages/health-report/manager/ManagerHealthReportPage";
 import OcrPage from './pages/ocr/OcrPage';
@@ -52,18 +53,18 @@ function App() {
             <Route path="/ocr" element={<OcrPage />} />
             <Route path="/ocr/:reportId" element={<OcrPage />} />
 
-                {/* 마이페이지 */}
-                <Route path="/mypage/manager" element={<ManagerMyPage />} />
-                <Route path="/mypage/org-admin" element={<OrgAdminMyPage />}/>
+            {/* 마이페이지 */}
+            <Route path="/mypage/manager" element={<ManagerMyPage />} />
+            <Route path="/mypage/org-admin" element={<OrgAdminMyPage />}/>
 
-                {/* 어드민 페이지 */}
-                <Route path="/admin" element={<AdminMainPage />} />
-                <Route path="/admin/list" element={<AdminCompanyListPage />} />
-                <Route path="/admin/create" element={<AdminCompanyListPage />} />
-              </Routes>
-            </Layout>
-        </PersistGate>
-      </Provider>
+            {/* 어드민 페이지 */}
+            <Route path="/admin" element={<AdminMainPage />} />
+            <Route path="/admin/list" element={<AdminCompanyListPage />} />
+            <Route path="/admin/create" element={<AdminCompanyCreatePage />} />
+          </Routes>
+        </Layout>
+      </PersistGate>
+    </Provider>
   );
 }
 
