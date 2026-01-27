@@ -7,20 +7,17 @@ import axios, {
 import {LoginType} from "../common/UserTypes";
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
-import { LoginRequest } from '../types/auth';
-import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
+import {BoardDetail, BoardListItem, BoardRequest, PagingDto} from '../types/board';
 import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
 
 
-
-
 // ------------------- API 기본 설정 -------------------
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8084';
 const LOGIN_URL = '/api/core/login';
-const NOTICE_API_BASE = '/api/notice';
+const NOTICE_API_BASE = '/api/admin/notices';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // 또는 배포용 주소
+  baseURL: 'http://localhost:8084', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -40,6 +37,9 @@ axiosInstance.interceptors.request.use(
 
       const url = (config.url || '').toLowerCase();
 
+      if (url.startsWith('/api/anonymous/')) {
+        return config; // 익명 API는 토큰 안 붙임
+      }
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
         '/users/sign-in',
@@ -76,7 +76,7 @@ axiosInstance.interceptors.response.use(
           isRefreshing = true;
 
           try {
-            const response = await axios.post<{ token: string }>(
+            const response = await axiosInstance.post<{ token: string }>(
                 '/refresh',
                 {},
                 {withCredentials: true}
@@ -117,8 +117,8 @@ axiosInstance.interceptors.response.use(
  */
 export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
 
-  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notice${NOTICE_API_BASE}`, {
-    params: { page, size, sort: 'id,desc' }
+  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/user/notices`, {
+    params: {page, size, sort: 'id,desc'}
   });
   return response.data;
 };
@@ -129,35 +129,87 @@ export const fetchBoardList = async (page: number = 0, size: number = 10): Promi
  */
 export const fetchBoardDetail = async (noticeId: number): Promise<BoardDetail> => {
 
-  const response = await axiosInstance.get<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`);
+  const response = await axiosInstance.get<BoardDetail>(`/api/user/notices/${noticeId}`);
   return response.data;
 };
 
 /**
  * 2-3. 게시글 생성 (POST /api/notice)
  */
-export const createBoard = async (userId: number, data: BoardRequest): Promise<BoardDetail> => {
+export const createBoard = async (userId: number, data: BoardRequest, files?: File[]): Promise<BoardDetail> => {
+  const formData = new FormData();
 
+  // 💡 백엔드 NoticeRequestDto 구조에 맞게 title과 content가 포함된 Blob 생성
+  const jsonBlob = new Blob(
+      [JSON.stringify({title: data.title, content: data.content})],
+      {type: 'application/json'}
+  );
+  formData.append('json', jsonBlob);
 
-  // 실제 API
-  const response = await axiosInstance.post<BoardDetail>(`${NOTICE_API_BASE}?userId=${userId}`, { json: data });
+  if (files) {
+    files.forEach(file => formData.append('attachedFile', file));
+  }
+
+  const response = await axiosInstance.post<BoardDetail>(
+      `${NOTICE_API_BASE}`, // 💡 userId는 토큰에서 추출하므로 쿼리 파라미터 불필요
+      formData,
+      {headers: {'Content-Type': 'multipart/form-data'}}
+  );
   return response.data;
 };
-
+// export const createBoard = async (userId: number, data: BoardRequest, files?: File[]): Promise<BoardDetail> => {
+//   const formData = new FormData();
+//
+//   // 1. JSON 데이터를 Blob으로 변환하여 'json' 파트에 추가 (백엔드의 @RequestPart("json")과 매칭)
+//   const jsonBlob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+//   formData.append('json', jsonBlob);
+//
+//   // 2. 첨부파일이 있다면 추가 (백엔드의 @RequestPart("attachedFile")과 매칭)
+//   if (files) {
+//     files.forEach(file => formData.append('attachedFile', file));
+//   }
+//
+//   // 💡 반드시 axiosInstance를 사용하여 토큰 인터셉터가 적용되게 해야 합니다.
+//   const response = await axiosInstance.post<BoardDetail>(
+//       `/api/admin/notices`, // userId 쿼리 파라미터 제거 (토큰에서 추출하므로)
+//       formData,
+//       {
+//         headers: {
+//           'Content-Type': 'multipart/form-data',
+//         },
+//       }
+//   );
+//
+//   return response.data;
+// };
 /**
  * 2-4. 게시글 수정 (PATCH /api/notice/{noticeId})
  */
+// export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
+//
+//   const response = await axiosInstance.patch<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`, {json: data});
+//   return response.data;
+// };
 export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
+  const formData = new FormData();
 
-  const response = await axiosInstance.patch<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`, { json: data });
+  const jsonBlob = new Blob(
+      [JSON.stringify({title: data.title, content: data.content})],
+      {type: 'application/json'}
+  );
+  formData.append('json', jsonBlob);
+
+  const response = await axiosInstance.patch<BoardDetail>(
+      `${NOTICE_API_BASE}/${noticeId}`,
+      formData,
+      {headers: {'Content-Type': 'multipart/form-data'}}
+  );
   return response.data;
 };
-
 /**
  * 7. 게시글 삭제 (DELETE /api/notice/{noticeId})
  */
 export const deleteBoard = async (noticeId: number): Promise<void> => {
-
 
 
   // API 사용 시:
@@ -169,36 +221,45 @@ export const getOcr = async (id: number) => {
 };
 
 export const getManagerInfo = async () => {
-    return await axiosInstance.get(`/api/org-manager/org-manager`);
+  return await axiosInstance.get(`/api/org-manager/org-manager`);
 };
 
 export const getOrganizationInfo = async () => {
-    return await axiosInstance.get(`/api/organization/organization`);
+  return await axiosInstance.get(`/api/organization/organization`);
 };
 
 export const getNews = (page: number, size: number, sort: string, query?: string) => {
   const params: any = {page, size, sort};
   if (query) params.query = query;
 
-  return axiosInstance.get('/anonymous/news', {
+  return axiosInstance.get('/api/anonymous/content/news', {
     params,
-    headers: {Authorization: ''}, // 이 요청에선 강제로 비움
   }).then(res => res.data);
 };
 
 export const deleteNews = async (id: number) => {
-  return await axiosInstance.delete(`/admin/news/${id}`)
+  return await axiosInstance.delete(`/api/admin/content/news/${id}`)
   .then(res => res.data);
 };
 
-export const userLogin=async (loginData: LoginType)=>{
+/**
+ * 💡 인기 키워드 조회 (Aggregation)
+ */
+export type TopKeywordDto = { keyword: string; count: number };
+export const getTopKeywords = (gte?: string, lt?: string, size: number = 10) => {
+  return axiosInstance.get('/api/anonymous/content/news/top-keywords', {
+    params: {gte, lt, size},
+  }).then(res => res.data); // [{ keyword: "의료", count: 123 }, ...]
+};
+
+export const userLogin = async (loginData: LoginType) => {
   return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
   // return axiosInstance.post('/user/auth/login', loginData);
 }
 
 export const getMonthlySchedules = async (date: string): Promise<ScheduleResponseDto[]> => {
   const response = await axiosInstance.get<ScheduleResponseDto[]>('/api/content/calendar/monthly', {
-    params: { date }
+    params: {date}
   });
   return response.data;
 };

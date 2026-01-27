@@ -1,14 +1,19 @@
 // src/pages/news/NewsPage.tsx
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Container, Typography} from '@mui/material';
+import {Box, Button, Chip, Container, Divider, Paper, Typography} from '@mui/material';
 import NewsTable from '../../component/board/NewsTable';
-import {deleteNews, getNews} from '../../api/Api';
+import {deleteNews, getNews, getTopKeywords} from '../../api/Api';
 
 type NewsItem = {
   id: number;
   title: string;
   link?: string;
   publishedAt?: string;
+};
+
+type TopKeywordDto = {
+  keyword: string;
+  count: number;
 };
 
 const NewsPage = () => {
@@ -18,6 +23,9 @@ const NewsPage = () => {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [topKeywords, setTopKeywords] = useState<{ keyword: string; count: number }[]>([]);
+  const [keywords, setKeywords] = useState<TopKeywordDto[]>([]);
+  const [isKeywordLoading, setIsKeywordLoading] = useState(false);
 
   const fetchNews = async (p = 0, size = 10) => {
 
@@ -31,14 +39,27 @@ const NewsPage = () => {
       console.error('fetchNews failed', e);
     }
   };
-
+// 키워드 데이터 호출 로직
+  const fetchKeywords = async () => {
+    setIsKeywordLoading(true);
+    try {
+      const data = await getTopKeywords(undefined, undefined, 10);
+      setKeywords(data);
+    } catch (e) {
+      console.error('fetchKeywords failed', e);
+      setKeywords([]);
+    } finally {
+      setIsKeywordLoading(false);
+    }
+  };
   useEffect(() => {
     fetchNews(page, rowsPerPage);
+    fetchKeywords();
   }, [page, rowsPerPage]);
 
   const handleSelect = (id: number, isSelected: boolean) => {
     if (isSelected) {
-      // 💡 (수정) 이미 목록에 ID가 없으면 추가합니다. (중복 방지)
+      //  (수정) 이미 목록에 ID가 없으면 추가합니다. (중복 방지)
       setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
     } else {
       // ID를 목록에서 제거합니다.
@@ -121,6 +142,30 @@ const NewsPage = () => {
               </Button>
             </Box>
         )}
+        {/* 뉴스 리스트 하단 인기 키워드 섹션 추가 */}
+        <Box sx={{mt: 6}}>
+          <Divider sx={{mb: 3}}/>
+          <Typography variant="h6" gutterBottom
+                      sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+            ✨ 최근 주요 의학 키워드
+          </Typography>
+          <Paper elevation={0} sx={{p: 2, bgcolor: '#f8f9fa', borderRadius: 2}}>
+            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
+              {keywords.length > 0 ? (
+                  keywords.map((kw, index) => (
+                      <Chip
+                          key={index}
+                          label={`#${kw.keyword} (${kw.count})`}
+                      />
+                  ))
+              ) : (
+                  <Typography variant="body2" color="textSecondary">
+                    {isKeywordLoading ? "키워드 데이터를 분석 중입니다..." : "분석된 키워드가 없습니다."}
+                  </Typography>
+              )}
+            </Box>
+          </Paper>
+        </Box>
       </Container>
   );
 };
