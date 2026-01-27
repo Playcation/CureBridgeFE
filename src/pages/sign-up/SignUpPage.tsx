@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import styles from './SignUp.module.css';
 import EyeIcon from '../../asset/eye-icon.png';
-import {signup} from '../../api/Api';
+import {signUp} from "../../api/AuthApi";
+import {SignUpRequestDto} from "../../types/auth";
 
 const SignupPage: React.FC = () => {
   // 각 입력 필드의 상태를 관리합니다.
@@ -33,34 +34,32 @@ const SignupPage: React.FC = () => {
   // 폼 제출 시 실행될 함수
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('회원가입 정보:', formData);
+    // 비밀번호와 비밀번호 확인이 일치하는지 검증
+    if(formData.password.toString() !== formData.passwordConfirm.toString()) {
+      alert('비밀번호와 비밀번호 확인의 입력값이 다릅니다.');
+      return;
+    }
 
-    const birthDateStr = `${formData.birthYear}-${formData.birthMonth.toString().padStart(2, '0')}-${formData.birthDay.toString().padStart(2, '0')}`;
-
-    const signupDto = {
+    // TODO: 임의로 빈 파일 넘기는 중
+    const profile: File = new File([], 'empty.txt', {type: 'text/plain'});
+    // YYYY-MM-DD 형식 맞추기 위한 제로패딩
+    const pad = (num: string | number) => num.toString().padStart(2, '0');
+    const data: SignUpRequestDto = {
       email: formData.email,
       password: formData.password,
       name: formData.name,
       phoneNumber: formData.phone,
-      birthDate: new Date(birthDateStr),
+      birthDate: `${formData.birthYear}-${pad(formData.birthMonth)}-${pad(formData.birthDay)}`
     };
-
-    const formDataToSend = new FormData();
-
-    const jsonBlob = new Blob([JSON.stringify(signupDto)], {
-      type: 'application/json',
-    });
-    formDataToSend.append('data', jsonBlob);
-
-    const emptyFile = new File([""], "empty.jpg", {type: "image/jpeg"});
-    formDataToSend.append('profile', emptyFile);
-
     try {
-      await signup(formDataToSend);
-      alert('회원가입 성공!');
-    } catch (error) {
-      console.error(error);
-      alert('회원가입 실패');
+      const response = await signUp(profile, data);
+      console.log('회원가입 응답', response);
+    } catch (error: any) {
+      console.error('회원가입 api 호출 실패', error);
+      console.error('에러 응답:', error.response?.data);
     }
+    alert('회원가입 정보가 콘솔에 출력되었습니다.');
   };
 
   // 생년월일 드롭다운 옵션 생성

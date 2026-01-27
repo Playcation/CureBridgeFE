@@ -4,11 +4,12 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
-import {LoginType} from "../common/UserTypes";
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
-import {BoardDetail, BoardListItem, BoardRequest, PagingDto} from '../types/board';
+import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
+import {toPath, UserRole} from "../types/auth";
 import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
+
 
 
 // ------------------- API 기본 설정 -------------------
@@ -36,17 +37,20 @@ axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
 
       const url = (config.url || '').toLowerCase();
+      const storedRole = localStorage.getItem('userRole') as UserRole | undefined;
+      const rolePath = storedRole? toPath(storedRole) : 'anonymous';
+
+      // baseURL 에 권한 정보 추가
+      config.baseURL = `http://localhost:8080/api/${rolePath}`
 
       if (url.startsWith('/api/anonymous/')) {
         return config; // 익명 API는 토큰 안 붙임
       }
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
-        '/users/sign-in',
-        '/api/anonymous/user/auth/login',
-        '/api/core/users/sign-in',
-        '/token/refresh',
-        '/refresh',
+        'member/user/sign-in',
+        'member/user/login',
+        'member/auth/refresh'
       ];
 
       if (skipAuth.some(path => url.endsWith(path))) {
@@ -76,8 +80,8 @@ axiosInstance.interceptors.response.use(
           isRefreshing = true;
 
           try {
-            const response = await axiosInstance.post<{ token: string }>(
-                '/refresh',
+            const response = await axios.post<{ token: string }>(
+                '/member/auth/refresh',
                 {},
                 {withCredentials: true}
             );
@@ -157,39 +161,10 @@ export const createBoard = async (userId: number, data: BoardRequest, files?: Fi
   );
   return response.data;
 };
-// export const createBoard = async (userId: number, data: BoardRequest, files?: File[]): Promise<BoardDetail> => {
-//   const formData = new FormData();
-//
-//   // 1. JSON 데이터를 Blob으로 변환하여 'json' 파트에 추가 (백엔드의 @RequestPart("json")과 매칭)
-//   const jsonBlob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-//   formData.append('json', jsonBlob);
-//
-//   // 2. 첨부파일이 있다면 추가 (백엔드의 @RequestPart("attachedFile")과 매칭)
-//   if (files) {
-//     files.forEach(file => formData.append('attachedFile', file));
-//   }
-//
-//   // 💡 반드시 axiosInstance를 사용하여 토큰 인터셉터가 적용되게 해야 합니다.
-//   const response = await axiosInstance.post<BoardDetail>(
-//       `/api/admin/notices`, // userId 쿼리 파라미터 제거 (토큰에서 추출하므로)
-//       formData,
-//       {
-//         headers: {
-//           'Content-Type': 'multipart/form-data',
-//         },
-//       }
-//   );
-//
-//   return response.data;
-// };
+
 /**
  * 2-4. 게시글 수정 (PATCH /api/notice/{noticeId})
  */
-// export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
-//
-//   const response = await axiosInstance.patch<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`, {json: data});
-//   return response.data;
-// };
 export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
   const formData = new FormData();
 
@@ -206,10 +181,12 @@ export const updateBoard = async (noticeId: number, data: BoardRequest): Promise
   );
   return response.data;
 };
+
 /**
  * 7. 게시글 삭제 (DELETE /api/notice/{noticeId})
  */
 export const deleteBoard = async (noticeId: number): Promise<void> => {
+
 
 
   // API 사용 시:
@@ -221,11 +198,11 @@ export const getOcr = async (id: number) => {
 };
 
 export const getManagerInfo = async () => {
-  return await axiosInstance.get(`/api/org-manager/org-manager`);
+    return await axiosInstance.get(`/api/org-manager/org-manager`);
 };
 
 export const getOrganizationInfo = async () => {
-  return await axiosInstance.get(`/api/organization/organization`);
+    return await axiosInstance.get(`/api/organization/organization`);
 };
 
 export const getNews = (page: number, size: number, sort: string, query?: string) => {
@@ -252,7 +229,7 @@ export const getTopKeywords = (gte?: string, lt?: string, size: number = 10) => 
   }).then(res => res.data); // [{ keyword: "의료", count: 123 }, ...]
 };
 
-export const userLogin = async (loginData: LoginType) => {
+export const userLogin=async (loginData: LoginType)=>{
   return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
   // return axiosInstance.post('/user/auth/login', loginData);
 }

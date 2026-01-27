@@ -1,7 +1,7 @@
 // src/App.tsx
 
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 // ✅ 추가: Redux Provider와 PersistGate
 import { Provider } from 'react-redux';
