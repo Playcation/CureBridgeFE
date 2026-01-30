@@ -10,10 +10,10 @@ import KakaoIcon from '../../asset/kakao.png';
 import GoogleIcon from '../../asset/google.png';
 import NaverIcon from '../../asset/naver.png';
 import EyeIcon from '../../asset/eye-icon.png';
-import {LoginType} from "../../common/UserTypes";
 
 // api
-import {userLogin} from "../../api/Api"
+import {userLogin} from "../../api/AuthApi"
+import {LoginRequest} from "../../types/auth";
 
 const LoginPage: React.FC = () => {
   // 이메일과 비밀번호 입력을 관리하기 위한 state
@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
 
     // role을 명시적으로 포함
-    const loginData: LoginType = {
+    const loginData: LoginRequest = {
       email,
       password,
       role: userType  // USER, ORG_MANAGER, ORG_ADMIN 중 하나

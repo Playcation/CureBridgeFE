@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import styles from './SignUp.module.css';
 import EyeIcon from '../../asset/eye-icon.png';
+import {signUp} from "../../api/AuthApi";
+import {SignUpRequestDto} from "../../types/auth";
 
 const SignupPage: React.FC = () => {
   // 각 입력 필드의 상태를 관리합니다.
@@ -30,11 +32,33 @@ const SignupPage: React.FC = () => {
   };
 
   // 폼 제출 시 실행될 함수
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('회원가입 정보:', formData);
-    // TODO: 비밀번호와 비밀번호 확인이 일치하는지 검증
-    // TODO: 서버로 회원가입 API 요청 보내기
+    // 비밀번호와 비밀번호 확인이 일치하는지 검증
+    if(formData.password.toString() !== formData.passwordConfirm.toString()) {
+      alert('비밀번호와 비밀번호 확인의 입력값이 다릅니다.');
+      return;
+    }
+
+    // TODO: 임의로 빈 파일 넘기는 중
+    const profile: File = new File([], 'empty.txt', {type: 'text/plain'});
+    // YYYY-MM-DD 형식 맞추기 위한 제로패딩
+    const pad = (num: string | number) => num.toString().padStart(2, '0');
+    const data: SignUpRequestDto = {
+      email: formData.email,
+      password: formData.password,
+      name: formData.name,
+      phoneNumber: formData.phone,
+      birthDate: `${formData.birthYear}-${pad(formData.birthMonth)}-${pad(formData.birthDay)}`
+    };
+    try {
+      const response = await signUp(profile, data);
+      console.log('회원가입 응답', response);
+    } catch (error: any) {
+      console.error('회원가입 api 호출 실패', error);
+      console.error('에러 응답:', error.response?.data);
+    }
     alert('회원가입 정보가 콘솔에 출력되었습니다.');
   };
 

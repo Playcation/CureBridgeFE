@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import ReportTable from '../../component/health-report/ReportTable';
-import { getOcr } from '../../api/Api'; // 이 API 함수가 실제로는 getHealthReports를 호출한다고 가정합니다.
+import { getOcr } from '../../api/ContentApi'; // 이 API 함수가 실제로는 getHealthReports를 호출한다고 가정합니다.
 
 const HealthReportPage = () => {
   const [reports, setReports] = useState([]);

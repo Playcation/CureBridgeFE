@@ -4,22 +4,19 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
-import {LoginType} from "../common/UserTypes";
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
-import { LoginRequest } from '../types/auth';
 import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
+import {toPath, UserRole} from "../types/auth";
 
 
 
 
 // ------------------- API 기본 설정 -------------------
-const BASE_URL = 'http://localhost:8081';
-const LOGIN_URL = '/api/core/login';
-const NOTICE_API_BASE = '/api/notice';
+const NOTICE_API_BASE = '/notice';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // 또는 배포용 주소
+  baseURL: 'http://localhost:8080/api', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -38,14 +35,17 @@ axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
 
       const url = (config.url || '').toLowerCase();
+      const storedRole = localStorage.getItem('userRole') as UserRole | undefined;
+      const rolePath = storedRole? toPath(storedRole) : 'anonymous';
+
+      // baseURL 에 권한 정보 추가
+      config.baseURL = `http://localhost:8080/api/${rolePath}`
 
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
-        '/users/sign-in',
-        '/api/anonymous/user/auth/login',
-        '/api/core/users/sign-in',
-        '/token/refresh',
-        '/refresh',
+        'member/user/sign-in',
+        'member/user/login',
+        'member/auth/refresh'
       ];
 
       if (skipAuth.some(path => url.endsWith(path))) {
@@ -76,7 +76,7 @@ axiosInstance.interceptors.response.use(
 
           try {
             const response = await axios.post<{ token: string }>(
-                '/refresh',
+                '/member/auth/refresh',
                 {},
                 {withCredentials: true}
             );
@@ -163,27 +163,27 @@ export const deleteBoard = async (noticeId: number): Promise<void> => {
   await axiosInstance.delete(`${NOTICE_API_BASE}/${noticeId}`);
 };
 
-export const getOcr = async (id: number) => {
+/*export const getOcr = async (id: number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);
-};
+};*/
 
-export const getManagerInfo = async () => {
+/*export const getManagerInfo = async () => {
     return await axiosInstance.get(`/api/org-manager/org-manager`);
-};
+};*/
 
-export const getOrganizationInfo = async () => {
+/*export const getOrganizationInfo = async () => {
     return await axiosInstance.get(`/api/organization/organization`);
-};
+};*/
 
-export const getNews = (page: number, size: number, sort: string, query?: string) => {
+/*export const getNews = (page: number, size: number, sort: string, query?: string) => {
   const params: any = {page, size, sort};
   if (query) params.query = query; // 검색어 추가
   return axiosInstance.get('/api/news', {params}).then(res => res.data);
-};
+};*/
 
-export const userLogin=async (loginData: LoginType)=>{
+/*export const userLogin=async (loginData: LoginType)=>{
   return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
   // return axiosInstance.post('/user/auth/login', loginData);
-}
+}*/
 
 export default axiosInstance;
