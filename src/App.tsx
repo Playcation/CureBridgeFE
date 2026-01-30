@@ -21,6 +21,12 @@ import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
 
+import ChatMainPage from "./pages/chat/ChatMainPage";
+import MyChatListPage from "./pages/chat/MyChatListPage";
+import ChatPage from "./pages/chat/ChatPage";
+import MemberListPage from "./pages/chat/MemberListPage";
+
+
 function App() {
   return (
       <Provider store={store}>
@@ -42,6 +48,12 @@ function App() {
                 {/* 마이페이지 */}
                 <Route path="/mypage/manager" element={<ManagerMyPage />} />
                 <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
+
+                {/* 채팅 */}
+                <Route path="/chat/groupchatting/list" element={<ChatMainPage />} />
+                <Route path="/chat/my/rooms" element={<MyChatListPage />} />
+                <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
+                <Route path="/chat/member/list" element={<MemberListPage />} />
               </Routes>
             </Layout>
         </PersistGate>

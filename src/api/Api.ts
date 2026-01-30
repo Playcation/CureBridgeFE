@@ -14,10 +14,9 @@ import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/bo
 
 
 // ------------------- API 기본 설정 -------------------
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8081';
 const LOGIN_URL = '/api/core/login';
 const NOTICE_API_BASE = '/api/notice';
-const CHAT_API_BASE = '/api/chat';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8080', // 또는 배포용 주소
