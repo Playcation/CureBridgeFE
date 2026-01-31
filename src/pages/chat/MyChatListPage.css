@@ -1,0 +1,37 @@
+.member-list-container {
+  margin-top: 32px;
+}
+
+.member-paper {
+  padding: 24px;
+  border-radius: 12px !important;
+}
+
+.member-title {
+  text-align: center;
+  margin-bottom: 24px !important;
+  font-weight: bold !important;
+}
+
+.member-table-head {
+  background-color: #f5f5f5;
+}
+
+.member-table-head th {
+  font-weight: bold !important;
+}
+
+.member-row:hover {
+  background-color: #fafafa;
+}
+
+.chat-button {
+  text-transform: none !important;
+  border-radius: 8px !important;
+}
+
+.empty-row-text {
+  text-align: center;
+  padding: 40px 0 !important;
+  color: #888;
+}
