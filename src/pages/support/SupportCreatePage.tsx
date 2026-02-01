@@ -1,52 +1,77 @@
+// src/pages/support/SupportCreatePage.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import SupportForm from "../../component/support/SupportForm";
+import styles from "./SupportCreatePage.module.css";
 import { createSupport } from "../../api/SupportApi";
 import { selectCurrentUserId } from "../../store/slices/authSlice";
 
 function SupportCreatePage() {
     const navigate = useNavigate();
-    const userId = useSelector(selectCurrentUserId);
+    const myUserId = useSelector(selectCurrentUserId);
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
     const [files, setFiles] = useState<File[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
-    const submit = async () => {
-        if (!userId) return alert("로그인이 필요합니다.");
-        if (!title.trim() || !content.trim()) return alert("제목과 내용을 입력해주세요.");
+    const onSubmit = async () => {
+        if (!myUserId) return alert("로그인 후 작성할 수 있어요.");
+        if (!title.trim() || !content.trim()) return alert("제목/내용을 입력해주세요.");
 
-        setLoading(true);
+        setSubmitting(true);
         try {
-            const created = await createSupport(userId, { title, content, isPrivate }, files);
-            alert("문의가 등록되었습니다.");
-            // created.supportId 로 상세 이동 가능
-            navigate(`/support/${created.supportId}`);
+            await createSupport(myUserId, { title, content, isPrivate,}, files);
+            alert("등록되었습니다.");
+            navigate("/support");
         } catch (e) {
             console.error(e);
-            alert("문의 등록에 실패했습니다.");
+            alert("등록에 실패했습니다.");
         } finally {
-            setLoading(false);
+            setSubmitting(false);
         }
     };
 
     return (
-        <SupportForm
-            mode="create"
-            title={title}
-            content={content}
-            isPrivate={isPrivate}
-            loading={loading}
-            onTitleChange={setTitle}
-            onContentChange={setContent}
-            onPrivateChange={setIsPrivate}
-            onFilesChange={setFiles}
-            onSubmit={submit}
-            submitText="등록하기"
-        />
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h2>문의 작성</h2>
+                <button className={styles.outline} onClick={() => navigate("/support")}>목록</button>
+            </div>
+
+            <div className={styles.field}>
+                <div className={styles.label}>제목</div>
+                <input className={styles.input} value={title} onChange={(e) => setTitle(e.target.value)} />
+            </div>
+
+            <div className={styles.field}>
+                <div className={styles.label}>내용</div>
+                <textarea className={styles.textarea} value={content} onChange={(e) => setContent(e.target.value)} />
+            </div>
+
+            <div className={styles.row}>
+                <label className={styles.checkbox}>
+                    <input type="checkbox" checked={isPrivate} onChange={(e) => setIsPrivate(e.target.checked)} />
+                    비공개
+                </label>
+            </div>
+
+            <div className={styles.field}>
+                <div className={styles.label}>첨부파일</div>
+                <input
+                    type="file"
+                    multiple
+                    onChange={(e) => setFiles(Array.from(e.target.files || []))}
+                />
+            </div>
+
+            <div className={styles.actions}>
+                <button className={styles.primary} disabled={submitting} onClick={onSubmit}>
+                    {submitting ? "등록 중..." : "등록"}
+                </button>
+            </div>
+        </div>
     );
 }
 

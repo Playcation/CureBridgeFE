@@ -1,8 +1,8 @@
+// src/pages/support/SupportDetailPage.tsx
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { fetchSupportDetail, deleteSupport } from "../../api/SupportApi";
-import { SupportDetail } from "../../types/support";
 import { selectCurrentUserId, selectIsAdmin } from "../../store/slices/authSlice";
 import ReplyBox from "../../component/support/ReplyBox";
 import styles from "./SupportDetailPage.module.css";
@@ -14,7 +14,7 @@ function SupportDetailPage() {
     const myUserId = useSelector(selectCurrentUserId);
     const isAdmin = useSelector(selectIsAdmin);
 
-    const [data, setData] = useState<SupportDetail | null>(null);
+    const [data, setData] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
 
     const load = useCallback(async () => {
@@ -23,7 +23,7 @@ function SupportDetailPage() {
         try {
             const detail = await fetchSupportDetail(Number(supportId));
 
-            // 비공개 글 접근 제한(작성자 or ADMIN만)
+            // 비공개 글 접근 제한(작성자 or ADMIN)
             if (detail.isPrivate && !isAdmin && myUserId !== detail.userId) {
                 alert("비공개 문의입니다.");
                 navigate("/support");
@@ -47,12 +47,9 @@ function SupportDetailPage() {
     const onDelete = async () => {
         if (!data) return;
 
-        if (data.isReplied) {
-            return alert("답변이 등록된 문의는 삭제할 수 없습니다.");
-        }
-        if (myUserId !== data.userId) {
-            return alert("본인 문의만 삭제할 수 있습니다.");
-        }
+        if (!myUserId) return alert("로그인 후 삭제할 수 있어요.");
+        if (data.isReplied) return alert("답변이 등록된 문의는 삭제할 수 없습니다.");
+        if (myUserId !== data.userId) return alert("본인 문의만 삭제할 수 있습니다.");
         if (!window.confirm("정말 삭제할까요?")) return;
 
         try {
@@ -75,15 +72,11 @@ function SupportDetailPage() {
             <div className={styles.header}>
                 <h2 className={styles.title}>문의하기</h2>
                 <div className={styles.headerRight}>
-                    <button className={styles.outline} onClick={() => navigate("/support")}>
-                        목록
-                    </button>
+                    <button className={styles.outline} onClick={() => navigate("/support")}>목록</button>
+
                     {canEditOrDelete && (
                         <>
-                            <button
-                                className={styles.outline}
-                                onClick={() => navigate(`/support/edit/${data.id}`)}
-                            >
+                            <button className={styles.outline} onClick={() => navigate(`/support/edit/${data.id}`)}>
                                 수정
                             </button>
                             <button className={styles.danger} onClick={onDelete}>
@@ -116,7 +109,7 @@ function SupportDetailPage() {
                 <div className={styles.label}>첨부파일</div>
                 <div className={styles.files}>
                     {data.attachedFilePaths?.length ? (
-                        data.attachedFilePaths.map((p, idx) => (
+                        data.attachedFilePaths.map((p: string, idx: number) => (
                             <a key={idx} href={p} target="_blank" rel="noreferrer" className={styles.fileLink}>
                                 {p}
                             </a>

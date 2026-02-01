@@ -24,7 +24,8 @@ import SupportListPage from "./pages/support/SupportListPage";
 import SupportDetailPage from "./pages/support/SupportDetailPage";
 import SupportCreatePage from "./pages/support/SupportCreatePage";
 import SupportEditPage from "./pages/support/SupportEditPage";
-// import Calendar from "./pages/calendar/Calendar";
+import MainPage from "./pages/main/MainPage";
+import Calendar from "./pages/calendar/Calendar";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <PersistGate loading={null} persistor={persistor}>
             <Layout>
               <Routes>
+                <Route path="/" element={<MainPage />} />
                 <Route path="/health-report" element={<HealthReportPage />} />
 
                 {/* 로그인 */}
@@ -39,13 +41,13 @@ function App() {
                 <Route path="/signup" element={<SignupPage />} />
 
                 {/* 공지사항 목록,상세,등록,수정 페이지 */}
-                <Route path="/notice" element={<NoticeListPage />} />
-                <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
-                <Route path="/notice/create" element={<NoticeCreatePage />} />
-                <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
+                <Route path="/notices" element={<NoticeListPage />} />
+                <Route path="/notices/:noticeId" element={<NoticeDetailPage />} />
+                <Route path="/notices/create" element={<NoticeCreatePage />} />
+                <Route path="/notices/edit/:noticeId" element={<NoticeEditPage />} />
 
                 {/* 캘린더 */}
-                {/*<Route path="/calendar" element={<Calendar />} />*/}
+                <Route path="/calendar" element={<Calendar />} />
 
                 {/* 마이페이지 */}
                 <Route path="/mypage/manager" element={<ManagerMyPage />} />

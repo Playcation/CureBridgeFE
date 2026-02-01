@@ -61,7 +61,7 @@ function NoticeDetailPage() {
                 {/* 4. 액션 바 */}
                 <div className={styles.actionBar}>
                     {/* 목록으로 버튼 (좌측) */}
-                    <Link to="/notice">
+                    <Link to="/notices">
                         <button className={styles.btnList}>목록으로</button>
                     </Link>
 

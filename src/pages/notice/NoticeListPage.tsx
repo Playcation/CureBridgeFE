@@ -105,7 +105,7 @@ function NoticeListPage() {
             <div className={styles.listHeader}>
                 <div>총 {totalElements}개의 게시글</div>
                 {isAdmin && ( 
-                    <Link to="/notice/create" className={styles.writeButtonLink}>
+                    <Link to="/notices/create" className={styles.writeButtonLink}>
                         글쓰기
                     </Link>
                 )}

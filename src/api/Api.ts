@@ -17,7 +17,7 @@ import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
 // ------------------- API 기본 설정 -------------------
 const BASE_URL = 'http://localhost:8080';
 const LOGIN_URL = '/api/core/login';
-const NOTICE_API_BASE = '/api/notice';
+const NOTICE_API_BASE = '/api/notices';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8080', // 또는 배포용 주소
@@ -38,7 +38,24 @@ const onRefreshed = (newToken: string) => {
 axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
 
-      const url = (config.url || '').toLowerCase();
+        const url = (config.url || "").toLowerCase();
+        const method = (config.method || "get").toLowerCase();
+
+       // 익명 공개 support GET은 토큰 붙이면 안 됨
+        const isPublicSupportGet =
+            method === "get" &&
+            (url === "/api/anonymous/support" ||
+                url.startsWith("/api/anonymous/support/"));
+
+        if (isPublicSupportGet) {
+            if (config.headers && "Authorization" in config.headers) {
+                delete (config.headers as any).Authorization;
+            }
+            return config;
+        }
+
+
+
 
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
@@ -47,6 +64,9 @@ axiosInstance.interceptors.request.use(
         '/api/core/users/sign-in',
         '/token/refresh',
         '/refresh',
+        '/api/anonymous/support',          // 목록
+        '/api/anonymous/support',         // 상세
+        '/api/anonymous/supportsearch-',
       ];
 
       if (skipAuth.some(path => url.endsWith(path))) {
@@ -71,6 +91,17 @@ axiosInstance.interceptors.response.use(
       if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         let isRefreshing = false;
+
+          // 공개(다건조회 목록) support GET은 401이어도 refresh/redirect 하지 않고 그냥 에러로 넘김
+          const url = (originalRequest.url || "").toLowerCase();
+          const method = (originalRequest.method || "get").toLowerCase();
+          const isPublicSupportGet =
+              method === "get" &&
+              (url === "/api/support" || url.startsWith("/api/support/") || url.startsWith("/api/support/search-"));
+
+          if (isPublicSupportGet) {
+              return Promise.reject(error);
+          }
 
         if (!isRefreshing) {
           isRefreshing = true;
@@ -117,7 +148,7 @@ axiosInstance.interceptors.response.use(
  */
 export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
 
-  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notice${NOTICE_API_BASE}`, {
+  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notices${NOTICE_API_BASE}`, {
     params: { page, size, sort: 'id,desc' }
   });
   return response.data;

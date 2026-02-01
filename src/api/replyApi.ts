@@ -3,10 +3,10 @@ import { ReplyRequest } from "../types/support";
 
 /** ADMIN 토큰 필요: ReplyController에서 jwtParser.checkAdmin */
 export const createReply = (data: ReplyRequest) =>
-    axiosInstance.post("/reply", data).then((res) => res.data);
+    axiosInstance.post("/api/reply", data).then((res) => res.data);
 
 export const updateReply = (data: ReplyRequest) =>
-    axiosInstance.patch("/reply", data).then((res) => res.data);
+    axiosInstance.patch("/api/reply", data).then((res) => res.data);
 
 export const deleteReply = (supportId: number) =>
-    axiosInstance.delete(`/reply/${supportId}`).then((res) => res.data);
+    axiosInstance.delete(`/api/reply/${supportId}`).then((res) => res.data);

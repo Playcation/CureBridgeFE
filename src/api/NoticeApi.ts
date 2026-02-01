@@ -2,7 +2,7 @@ import axios from 'axios';
 import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
 
 
-const API_BASE_URL = 'http://localhost:8081/api/notice'; 
+const API_BASE_URL = 'http://localhost:8081/api/notices';
 
 // 1. 다건 조회 (목록) - Mock 사용
 export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {

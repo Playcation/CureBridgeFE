@@ -17,7 +17,7 @@ function NoticeCreatePage() {
     useEffect(() => {
         if (!isAdmin) {
             alert("공지사항 작성 권한이 없습니다.");
-            navigate('/notice');
+            navigate('/notices');
         }
     }, [isAdmin, navigate]);
 
@@ -33,7 +33,7 @@ function NoticeCreatePage() {
         try {
             const newPost = await createBoard(currentUserId, { title, content });
             alert("게시글이 성공적으로 작성되었습니다.");
-            navigate(`/notice/${newPost.noticeId}`);
+            navigate(`/notices/${newPost.noticeId}`);
         } catch (error) {
             alert("게시글 작성에 실패했습니다.");
         } finally {

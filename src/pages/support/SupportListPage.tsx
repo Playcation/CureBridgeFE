@@ -1,12 +1,9 @@
+// src/pages/support/SupportListPage.tsx
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styles from "./SupportListPage.module.css";
-import {
-    fetchSupports,
-    searchSupportByAll,
-    searchSupportByTitle,
-} from "../../api/SupportApi";
+import { fetchSupports, searchSupportByAll, searchSupportByTitle } from "../../api/SupportApi";
 import { selectCurrentUserId, selectIsAdmin } from "../../store/slices/authSlice";
 import SupportSearchBar from "../../component/support/SupportSearchBar";
 
@@ -39,9 +36,9 @@ function SupportListPage() {
         setError(null);
         try {
             const res = searchType
-                ? (searchType === "title"
+                ? searchType === "title"
                     ? await searchSupportByTitle(keyword, page, size)
-                    : await searchSupportByAll(keyword, page, size))
+                    : await searchSupportByAll(keyword, page, size)
                 : await fetchSupports(page, size);
 
             const normalized = normalizePaging(res);
@@ -79,11 +76,14 @@ function SupportListPage() {
         <div className={styles.container}>
             <div className={styles.topRow}>
                 <h2 className={styles.title}>문의하기</h2>
-                {/* 로그인 유저면 작성 가능(너는 USER만 제한할 예정이면 RequireUser로 감싸도 됨) */}
-                {myUserId && (
-                    <Link to="/support/create" className={styles.writeButton}>
+
+                {/* ✅ 작성은 로그인 유저만 */}
+                {myUserId ? (
+                    <Link to="/support/create" className={styles.writeButton}>문의 작성</Link>
+                ) : (
+                    <button className={styles.writeButtonDisabled} onClick={() => alert("로그인 후 작성할 수 있어요.")}>
                         문의 작성
-                    </Link>
+                    </button>
                 )}
             </div>
 
@@ -107,8 +107,6 @@ function SupportListPage() {
                     items.map((it: any) => {
                         const isPrivate = !!it.isPrivate;
                         const isOwner = myUserId === it.userId;
-
-                        // 비공개: 작성자 or admin만 제목 링크 열리게(그 외는 잠금 표시)
                         const canOpen = !isPrivate || isOwner || isAdmin;
 
                         return (
@@ -132,23 +130,14 @@ function SupportListPage() {
                 </tbody>
             </table>
 
-            {/* 간단 페이징 */}
             <div className={styles.paging}>
-                <button
-                    className={styles.pageBtn}
-                    disabled={page <= 0}
-                    onClick={() => setPage((p) => Math.max(0, p - 1))}
-                >
+                <button className={styles.pageBtn} disabled={page <= 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
                     이전
                 </button>
                 <span className={styles.pageInfo}>
           {totalPages === 0 ? 1 : page + 1} / {totalPages === 0 ? 1 : totalPages}
         </span>
-                <button
-                    className={styles.pageBtn}
-                    disabled={page >= totalPages - 1}
-                    onClick={() => setPage((p) => p + 1)}
-                >
+                <button className={styles.pageBtn} disabled={page >= totalPages - 1} onClick={() => setPage((p) => p + 1)}>
                     다음
                 </button>
             </div>

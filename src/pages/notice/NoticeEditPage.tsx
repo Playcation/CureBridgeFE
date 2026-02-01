@@ -22,7 +22,7 @@ function NoticeEditPage() {
     useEffect(() => {
         if (!isAdmin) {
             alert("공지사항 수정 권한이 없습니다.");
-            navigate('/notice');
+            navigate('/notices');
             return;
         }
 
@@ -111,7 +111,7 @@ function NoticeEditPage() {
                 <div className={styles.formActions}>
                     <button 
                         type="button" 
-                        onClick={() => navigate(`/notice/${noticeId}`)} 
+                        onClick={() => navigate(`/notices/${noticeId}`)}
                         disabled={submitting}
                         className={`${styles.btnAction} ${styles.btnCancel}`}
                     >
