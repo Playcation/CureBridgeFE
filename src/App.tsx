@@ -27,6 +27,12 @@ import Calendar from './pages/calendar/Calendar';
 import ManagerHealthReportPage from "./pages/health-report/manager/ManagerHealthReportPage";
 import OcrPage from './pages/ocr/OcrPage';
 
+import ChatMainPage from "./pages/chat/ChatMainPage";
+import MyChatListPage from "./pages/chat/MyChatListPage";
+import ChatPage from "./pages/chat/ChatPage";
+import MemberListPage from "./pages/chat/MemberListPage";
+
+
 function App() {
   return (
     <Provider store={store}>
@@ -61,6 +67,12 @@ function App() {
             <Route path="/admin" element={<AdminMainPage />} />
             <Route path="/admin/list" element={<AdminCompanyListPage />} />
             <Route path="/admin/create" element={<AdminCompanyCreatePage />} />
+
+            {/* 채팅 */}
+            <Route path="/chat/groupchatting/list" element={<ChatMainPage />} />
+            <Route path="/chat/my/rooms" element={<MyChatListPage />} />
+            <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
+            <Route path="/chat/member/list" element={<MemberListPage />} />
           </Routes>
         </Layout>
       </PersistGate>

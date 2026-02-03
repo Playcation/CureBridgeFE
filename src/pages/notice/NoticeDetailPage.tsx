@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { fetchBoardDetail } from '../../api/ContentApi';
-import { BoardDetail } from '../../types/board'; 
+import { fetchBoardDetail } from '../../api/NoticeApi';
+import { BoardDetail } from '../../types/board';
 import AuthButtons from '../../component/AuthButtons'; 
 import styles from './NoticeDetailPage.module.css'; // 💡 CSS Modules 임포트
 

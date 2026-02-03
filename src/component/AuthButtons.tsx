@@ -3,8 +3,8 @@
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { deleteBoard } from '../api/ContentApi';
-import { selectIsAdmin, selectCurrentUserId } from '../store/slices/authSlice'; 
+import { deleteBoard } from '../api/NoticeApi';
+import { selectIsAdmin, selectCurrentUserId } from '../store/slices/authSlice';
 import { RootState } from '../store/store'; 
 
 interface AuthButtonsProps {
