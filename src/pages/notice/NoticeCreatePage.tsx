@@ -90,7 +90,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createBoard } from '../../api/Api'; // API 경로 수정
+import { createBoard } from '../../api/ContentApi'; // API 경로 수정
 import { useSelector } from 'react-redux';
 import { selectIsAdmin, selectCurrentUserId } from '../../store/slices/authSlice';
 import styles from './NoticeCreatePage.module.css'; 

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import './Calendar.css';
-import { getMonthlySchedules, createSchedule } from '../../api/Api';
-import {ScheduleResponseDto} from '../../types/calendar'
+import { getMonthlySchedules, createSchedule } from '../../api/ContentApi';
+import {ScheduleResponseDto} from '../../types/contentTypes'
 
 // Helper to get days in a month
 const getDaysInMonth = (year: number, month: number) => {

@@ -1,25 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminMainPage.css";
+import {OrgResponseDto, OrgCreateRequestDto} from "../../types/memberTypes";
 
-interface OrgResponseDto {
-    id: number;
-    orgName: string;
-    orgNumber: string;
-    ownerName: string;
-    email: string;
-    address: string;
-    phoneNumber: string;
-}
-
-interface OrgCreateRequestDto {
-    orgName: string;
-    orgNumber: string;
-    email: string;
-    address: string;
-    phoneNumber: string;
-    ownerName: string;
-}
 
 export const fetchOrganizations = async () => {
     try {
@@ -33,11 +16,11 @@ const AdminMainPage: React.FC = () => {
     const [organizations, setOrganizations] = useState<OrgResponseDto[]>([]);
     const [searchTitle, setSearchTitle] = useState("");
     const [newOrg, setNewOrg] = useState<OrgCreateRequestDto>({
+        account: "",
         orgName: "",
         orgNumber: "",
-        email: "",
-        address: "",
-        phoneNumber: "",
+        orgAddress: "",
+        ownerNumber: "",
         ownerName: ""
     });
     const [showCreateForm, setShowCreateForm] = useState(false);
@@ -55,12 +38,12 @@ const AdminMainPage: React.FC = () => {
             });
             alert("기업이 생성되었습니다.");
             setNewOrg({
+                account: "",
                 orgName: "",
                 orgNumber: "",
-                email: "",
-                address: "",
-                phoneNumber: "",
-                ownerName: ""
+                ownerName: "",
+                ownerNumber: "",
+                orgAddress: ""
             });
             setShowCreateForm(false);
             fetchOrganizations();
@@ -123,21 +106,21 @@ const AdminMainPage: React.FC = () => {
                     <input
                         type="email"
                         placeholder="이메일"
-                        value={newOrg.email}
-                        onChange={(e) => setNewOrg({ ...newOrg, email: e.target.value })}
+                        value={newOrg.account}
+                        onChange={(e) => setNewOrg({ ...newOrg, account: e.target.value })}
                     />
                     <input
                         type="text"
                         placeholder="주소"
-                        value={newOrg.address}
-                        onChange={(e) => setNewOrg({ ...newOrg, address: e.target.value })}
+                        value={newOrg.orgAddress}
+                        onChange={(e) => setNewOrg({ ...newOrg, orgAddress: e.target.value })}
                     />
                     <input
                         type="text"
-                        placeholder="전화번호"
-                        value={newOrg.phoneNumber}
+                        placeholder="대표자 번호"
+                        value={newOrg.ownerNumber}
                         onChange={(e) =>
-                            setNewOrg({ ...newOrg, phoneNumber: e.target.value })
+                            setNewOrg({ ...newOrg, ownerNumber: e.target.value })
                         }
                     />
                     <input
@@ -177,9 +160,9 @@ const AdminMainPage: React.FC = () => {
                             <td>{org.orgName}</td>
                             <td>{org.orgNumber}</td>
                             <td>{org.ownerName}</td>
-                            <td>{org.email}</td>
-                            <td>{org.address}</td>
-                            <td>{org.phoneNumber}</td>
+                            <td>{org.account}</td>
+                            <td>{org.orgAddress}</td>
+                            <td>{org.ownerNumber}</td>
                             <td>
                                 <button
                                     className="delete-btn"

@@ -5,16 +5,8 @@ import {
 } from '@mui/material';
 import HealthReportPage from '../../health-report/HealthReportPage';
 import InviteModal from "../../../component/invite-modal/InviteModal";
-import {getOrgUser} from "../../../api/Api"; // 기존 컴포넌트 활용 (userId props 추가 필요)
-
-// 사용자 정보를 위한 인터페이스
-interface UserSummary {
-  id: number;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  birthDate: string;
-}
+import {getOrgUser} from "../../../api/MemberApi"; // 기존 컴포넌트 활용 (userId props 추가 필요)
+import {UserSummary} from "../../../types/memberTypes";
 
 const ManagerHealthReportPage = () => {
   const [users, setUsers] = useState<UserSummary[]>([]);

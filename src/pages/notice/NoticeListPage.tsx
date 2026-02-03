@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'; 
 import { Link } from 'react-router-dom';
-import { fetchBoardList } from '../../api/Api'; 
+import { fetchBoardList } from '../../api/ContentApi';
 import { BoardListItem, PagingDto } from '../../types/board'; 
 import ReusablePagination from '../../component/PagingNation'; 
-import BoardSearch, { SearchParams } from '../../component/BoardSearch/BoardSearch'; 
+import BoardSearch from '../../component/BoardSearch/BoardSearch'
+import { SearchParams } from '../../types/board';
 import { useSelector } from 'react-redux';
 import { selectIsAdmin } from '../../store/slices/authSlice';
 import styles from './NoticeListPage.module.css'; 

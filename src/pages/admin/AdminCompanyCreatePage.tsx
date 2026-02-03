@@ -2,15 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import "./AdminMainPage.css";
 import { useNavigate } from "react-router-dom";
-
-interface OrgCreateRequestDto {
-    account: string;
-    orgName: string;
-    orgNumber: string;
-    ownerName: string;
-    ownerNumber: string;
-    orgAddress: string;
-}
+import {OrgCreateRequestDto} from "../../types/memberTypes";
 
 const AdminCompanyCreatePage: React.FC = () => {
     const navigate = useNavigate();

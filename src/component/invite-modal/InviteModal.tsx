@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {inviteUser} from "../../api/Api";
+import {inviteUser} from "../../api/MemberApi";
 
 interface InviteModalProps {
   open: boolean;

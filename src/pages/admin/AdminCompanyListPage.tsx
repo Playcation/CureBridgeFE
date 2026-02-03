@@ -1,28 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import "./AdminMainPage.css";
-
-interface OrgResponseDto {
-    id: number;
-    account: string;
-    orgName: string;
-    orgNumber: string;
-    ownerName: string;
-    ownerNumber: string;
-    orgAddress: string;
-}
+import {OrgResponseDto} from "../../types/memberTypes";
+import {getAllOrganization} from "../../api/MemberApi"
 
 const AdminCompanyListPage: React.FC = () => {
     const [organizations, setOrganizations] = useState<OrgResponseDto[]>([]);
     const [searchTitle, setSearchTitle] = useState("");
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("Authorization");
 
     // 기업 목록 조회
     const getOrganizations = async () => {
         try {
-            const response = await axios.get("/api/organization/list", {
-                headers: { Authorization: token || "" }
-            });
+            const response = await getAllOrganization()
             setOrganizations(response.data);
         } catch (err) {
             console.error("기업 목록 로드 실패:", err);

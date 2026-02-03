@@ -4,12 +4,12 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
-import {LoginType} from "../common/UserTypes";
+// import {LoginType} from "../common/UserTypes";
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
 import { LoginRequest } from '../types/auth';
 import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
-import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
+import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/contentTypes";
 import {toPath, UserRole} from "../types/auth";
 
 
@@ -114,57 +114,54 @@ axiosInstance.interceptors.response.use(
 //                 2. 게시판 (CRUD) API
 // ==========================================================
 
-/**
- * 2-1. 게시글 다건 조회 (목록) - GET /api/notice
- */
-export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
-
-  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notice${NOTICE_API_BASE}`, {
-    params: { page, size, sort: 'id,desc' }
-  });
-  return response.data;
-};
-
-
-/**
- * 2-2. 게시글 단건 조회 (상세) - GET /api/notice/{noticeId}
- */
-export const fetchBoardDetail = async (noticeId: number): Promise<BoardDetail> => {
-
-  const response = await axiosInstance.get<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`);
-  return response.data;
-};
-
-/**
- * 2-3. 게시글 생성 (POST /api/notice)
- */
-export const createBoard = async (userId: number, data: BoardRequest): Promise<BoardDetail> => {
-
-
-  // 실제 API
-  const response = await axiosInstance.post<BoardDetail>(`${NOTICE_API_BASE}?userId=${userId}`, { json: data });
-  return response.data;
-};
-
-/**
- * 2-4. 게시글 수정 (PATCH /api/notice/{noticeId})
- */
-export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
-
-  const response = await axiosInstance.patch<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`, { json: data });
-  return response.data;
-};
-
-/**
- * 7. 게시글 삭제 (DELETE /api/notice/{noticeId})
- */
-export const deleteBoard = async (noticeId: number): Promise<void> => {
-
-
-
-  // API 사용 시:
-  await axiosInstance.delete(`${NOTICE_API_BASE}/${noticeId}`);
-};
+// /**
+//  * 2-1. 게시글 다건 조회 (목록) - GET /api/notice
+//  */
+// export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
+//
+//   const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notice${NOTICE_API_BASE}`, {
+//     params: { page, size, sort: 'id,desc' }
+//   });
+//   return response.data;
+// };
+//
+//
+// /**
+//  * 2-2. 게시글 단건 조회 (상세) - GET /api/notice/{noticeId}
+//  */
+// export const fetchBoardDetail = async (noticeId: number): Promise<BoardDetail> => {
+//
+//   const response = await axiosInstance.get<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`);
+//   return response.data;
+// };
+//
+// /**
+//  * 2-3. 게시글 생성 (POST /api/notice)
+//  */
+// export const createBoard = async (userId: number, data: BoardRequest): Promise<BoardDetail> => {
+//
+//
+//   // 실제 API
+//   const response = await axiosInstance.post<BoardDetail>(`${NOTICE_API_BASE}?userId=${userId}`, { json: data });
+//   return response.data;
+// };
+//
+// /**
+//  * 2-4. 게시글 수정 (PATCH /api/notice/{noticeId})
+//  */
+// export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
+//
+//   const response = await axiosInstance.patch<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`, { json: data });
+//   return response.data;
+// };
+//
+// /**
+//  * 7. 게시글 삭제 (DELETE /api/notice/{noticeId})
+//  */
+// export const deleteBoard = async (noticeId: number): Promise<void> => {
+//   // API 사용 시:
+//   await axiosInstance.delete(`${NOTICE_API_BASE}/${noticeId}`);
+// };
 
 /*export const getOcr = async (id: number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);
@@ -189,34 +186,34 @@ export const deleteBoard = async (noticeId: number): Promise<void> => {
   // return axiosInstance.post('/user/auth/login', loginData);
 }*/
 
-export const getMonthlySchedules = async (date: string): Promise<ScheduleResponseDto[]> => {
-  const response = await axiosInstance.get<ScheduleResponseDto[]>('/api/content/calendar/monthly', {
-    params: { date }
-  });
-  return response.data;
-};
+// export const getMonthlySchedules = async (date: string): Promise<ScheduleResponseDto[]> => {
+//   const response = await axiosInstance.get<ScheduleResponseDto[]>('/api/content/calendar/monthly', {
+//     params: { date }
+//   });
+//   return response.data;
+// };
+//
+// export const createSchedule = async (data: CreateScheduleRequestDto): Promise<ScheduleResponseDto> => {
+//   const response = await axiosInstance.post<any>('/api/content/calendar', data);
+//   return response.data;
+// };
 
-export const createSchedule = async (data: CreateScheduleRequestDto): Promise<ScheduleResponseDto> => {
-  const response = await axiosInstance.post<any>('/api/content/calendar', data);
-  return response.data;
-};
-
-export const signup = async (data: FormData): Promise<any> => {
-  const response = await axiosInstance.post('/api/anonymous/user/auth/signup', data, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-  return response.data;
-};
-
-export const inviteUser = async (data: Object): Promise<any> => {
-  const response = await axiosInstance.post(`/api/org-manager/org-manager/invite`, data)
-  return response.data;
-};
-
-export const getOrgUser = async ():Promise<any>=>{
-  return await axiosInstance.get('/api/org-manager/org-manager/list');
-}
+// export const signup = async (data: FormData): Promise<any> => {
+//   const response = await axiosInstance.post('/api/anonymous/user/auth/signup', data, {
+//     headers: {
+//       'Content-Type': 'multipart/form-data',
+//     },
+//   });
+//   return response.data;
+// };
+//
+// export const inviteUser = async (data: Object): Promise<any> => {
+//   const response = await axiosInstance.post(`/api/org-manager/org-manager/invite`, data)
+//   return response.data;
+// };
+//
+// export const getOrgUser = async ():Promise<any>=>{
+//   return await axiosInstance.get('/api/org-manager/org-manager/list');
+// }
 
 export default axiosInstance;
