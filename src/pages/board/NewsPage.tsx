@@ -1,8 +1,7 @@
-// src/pages/news/NewsPage.tsx
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Chip, Container, Divider, Paper, Typography} from '@mui/material';
 import NewsTable from '../../component/board/NewsTable';
-import {deleteNews, getNews, getTopKeywords} from '../../api/Api';
+import {deleteNews, getNews, getTopKeywords} from '../../api/ContentApi';
 
 type NewsItem = {
   id: number;
@@ -69,11 +68,9 @@ const NewsPage = () => {
   const handleSelectAll = (isSelected: boolean) => {
     const currentNewsIds = news.map(n => n.id);
     if (isSelected) {
-      // 기존 선택 ID와 현재 페이지 ID를 합치고 중복 제거
-      const newSelected = [...new Set([...selectedIds, ...currentNewsIds])];
+      const newSelected = Array.from(new Set([...selectedIds, ...currentNewsIds]));
       setSelectedIds(newSelected);
     } else {
-      // 현재 페이지 ID만 제외
       setSelectedIds((prev) => prev.filter((id) => !currentNewsIds.includes(id)));
     }
   };
@@ -92,7 +89,7 @@ const NewsPage = () => {
         await deleteNews(id); // 단건 삭제 API 반복 호출
         successCount++;
       } catch (e) {
-        console.error(`deleteNews for ID ${id} failed`, e);
+        console.error(`deleteNews for ID ${id} failed, e`);
         failCount++;
       }
     }

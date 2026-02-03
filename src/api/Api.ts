@@ -6,10 +6,9 @@ import axios, {
 } from 'axios';
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
-import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
+import {BoardDetail, BoardListItem, BoardRequest, PagingDto} from '../types/board';
 import {toPath, UserRole} from "../types/auth";
 import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
-
 
 
 // ------------------- API 기본 설정 -------------------
@@ -38,21 +37,21 @@ axiosInstance.interceptors.request.use(
 
       const url = (config.url || '').toLowerCase();
       const storedRole = localStorage.getItem('userRole') as UserRole | undefined;
-      const rolePath = storedRole? toPath(storedRole) : 'anonymous';
+      const rolePath = storedRole ? toPath(storedRole) : 'anonymous';
 
       // baseURL 에 권한 정보 추가
-      config.baseURL = `http://localhost:8080/api/${rolePath}`
+      //config.baseURL = `http://localhost:8084/api/${rolePath}`  // 뉴스 접근 안됨이슈로 주석 처리
 
       if (url.startsWith('/api/anonymous/')) {
         return config; // 익명 API는 토큰 안 붙임
       }
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
-        'member/user/sign-in',
-        'member/user/login',
-        'member/auth/refresh'
+        '/member/user/sign-in',
+        '/member/user/login',
+        '/member/user/signup',
+        '/member/auth/refresh'
       ];
-
       if (skipAuth.some(path => url.endsWith(path))) {
         return config;
       }
@@ -80,7 +79,7 @@ axiosInstance.interceptors.response.use(
           isRefreshing = true;
 
           try {
-            const response = await axios.post<{ token: string }>(
+            const response = await axiosInstance.post<{ token: string }>(
                 '/member/auth/refresh',
                 {},
                 {withCredentials: true}
@@ -121,7 +120,7 @@ axiosInstance.interceptors.response.use(
  */
 export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
 
-  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/user/notices`, {
+  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`http://localhost:8084/api/anonymous/member/notices`, {
     params: {page, size, sort: 'id,desc'}
   });
   return response.data;
@@ -133,7 +132,7 @@ export const fetchBoardList = async (page: number = 0, size: number = 10): Promi
  */
 export const fetchBoardDetail = async (noticeId: number): Promise<BoardDetail> => {
 
-  const response = await axiosInstance.get<BoardDetail>(`/api/user/notices/${noticeId}`);
+  const response = await axiosInstance.get<BoardDetail>(`http://localhost:8084/api/anonymous/member/notices/${noticeId}`);
   return response.data;
 };
 
@@ -188,7 +187,6 @@ export const updateBoard = async (noticeId: number, data: BoardRequest): Promise
 export const deleteBoard = async (noticeId: number): Promise<void> => {
 
 
-
   // API 사용 시:
   await axiosInstance.delete(`${NOTICE_API_BASE}/${noticeId}`);
 };
@@ -198,41 +196,17 @@ export const getOcr = async (id: number) => {
 };
 
 export const getManagerInfo = async () => {
-    return await axiosInstance.get(`/api/org-manager/org-manager`);
+  return await axiosInstance.get(`/api/org-manager/org-manager`);
 };
 
 export const getOrganizationInfo = async () => {
-    return await axiosInstance.get(`/api/organization/organization`);
+  return await axiosInstance.get(`/api/organization/organization`);
 };
 
-export const getNews = (page: number, size: number, sort: string, query?: string) => {
-  const params: any = {page, size, sort};
-  if (query) params.query = query;
-
-  return axiosInstance.get('/api/anonymous/content/news', {
-    params,
-  }).then(res => res.data);
-};
-
-export const deleteNews = async (id: number) => {
-  return await axiosInstance.delete(`/api/admin/content/news/${id}`)
-  .then(res => res.data);
-};
-
-/**
- * 💡 인기 키워드 조회 (Aggregation)
- */
-export type TopKeywordDto = { keyword: string; count: number };
-export const getTopKeywords = (gte?: string, lt?: string, size: number = 10) => {
-  return axiosInstance.get('/api/anonymous/content/news/top-keywords', {
-    params: {gte, lt, size},
-  }).then(res => res.data); // [{ keyword: "의료", count: 123 }, ...]
-};
-
-export const userLogin=async (loginData: LoginType)=>{
-  return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
-  // return axiosInstance.post('/user/auth/login', loginData);
-}
+// export const userLogin=async (loginData: LoginType)=>{
+//   return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
+//   // return axiosInstance.post('/user/auth/login', loginData);
+// }
 
 export const getMonthlySchedules = async (date: string): Promise<ScheduleResponseDto[]> => {
   const response = await axiosInstance.get<ScheduleResponseDto[]>('/api/content/calendar/monthly', {
