@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { store } from './store/store';
+import {Provider} from 'react-redux';
+import {BrowserRouter} from 'react-router-dom';
+import {store} from './store/store';
 import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+//    <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <App/>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
+//    </React.StrictMode>, 조회수 2배 증가 문제 해소
 );

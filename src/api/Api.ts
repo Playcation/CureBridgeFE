@@ -6,15 +6,12 @@ import axios, {
 } from 'axios';
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
-// import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
 import {toPath, UserRole} from "../types/auth";
-
-
 
 
 // ------------------- API 기본 설정 -------------------
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api', // 또는 배포용 주소
+  baseURL: 'http://localhost:8084/api', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -34,11 +31,14 @@ axiosInstance.interceptors.request.use(
 
       const url = (config.url || '').toLowerCase();
       const storedRole = localStorage.getItem('userRole') as UserRole | undefined;
-      const rolePath = storedRole? toPath(storedRole) : 'anonymous';
+      const rolePath = storedRole ? toPath(storedRole) : 'anonymous';
 
       // baseURL 에 권한 정보 추가
       config.baseURL = `http://localhost:8080/api/${rolePath}`
 
+      if (url.startsWith('/api/anonymous/')) {
+        return config; // 익명 API는 토큰 안 붙임
+      }
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
         'member/user/sign-in',

@@ -20,11 +20,13 @@ import NoticeCreatePage from './pages/notice/NoticeCreatePage';
 import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
+import Calendar from './pages/calendar/Calendar';
 
 import ChatMainPage from "./pages/chat/ChatMainPage";
 import MyChatListPage from "./pages/chat/MyChatListPage";
 import ChatPage from "./pages/chat/ChatPage";
 import MemberListPage from "./pages/chat/MemberListPage";
+import NewsPage from "./pages/board/NewsPage";
 
 
 function App() {
@@ -45,9 +47,11 @@ function App() {
                 <Route path="/notice/create" element={<NoticeCreatePage />} />
                 <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
 
-                {/* 마이페이지 */}
-                <Route path="/mypage/manager" element={<ManagerMyPage />} />
-                <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
+              <Route path="/news" element={<NewsPage/>}/>
+
+              {/* 마이페이지 */}
+              <Route path="/mypage/manager" element={<ManagerMyPage/>}/>
+              <Route path="/mypage/org_admin" element={<OrgAdminMyPage/>}/>
 
                 {/* 채팅 */}
                 <Route path="/chat/groupchatting/list" element={<ChatMainPage />} />
