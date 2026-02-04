@@ -190,15 +190,15 @@ function NoticeCreatePage() {
                 </div>
 
 
-                {/* 4. 최종 액션 버튼 (중앙 정렬) */}
-                <div className={styles.formActions}>
-                    <button type="submit" disabled={loading} className={styles.submitButton}>
-                        {loading ? '작성 중...' : '문의하기'}
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
+          {/* 4. 최종 액션 버튼 (중앙 정렬) */}
+          <div className={styles.formActions}>
+            <button type="submit" disabled={loading} className={styles.submitButton}>
+              {loading ? '작성 중...' : '게시물 등록'}
+            </button>
+          </div>
+        </form>
+      </div>
+  );
 }
 
 export default NoticeCreatePage;
