@@ -22,7 +22,7 @@ export interface SignUpRequestDto {
   password: string;
   name: string;
   phoneNumber?: string;
-  birthDate?: string;   // "YYYY-MM-DD" 형식
+  birthDate?: Date;   // "YYYY-MM-DD" 형식
 }
 
 /** 로그인 요청 DTO */

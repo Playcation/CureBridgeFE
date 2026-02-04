@@ -1,4 +1,6 @@
 import axiosInstance from './Api';
+import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/contentTypes";
+import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
 
 const API_BASE_URL = "/content"
 
@@ -44,11 +46,77 @@ export const getTopKeywords = (gte?: string, lt?: string, size: number = 10) => 
 };
 // ------------------------ HealthReport 페이지
 /**
- * Ocr 단건 조회
+ * Report 단건 조회
  *
  * @param id Ocr 아이디
  */
-export const getOcr = async (id: number) => {
-  return await axiosInstance.get(`${API_BASE_URL}/health-report/${id}`);
+export const getHealthReportsByUserId = async (id: number) => {
+    return await axiosInstance.get(`${API_BASE_URL}/health-report/user/${id}`);
 };
 
+// ---------------------- Schedule 페이지
+
+export const getMonthlySchedules = async (date: string): Promise<ScheduleResponseDto[]> => {
+    const response = await axiosInstance.get<ScheduleResponseDto[]>(`${API_BASE_URL}/user/calendar/monthly`, {
+        params: { date }
+    });
+    return response.data;
+};
+
+export const createSchedule = async (data: CreateScheduleRequestDto): Promise<ScheduleResponseDto> => {
+    const response = await axiosInstance.post<any>(`${API_BASE_URL}/user/calendar`, data);
+    return response.data;
+};
+
+// ==========================================================
+//                 2. 게시판 (CRUD) API
+// ==========================================================
+
+/**
+ * 2-1. 게시글 다건 조회 (목록) - GET /api/notice
+ */
+export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
+
+    const response = await axiosInstance.get<PagingDto<BoardListItem>>(`${API_BASE_URL}/api/notice/notice`, {
+        params: { page, size, sort: 'id,desc' }
+    });
+    return response.data;
+};
+
+
+/**
+ * 2-2. 게시글 단건 조회 (상세) - GET /api/notice/{noticeId}
+ */
+export const fetchBoardDetail = async (noticeId: number): Promise<BoardDetail> => {
+
+    const response = await axiosInstance.get<BoardDetail>(`${API_BASE_URL}/notice/${noticeId}`);
+    return response.data;
+};
+
+/**
+ * 2-3. 게시글 생성 (POST /api/notice)
+ */
+export const createBoard = async (userId: number, data: BoardRequest): Promise<BoardDetail> => {
+
+
+    // 실제 API
+    const response = await axiosInstance.post<BoardDetail>(`${API_BASE_URL}/notice?userId=${userId}`, { json: data });
+    return response.data;
+};
+
+/**
+ * 2-4. 게시글 수정 (PATCH /api/notice/{noticeId})
+ */
+export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
+
+    const response = await axiosInstance.patch<BoardDetail>(`${API_BASE_URL}/notice/${noticeId}`, { json: data });
+    return response.data;
+};
+
+/**
+ * 7. 게시글 삭제 (DELETE /api/notice/{noticeId})
+ */
+export const deleteBoard = async (noticeId: number): Promise<void> => {
+    // API 사용 시:
+    await axiosInstance.delete(`${API_BASE_URL}/notice/${noticeId}`);
+};
