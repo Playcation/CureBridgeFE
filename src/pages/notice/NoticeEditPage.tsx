@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchBoardDetail, updateBoard } from '../../api/Api'; // API 경로
+import { fetchBoardDetail, updateBoard } from '../../api/NoticeApi'; // API 경로
 import { useSelector } from 'react-redux';
 import { selectIsAdmin } from '../../store/slices/authSlice';
 import styles from './NoticeEditPage.module.css'; // CSS Modules 임포트

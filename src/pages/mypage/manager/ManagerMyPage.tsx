@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import "./ManagerMyPage.css";
-import {getManagerInfo} from "../../../api/Api";
+import {getManagerInfo} from "../../../api/MemberApi";
 import {useSelector} from "react-redux";
 import {selectCurrentUserId} from "../../../store/slices/authSlice";
 
