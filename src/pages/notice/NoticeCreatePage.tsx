@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createBoard } from '../../api/Api'; // API 경로 수정
+import { createBoard } from '../../api/NoticeApi'; // API 경로 수정
 import { useSelector } from 'react-redux';
 import { selectIsAdmin, selectCurrentUserId } from '../../store/slices/authSlice';
-import styles from './NoticeCreatePage.module.css'; 
+import { BoardRequest } from "../../types/board";
+import styles from './NoticeCreatePage.module.css';
 
 function NoticeCreatePage() {
     const [title, setTitle] = useState('');
@@ -31,7 +32,7 @@ function NoticeCreatePage() {
 
         setLoading(true);
         try {
-            const newPost = await createBoard(currentUserId, { title, content });
+            const newPost = await createBoard({title, content});
             alert("게시글이 성공적으로 작성되었습니다.");
             navigate(`/notices/${newPost.noticeId}`);
         } catch (error) {

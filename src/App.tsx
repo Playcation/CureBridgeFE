@@ -1,7 +1,7 @@
 // src/App.tsx
 
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 // ✅ 추가: Redux Provider와 PersistGate
 import { Provider } from 'react-redux';
@@ -20,44 +20,62 @@ import NoticeCreatePage from './pages/notice/NoticeCreatePage';
 import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
-import SupportListPage from "./pages/support/SupportListPage";
-import SupportDetailPage from "./pages/support/SupportDetailPage";
-import SupportCreatePage from "./pages/support/SupportCreatePage";
-import SupportEditPage from "./pages/support/SupportEditPage";
-import MainPage from "./pages/main/MainPage";
-import Calendar from "./pages/calendar/Calendar";
+import AdminMainPage from "./pages/admin/AdminMainPage";
+import AdminCompanyListPage from "./pages/admin/AdminCompanyListPage";
+import AdminCompanyCreatePage from "./pages/admin/AdminCompanyCreatePage";
+import Calendar from './pages/calendar/Calendar';
+import ManagerHealthReportPage from "./pages/health-report/manager/ManagerHealthReportPage";
+import OcrPage from './pages/ocr/OcrPage';
+
+import ChatMainPage from "./pages/chat/ChatMainPage";
+import MyChatListPage from "./pages/chat/MyChatListPage";
+import ChatPage from "./pages/chat/ChatPage";
+import MemberListPage from "./pages/chat/MemberListPage";
+import NewsPage from "./pages/board/NewsPage";
+
 
 function App() {
   return (
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/health-report" element={<HealthReportPage />} />
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Layout>
+          <Routes>
+            <Route path="/health-report" element={<HealthReportPage />} />
+            <Route path="/manager/health-report" element={<ManagerHealthReportPage />} />
 
-                {/* 로그인 */}
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
+            {/* 로그인 */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
 
-                {/* 공지사항 목록,상세,등록,수정 페이지 */}
-                <Route path="/notices" element={<NoticeListPage />} />
-                <Route path="/notices/:noticeId" element={<NoticeDetailPage />} />
-                <Route path="/notices/create" element={<NoticeCreatePage />} />
-                <Route path="/notices/edit/:noticeId" element={<NoticeEditPage />} />
+            {/* 공지사항 목록,상세,등록,수정 페이지 */}
+            <Route path="/notice" element={<NoticeListPage />} />
+            <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
+            <Route path="/notice/create" element={<NoticeCreatePage />} />
+            <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
 
-                {/* 캘린더 */}
-                <Route path="/calendar" element={<Calendar />} />
+            <Route path="/news" element={<NewsPage/>}/>
 
-                {/* 마이페이지 */}
-                <Route path="/mypage/manager" element={<ManagerMyPage />} />
-                <Route path="/mypage/org_admin" element={<OrgAdminMyPage />} />
+            {/* 캘린더 */}
+            <Route path="/calendar" element={<Calendar />} />
 
-                  {/* 문의하기 목록,상세,등록,수정 페이지 */}
-                <Route path="/support" element={<SupportListPage />} />
-                <Route path="/support/create" element={<SupportCreatePage />} />
-                <Route path="/support/:supportId" element={<SupportDetailPage />} />
-                <Route path="/support/edit/:supportId" element={<SupportEditPage />} />
+            {/* OCR/보고서 페이지 */}
+            <Route path="/ocr" element={<OcrPage />} />
+            <Route path="/ocr/:reportId" element={<OcrPage />} />
+
+            {/* 마이페이지 */}
+            <Route path="/mypage/manager" element={<ManagerMyPage />} />
+            <Route path="/mypage/org-admin" element={<OrgAdminMyPage />}/>
+
+            {/* 어드민 페이지 */}
+            <Route path="/admin" element={<AdminMainPage />} />
+            <Route path="/admin/list" element={<AdminCompanyListPage />} />
+            <Route path="/admin/create" element={<AdminCompanyCreatePage />} />
+
+            {/* 채팅 */}
+            <Route path="/chat/groupchatting/list" element={<ChatMainPage />} />
+            <Route path="/chat/my/rooms" element={<MyChatListPage />} />
+            <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
+            <Route path="/chat/member/list" element={<MemberListPage />} />
           </Routes>
         </Layout>
       </PersistGate>

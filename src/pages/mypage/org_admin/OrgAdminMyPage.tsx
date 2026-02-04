@@ -1,17 +1,9 @@
 import { useEffect, useState } from "react";
 import {useSelector} from "react-redux";
-import {getOrganizationInfo} from "../../../api/Api";
+import {getOrganizationInfo} from "../../../api/MemberApi";
 import {selectCurrentUserId} from "../../../store/slices/authSlice";
+import {OrganizationInfo} from "../../../types/memberTypes";
 import "./OrgAdminMyPage.css";
-
-
-interface OrganizationInfo {
-  orgName:string;
-  orgNumber:string;
-  ownerName:string;
-  ownerNumber:string;
-  orgAddress:string;
-}
 
 function OrgAdminMyPage() {
   const [organizationInfo, setOrganizationInfo] = useState<OrganizationInfo | null>(null);

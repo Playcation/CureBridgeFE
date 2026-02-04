@@ -4,23 +4,14 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
-import {LoginType} from "../common/UserTypes";
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
-import { LoginRequest } from '../types/auth';
-import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
-import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
-
-
+import {toPath, UserRole} from "../types/auth";
 
 
 // ------------------- API 기본 설정 -------------------
-const BASE_URL = 'http://localhost:8080';
-const LOGIN_URL = '/api/core/login';
-const NOTICE_API_BASE = '/api/notices';
-
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // 또는 배포용 주소
+  baseURL: 'http://localhost:8084/api', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -38,35 +29,21 @@ const onRefreshed = (newToken: string) => {
 axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
 
-        const url = (config.url || "").toLowerCase();
-        const method = (config.method || "get").toLowerCase();
+      const url = (config.url || '').toLowerCase();
+      const storedRole = localStorage.getItem('userRole') as UserRole | undefined;
+      const rolePath = storedRole ? toPath(storedRole) : 'anonymous';
 
-       // 익명 공개 support GET은 토큰 붙이면 안 됨
-        const isPublicSupportGet =
-            method === "get" &&
-            (url === "/api/anonymous/support" ||
-                url.startsWith("/api/anonymous/support/"));
+      // baseURL 에 권한 정보 추가
+      config.baseURL = `http://localhost:8080/api/${rolePath}`
 
-        if (isPublicSupportGet) {
-            if (config.headers && "Authorization" in config.headers) {
-                delete (config.headers as any).Authorization;
-            }
-            return config;
-        }
-
-
-
-
+      if (url.startsWith('/api/anonymous/')) {
+        return config; // 익명 API는 토큰 안 붙임
+      }
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
-        '/users/sign-in',
-        '/api/anonymous/user/auth/login',
-        '/api/core/users/sign-in',
-        '/token/refresh',
-        '/refresh',
-        '/api/anonymous/support',          // 목록
-        '/api/anonymous/support',         // 상세
-        '/api/anonymous/supportsearch-',
+        'member/user/sign-in',
+        'member/user/login',
+        'member/auth/refresh'
       ];
 
       if (skipAuth.some(path => url.endsWith(path))) {
@@ -92,23 +69,12 @@ axiosInstance.interceptors.response.use(
         originalRequest._retry = true;
         let isRefreshing = false;
 
-          // 공개(다건조회 목록) support GET은 401이어도 refresh/redirect 하지 않고 그냥 에러로 넘김
-          const url = (originalRequest.url || "").toLowerCase();
-          const method = (originalRequest.method || "get").toLowerCase();
-          const isPublicSupportGet =
-              method === "get" &&
-              (url === "/api/support" || url.startsWith("/api/support/") || url.startsWith("/api/support/search-"));
-
-          if (isPublicSupportGet) {
-              return Promise.reject(error);
-          }
-
         if (!isRefreshing) {
           isRefreshing = true;
 
           try {
             const response = await axios.post<{ token: string }>(
-                '/refresh',
+                '/member/auth/refresh',
                 {},
                 {withCredentials: true}
             );
@@ -146,27 +112,27 @@ axiosInstance.interceptors.response.use(
 /**
  * 2-1. 게시글 다건 조회 (목록) - GET /api/notice
  */
-export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
+/*export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
 
-  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notices${NOTICE_API_BASE}`, {
+  const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notice${NOTICE_API_BASE}`, {
     params: { page, size, sort: 'id,desc' }
   });
   return response.data;
 };
 
 
-/**
+/!**
  * 2-2. 게시글 단건 조회 (상세) - GET /api/notice/{noticeId}
- */
+ *!/
 export const fetchBoardDetail = async (noticeId: number): Promise<BoardDetail> => {
 
   const response = await axiosInstance.get<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`);
   return response.data;
 };
 
-/**
+/!**
  * 2-3. 게시글 생성 (POST /api/notice)
- */
+ *!/
 export const createBoard = async (userId: number, data: BoardRequest): Promise<BoardDetail> => {
 
 
@@ -175,68 +141,47 @@ export const createBoard = async (userId: number, data: BoardRequest): Promise<B
   return response.data;
 };
 
-/**
+/!**
  * 2-4. 게시글 수정 (PATCH /api/notice/{noticeId})
- */
+ *!/
 export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
 
   const response = await axiosInstance.patch<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`, { json: data });
   return response.data;
 };
 
-/**
+/!**
  * 7. 게시글 삭제 (DELETE /api/notice/{noticeId})
- */
+ *!/
 export const deleteBoard = async (noticeId: number): Promise<void> => {
 
 
 
   // API 사용 시:
   await axiosInstance.delete(`${NOTICE_API_BASE}/${noticeId}`);
-};
+};*/
 
-export const getOcr = async (id: number) => {
+/*export const getOcr = async (id: number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);
-};
+};*/
 
-export const getManagerInfo = async () => {
+/*export const getManagerInfo = async () => {
     return await axiosInstance.get(`/api/org-manager/org-manager`);
-};
+};*/
 
-export const getOrganizationInfo = async () => {
+/*export const getOrganizationInfo = async () => {
     return await axiosInstance.get(`/api/organization/organization`);
-};
+};*/
 
-export const getNews = (page: number, size: number, sort: string, query?: string) => {
+/*export const getNews = (page: number, size: number, sort: string, query?: string) => {
   const params: any = {page, size, sort};
   if (query) params.query = query; // 검색어 추가
   return axiosInstance.get('/api/news', {params}).then(res => res.data);
-};
+};*/
 
-export const userLogin=async (loginData: LoginType)=>{
+/*export const userLogin=async (loginData: LoginType)=>{
   return axiosInstance.post('/api/anonymous/user/auth/login', loginData);
   // return axiosInstance.post('/user/auth/login', loginData);
-}
-
-export const getMonthlySchedules = async (date: string): Promise<ScheduleResponseDto[]> => {
-  const response = await axiosInstance.get<ScheduleResponseDto[]>('/api/content/calendar/monthly', {
-    params: { date }
-  });
-  return response.data;
-};
-
-export const createSchedule = async (data: CreateScheduleRequestDto): Promise<ScheduleResponseDto> => {
-  const response = await axiosInstance.post<any>('/api/content/calendar', data);
-  return response.data;
-};
-
-export const signup = async (data: FormData): Promise<any> => {
-  const response = await axiosInstance.post('/api/anonymous/user/auth/signup', data, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-  return response.data;
-};
+}*/
 
 export default axiosInstance;
