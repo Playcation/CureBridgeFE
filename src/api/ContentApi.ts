@@ -17,7 +17,7 @@ export const getNews = async (page: number, size: number, sort: string, query?: 
   if (query) params.query = query; // 검색어 추가
 
   // Api.ts의 로직을 유지하여 /api/anonymous/content/news 경로 사용
-  const res = await axiosInstance.get('/api/anonymous/content/news', {params});
+  const res = await axiosInstance.get(`${API_BASE_URL}/news`, {params});
   return res.data;
 };
 
@@ -26,7 +26,7 @@ export const getNews = async (page: number, size: number, sort: string, query?: 
  * * @param id 뉴스 아이디
  */
 export const deleteNews = async (id: number) => {
-  return await axiosInstance.delete(`/api/admin/content/news/${id}`)
+  return await axiosInstance.delete(`${API_BASE_URL}/news/${id}`)
   .then(res => res.data);
 };
 
@@ -38,7 +38,7 @@ export const deleteNews = async (id: number) => {
  */
 export type TopKeywordDto = { keyword: string; count: number };
 export const getTopKeywords = (gte?: string, lt?: string, size: number = 10) => {
-  return axiosInstance.get('/api/anonymous/content/news/top-keywords', {
+  return axiosInstance.get(`${API_BASE_URL}/news/top-keywords`, {
     params: {gte, lt, size},
   }).then(res => res.data); // [{ keyword: "의료", count: 123 }, ...]
 };
@@ -51,3 +51,4 @@ export const getTopKeywords = (gte?: string, lt?: string, size: number = 10) => 
 export const getOcr = async (id: number) => {
   return await axiosInstance.get(`${API_BASE_URL}/health-report/${id}`);
 };
+

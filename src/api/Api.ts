@@ -6,14 +6,12 @@ import axios, {
 } from 'axios';
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
-import {BoardDetail, BoardListItem, BoardRequest, PagingDto} from '../types/board';
 import {toPath, UserRole} from "../types/auth";
-import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
 
 
 // ------------------- API 기본 설정 -------------------
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api', // 또는 배포용 주소
+  baseURL: 'http://localhost:8084/api', // 또는 배포용 주소
   withCredentials: true,
 });
 
