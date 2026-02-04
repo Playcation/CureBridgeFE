@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'; 
 import { Link } from 'react-router-dom';
-import { fetchBoardList } from '../../api/Api'; 
+import { fetchBoardList } from '../../api/NoticeApi';
 import { BoardListItem, PagingDto } from '../../types/board'; 
 import ReusablePagination from '../../component/PagingNation'; 
 import BoardSearch, { SearchParams } from '../../component/BoardSearch/BoardSearch'; 
@@ -57,6 +57,7 @@ function NoticeListPage() {
     
     // 3. 페이지네이션 상태 업데이트 (useEffect 유지)
     useEffect(() => {
+        if (!filteredList) return;
         const newTotalElements = filteredList.length;
         const newTotalPages = Math.ceil(newTotalElements / pageSize);
 
@@ -72,6 +73,7 @@ function NoticeListPage() {
 
     // 4. 현재 페이지에 보여줄 목록 계산 (useMemo 유지)
     const visibleNoticeList = useMemo(() => {
+        if (!Array.isArray(filteredList)) return [];
         const startIndex = currentPage * pageSize;
         const endIndex = startIndex + pageSize;
         
@@ -121,9 +123,10 @@ function NoticeListPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {visibleNoticeList.length === 0 && totalElements > 0 ? (
+                    {
+                        !visibleNoticeList || visibleNoticeList.length === 0 ? (
                         <tr><td colSpan={4} className={styles.statusMessage}>검색 결과가 없습니다.</td></tr>
-                    ) : visibleNoticeList.length === 0 && totalElements === 0 ? (
+                    ) : !visibleNoticeList || visibleNoticeList.length === 0 ? (
                         <tr><td colSpan={4} className={styles.statusMessage}>등록된 게시글이 없습니다.</td></tr>
                     ) : (
                         // 작성일, 조회수 컬럼 위치 교정 (post.viewCount, post.createdAt 순서로 되어있음)
