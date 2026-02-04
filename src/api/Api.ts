@@ -4,22 +4,14 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
-// import {LoginType} from "../common/UserTypes";
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
-import { LoginRequest } from '../types/auth';
-import { PagingDto, BoardListItem, BoardDetail, BoardRequest } from '../types/board';
-import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/contentTypes";
 import {toPath, UserRole} from "../types/auth";
 
 
-
-
 // ------------------- API 기본 설정 -------------------
-const NOTICE_API_BASE = '/notice';
-
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api', // 또는 배포용 주소
+  baseURL: 'http://localhost:8084/api', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -39,11 +31,14 @@ axiosInstance.interceptors.request.use(
 
       const url = (config.url || '').toLowerCase();
       const storedRole = localStorage.getItem('userRole') as UserRole | undefined;
-      const rolePath = storedRole? toPath(storedRole) : 'anonymous';
+      const rolePath = storedRole ? toPath(storedRole) : 'anonymous';
 
       // baseURL 에 권한 정보 추가
       config.baseURL = `http://localhost:8080/api/${rolePath}`
 
+      if (url.startsWith('/api/anonymous/')) {
+        return config; // 익명 API는 토큰 안 붙임
+      }
       // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
       const skipAuth = [
         'member/user/sign-in',
@@ -117,7 +112,7 @@ axiosInstance.interceptors.response.use(
 /**
  * 2-1. 게시글 다건 조회 (목록) - GET /api/notice
  */
-export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
+/*export const fetchBoardList = async (page: number = 0, size: number = 10): Promise<PagingDto<BoardListItem>> => {
 
   const response = await axiosInstance.get<PagingDto<BoardListItem>>(`/api/notice${NOTICE_API_BASE}`, {
     params: { page, size, sort: 'id,desc' }
@@ -126,18 +121,18 @@ export const fetchBoardList = async (page: number = 0, size: number = 10): Promi
 };
 
 
-/**
+/!**
  * 2-2. 게시글 단건 조회 (상세) - GET /api/notice/{noticeId}
- */
+ *!/
 export const fetchBoardDetail = async (noticeId: number): Promise<BoardDetail> => {
 
   const response = await axiosInstance.get<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`);
   return response.data;
 };
 
-/**
+/!**
  * 2-3. 게시글 생성 (POST /api/notice)
- */
+ *!/
 export const createBoard = async (userId: number, data: BoardRequest): Promise<BoardDetail> => {
 
 
@@ -146,25 +141,25 @@ export const createBoard = async (userId: number, data: BoardRequest): Promise<B
   return response.data;
 };
 
-/**
+/!**
  * 2-4. 게시글 수정 (PATCH /api/notice/{noticeId})
- */
+ *!/
 export const updateBoard = async (noticeId: number, data: BoardRequest): Promise<BoardDetail> => {
 
   const response = await axiosInstance.patch<BoardDetail>(`${NOTICE_API_BASE}/${noticeId}`, { json: data });
   return response.data;
 };
 
-/**
+/!**
  * 7. 게시글 삭제 (DELETE /api/notice/{noticeId})
- */
+ *!/
 export const deleteBoard = async (noticeId: number): Promise<void> => {
 
 
 
   // API 사용 시:
   await axiosInstance.delete(`${NOTICE_API_BASE}/${noticeId}`);
-};
+};*/
 
 /*export const getOcr = async (id: number) => {
   return await axiosInstance.get(`/api/health-report/user/${id}`);

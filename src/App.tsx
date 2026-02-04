@@ -31,6 +31,7 @@ import ChatMainPage from "./pages/chat/ChatMainPage";
 import MyChatListPage from "./pages/chat/MyChatListPage";
 import ChatPage from "./pages/chat/ChatPage";
 import MemberListPage from "./pages/chat/MemberListPage";
+import NewsPage from "./pages/board/NewsPage";
 
 
 function App() {
@@ -51,6 +52,8 @@ function App() {
             <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
             <Route path="/notice/create" element={<NoticeCreatePage />} />
             <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
+
+            <Route path="/news" element={<NewsPage/>}/>
 
             {/* 캘린더 */}
             <Route path="/calendar" element={<Calendar />} />
