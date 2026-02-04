@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import ReportTable from '../../component/health-report/ReportTable';
-import { getOcr } from '../../api/ContentApi'; // 이 API 함수가 실제로는 getHealthReports를 호출한다고 가정합니다.
+import { getHealthReportsByUserId } from '../../api/ContentApi'; // 이 API 함수가 실제로는 getHealthReports를 호출한다고 가정합니다.
 
-const HealthReportPage = () => {
+const HealthReportPage = ({ userId }: { userId?: number }) => {
   const [reports, setReports] = useState([]);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
         // API 응답 데이터가 HealthReportResponseDto[] 형태라고 가정합니다.
-        const response = await getOcr(1);
+        const targetId = userId || 1;
+        const response = await getHealthReportsByUserId(targetId);
         if (response && response.data) {
           // response.data 배열을 직접 매핑합니다.
           const processedReports = response.data.map((report: any) => ({

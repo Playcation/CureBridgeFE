@@ -17,3 +17,29 @@ export const getOrganizationInfo = async () => {
 export const getManagerInfo = async () => {
     return await axiosInstance.get(`${API_BASE_URL}/org-manager`);
 };
+
+export const signup = async (data: FormData): Promise<any> => {
+    const response = await axiosInstance.post(`${API_BASE_URL}/user/signup`, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data;
+};
+
+export const inviteUser = async (data: Object): Promise<any> => {
+    const response = await axiosInstance.post(`${API_BASE_URL}/org-manager/invite`, data)
+    return response.data;
+};
+
+export const getOrgUser = async ():Promise<any>=>{
+    return await axiosInstance.get(`${API_BASE_URL}/org-manager/list`);
+}
+
+export const getAllOrganization = async ()=>{
+    return await axiosInstance.get(`${API_BASE_URL}/organization/all`)
+}
+
+export const getMember = async ()=>{
+    return await axiosInstance.get(`${API_BASE_URL}/user`)
+}
