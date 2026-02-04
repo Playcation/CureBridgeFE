@@ -31,7 +31,7 @@ export const getHealthReportsByUserId = async (id: number) => {
     return await axiosInstance.get(`${API_BASE_URL}/health-report/user/${id}`);
 };
 
-// ------------------------ Schedule 페이지
+// ---------------------- Schedule 페이지
 
 export const getMonthlySchedules = async (date: string): Promise<ScheduleResponseDto[]> => {
     const response = await axiosInstance.get<ScheduleResponseDto[]>(`${API_BASE_URL}/user/calendar/monthly`, {

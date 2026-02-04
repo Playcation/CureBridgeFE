@@ -86,7 +86,7 @@ const Calendar: React.FC = () => {
                 content: newScheduleContent
             });
             setIsModalOpen(false);
-            // Refresh schedules
+
             const dateStr = formatDate(year, month, 1);
             const data = await getMonthlySchedules(dateStr);
             setSchedules(data);
