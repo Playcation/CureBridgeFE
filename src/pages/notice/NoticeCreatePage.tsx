@@ -169,31 +169,32 @@ function NoticeCreatePage() {
                     />
                 </div>
 
-                {/* 3. 파일 첨부 영역 (와이어프레임 포함) */}
-                <div className={styles.formRow} style={{ alignItems: 'center' }}>
-                    <label className={styles.formLabel}>파일 첨부</label>
-                    <div className={styles.fileAttachGroup}>
-                        <button type="button" className={styles.fileAttachButton}>
-                            파일 첨부하기
-                        </button>
-                        <span className={styles.maxSizeText}>(최대 1개, 30MB)</span>
-                    </div>
-                </div>
-                
-                {/* 파일 첨부 설명 텍스트 */}
-                <div className={styles.formRow} style={{ marginTop: '-15px' }}>
-                    <div style={{ width: '75.2px' }} /> {/* 레이블 너비만큼 공백 */}
-                    <p className={styles.fileHelpText}>
-                        문의 내용과 관련된 파일만 첨부해주세요. (개인정보 접수 불가) <br/>
-                        동영상은 zip파일로 첨부하거나 업로드한 동영상 사이트 URL을 기재해주세요.
-                    </p>
-                </div>
+          {/* 3. 파일 첨부 영역 (와이어프레임 포함) */}
+          <div className={styles.formRow} style={{alignItems: 'center'}}>
+            <label className={styles.formLabel}>파일 첨부</label>
+            <div className={styles.fileAttachGroup}>
+              <button type="button" className={styles.fileAttachButton}>
+                파일 첨부하기
+              </button>
+              <span className={styles.maxSizeText}>(최대 1개, 30MB)</span>
+            </div>
+          </div>
+
+          {/* 파일 첨부 설명 텍스트 */}
+          <div className={styles.formRow} style={{marginTop: '-15px'}}>
+            <div style={{width: '75.2px'}}/>
+            {/* 레이블 너비만큼 공백 */}
+            <p className={styles.fileHelpText}>
+              공지 내용과 관련된 파일만 첨부해주세요. (개인정보 접수 불가) <br/>
+              동영상은 zip파일로 첨부하거나 업로드한 동영상 사이트 URL을 기재해주세요.
+            </p>
+          </div>
 
 
           {/* 4. 최종 액션 버튼 (중앙 정렬) */}
           <div className={styles.formActions}>
             <button type="submit" disabled={loading} className={styles.submitButton}>
-              {loading ? '작성 중...' : '게시물 등록'}
+              {loading ? '작성 중...' : '공지 등록'}
             </button>
           </div>
         </form>

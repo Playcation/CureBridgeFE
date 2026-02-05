@@ -4,6 +4,7 @@ import { fetchBoardDetail } from '../../api/NoticeApi';
 import { BoardDetail } from '../../types/board';
 import AuthButtons from '../../component/AuthButtons'; 
 import styles from './NoticeDetailPage.module.css'; // 💡 CSS Modules 임포트
+import {getUserInfoById} from '../../api/MemberApi';
 
 function NoticeDetailPage() {
     const { noticeId } = useParams<{ noticeId: string }>(); 
@@ -12,21 +13,34 @@ function NoticeDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const loadPost = async () => {
-            if (!noticeId) return;
-            setLoading(true);
-            try {
-                const data = await fetchBoardDetail(Number(noticeId));
-                setPost(data);
-            } catch (err) {
-                setError("게시글 정보를 불러오는 데 실패했습니다.");
-            } finally {
-                setLoading(false);
-            }
-        };
-        loadPost();
-    }, [noticeId]); 
+  useEffect(() => {
+    const loadPageData = async () => {
+      if (!noticeId) return;
+      setLoading(true);
+      try {
+        // 1. 공지사항 데이터 먼저 로드
+        const boardData = await fetchBoardDetail(Number(noticeId));
+        setPost(boardData);
+
+        // 2. 로드된 데이터의 userId를 이용해 유저 모듈에서 이름 조회
+        if (boardData.userId) {
+          try {
+            const userData = await getUserInfoById(boardData.userId);
+            setUserName(userData.name || `사용자(${boardData.userId})`);
+          } catch (userErr) {
+            console.error("유저 정보를 찾을 수 없습니다.", userErr);
+            setUserName(`작성자(ID: ${boardData.userId})`);
+          }
+        }
+      } catch (err) {
+        setError("게시글 정보를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPageData();
+  }, [noticeId]);
 
     const containerStyle = { maxWidth: '1000px', margin: '0 auto' }; 
     if (loading) return <div style={containerStyle}>게시글을 불러오는 중입니다...</div>;
@@ -57,6 +71,7 @@ function NoticeDetailPage() {
                 
                 {/* 3. 본문 내용 (사각형 테두리 적용) */}
                 <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.content }} />
+              <span className={styles.postAuthor}>작성자 : <strong>{userName}</strong></span>
 
                 {/* 4. 액션 바 */}
                 <div className={styles.actionBar}>
