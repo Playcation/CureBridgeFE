@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchBoardDetail } from '../../api/NoticeApi';
-import { BoardDetail } from '../../types/board';
+import { BoardDetail } from '../../types/board'; 
 import AuthButtons from '../../component/AuthButtons'; 
 import styles from './NoticeDetailPage.module.css'; // 💡 CSS Modules 임포트
 
@@ -61,7 +61,7 @@ function NoticeDetailPage() {
                 {/* 4. 액션 바 */}
                 <div className={styles.actionBar}>
                     {/* 목록으로 버튼 (좌측) */}
-                    <Link to="/notice">
+                    <Link to="/notices">
                         <button className={styles.btnList}>목록으로</button>
                     </Link>
 

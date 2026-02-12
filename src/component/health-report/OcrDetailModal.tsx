@@ -2,7 +2,22 @@ import React from 'react';
 import {
   Modal
 } from '@mui/material';
-import {OcrResult, OcrDetailModalProps} from "../../types/contentTypes";
+
+// Note: This interface should ideally be in a separate types file
+interface OcrResult {
+  reportId: string;
+  reportTitle: string;
+  patientName: string;
+  diagnosis: string;
+  reportDate: string;
+  createdAt: string;
+}
+
+interface OcrDetailModalProps {
+  open: boolean;
+  onClose: () => void;
+  ocrResults: OcrResult[] | null;
+}
 
 const style = {
   position: 'absolute' as 'absolute',

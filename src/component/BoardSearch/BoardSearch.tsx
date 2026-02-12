@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import styles from './BoardSearch.module.css';
-import {SearchParams} from "../../types/board";
+import styles from './BoardSearch.module.css'; 
+
+// 검색 파라미터 타입 정의 
+export interface SearchParams {
+  keyword: string;
+  type: 'all' | 'title'; 
+}
 
 // 컴포넌트 Props 정의
 interface BoardSearchProps {

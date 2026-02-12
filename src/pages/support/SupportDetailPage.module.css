@@ -1,0 +1,74 @@
+.container {
+    max-width: 980px;
+    margin: 0 auto;
+    background:#fff;
+    border-radius: 16px;
+    padding: 28px 32px 26px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.header {
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.title { font-size: 20px; font-weight: 700; color:#111827; }
+
+.headerRight { display:flex; gap: 8px; }
+
+.outline {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background:#fff;
+    cursor: pointer;
+}
+
+.danger {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: none;
+    background:#ef4444;
+    color:#fff;
+    cursor: pointer;
+}
+
+.sectionLine { height: 2px; background: #c7d2fe; margin: 16px 0 16px; }
+
+.metaRow {
+    display:flex;
+    gap: 18px;
+    font-size: 13px;
+    color:#6b7280;
+    margin-bottom: 18px;
+}
+
+.field {
+    display:grid;
+    grid-template-columns: 120px 1fr;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+
+.label { font-size: 13px; font-weight: 700; color:#111827; padding-top: 2px; }
+.value { font-size: 14px; color:#111827; }
+
+.contentBox {
+    background:#f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.files { display:flex; flex-direction: column; gap: 8px; }
+.fileLink { font-size: 13px; color:#4f46e5; text-decoration:none; }
+.fileLink:hover { text-decoration: underline; }
+.empty { font-size: 13px; color:#9ca3af; }
+
+.status { max-width:980px; margin: 0 auto; padding: 30px; text-align:center; }

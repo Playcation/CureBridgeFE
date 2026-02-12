@@ -1,118 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
-// import { fetchBoardDetail, updateBoard } from '../../api/Api'; // api.ts 임포트
-// import { useSelector } from 'react-redux';
-// import { selectIsAdmin } from '../../store/slices/authSlice';
-// import './NoticeEditPage.module.css';
-
-// function NoticeEditPage() {
-//     const { noticeId } = useParams<{ noticeId: string }>();
-//     const navigate = useNavigate();
-    
-//     // 상태 정의
-//     const [title, setTitle] = useState('');
-//     const [content, setContent] = useState('');
-//     const [loading, setLoading] = useState(true); // 💡 초기 상태: 로딩 중
-//     const [submitting, setSubmitting] = useState(false); // 제출 중 상태
-//     const [error, setError] = useState<string | null>(null);
-    
-//     const isAdmin = useSelector(selectIsAdmin);
-
-//     // 1. 권한 확인 및 기존 데이터 로드
-//     useEffect(() => {
-//         if (!isAdmin) {
-//             alert("공지사항 수정 권한이 없습니다.");
-//             navigate('/notice');
-//             return;
-//         }
-
-//         const loadPost = async () => {
-//             if (!noticeId) return;
-//             setLoading(true);
-//             try {
-//                 // 기존 게시글 데이터를 불러와 폼을 채웁니다.
-//                 const post = await fetchBoardDetail(Number(noticeId));
-//                 setTitle(post.title);
-//                 setContent(post.content);
-//                 setError(null);
-//             } catch (err) {
-//                 setError("게시글 정보를 불러오는 데 실패했습니다. ID를 확인하세요.");
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-
-//         loadPost();
-//     }, [noticeId, isAdmin, navigate]);
-
-//     // 2. 수정 제출 핸들러
-//     const handleSubmit = async (e: React.FormEvent) => {
-//         e.preventDefault();
-//         if (!isAdmin || !noticeId) return;
-//         if (!title.trim() || !content.trim()) return alert("제목과 내용을 모두 입력해주세요.");
-
-//         setSubmitting(true);
-//         try {
-//             await updateBoard(Number(noticeId), { title, content });
-//             alert("게시글이 성공적으로 수정되었습니다.");
-//             navigate(`/notice/${noticeId}`); // 수정 후 상세 페이지로 이동
-//         } catch (error) {
-//             alert("게시글 수정에 실패했습니다.");
-//         } finally {
-//             setSubmitting(false);
-//         }
-//     };
-
-//     // 3. 로딩 및 오류 시 렌더링 (흰 화면 방지)
-//     if (!isAdmin) return null; // 권한 없으면 리다이렉트 중
-    
-//     const containerStyle = { maxWidth: '800px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', backgroundColor: 'white' };
-    
-//     if (loading) return <div style={containerStyle}>게시글 정보를 불러오는 중입니다...</div>;
-//     if (error) return <div style={{...containerStyle, color: 'red'}}>오류: {error}</div>;
-
-//     // 4. 정상 렌더링 (폼 구조)
-//     return (
-//         <div style={containerStyle}>
-//             <h2>공지사항 수정 (ID: {noticeId})</h2>
-//             <form onSubmit={handleSubmit}>
-//                 <div style={{ marginBottom: '15px' }}>
-//                     <label htmlFor="title" style={{ display: 'block' }}>제목:</label>
-//                     <input 
-//                         id="title"
-//                         type="text" 
-//                         value={title} 
-//                         onChange={(e) => setTitle(e.target.value)} 
-//                         disabled={submitting}
-//                         style={{ width: '100%', padding: '8px' }}
-//                     />
-//                 </div>
-//                 <div style={{ marginBottom: '20px' }}>
-//                     <label htmlFor="content" style={{ display: 'block' }}>내용:</label>
-//                     <textarea 
-//                         id="content"
-//                         value={content} 
-//                         onChange={(e) => setContent(e.target.value)} 
-//                         rows={10}
-//                         disabled={submitting}
-//                         style={{ width: '100%', padding: '8px' }}
-//                     />
-//                 </div>
-//                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-//                     <button type="button" onClick={() => navigate(`/notice/${noticeId}`)} disabled={submitting}>
-//                         취소
-//                     </button>
-//                     <button type="submit" disabled={submitting} style={{ backgroundColor: '#007bff', color: 'white' }}>
-//                         {submitting ? '수정 중...' : '수정 완료'}
-//                     </button>
-//                 </div>
-//             </form>
-//         </div>
-//     );
-// }
-
-// export default NoticeEditPage;
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchBoardDetail, updateBoard } from '../../api/NoticeApi'; // API 경로
@@ -137,7 +22,7 @@ function NoticeEditPage() {
     useEffect(() => {
         if (!isAdmin) {
             alert("공지사항 수정 권한이 없습니다.");
-            navigate('/notice');
+            navigate('/notices');
             return;
         }
 
@@ -226,7 +111,7 @@ function NoticeEditPage() {
                 <div className={styles.formActions}>
                     <button 
                         type="button" 
-                        onClick={() => navigate(`/notice/${noticeId}`)} 
+                        onClick={() => navigate(`/notices/${noticeId}`)}
                         disabled={submitting}
                         className={`${styles.btnAction} ${styles.btnCancel}`}
                     >

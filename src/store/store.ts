@@ -1,6 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import authReducer from '../store/slices/authSlice';
-import userReducer from '../store/slices/userSlice';
 
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -8,13 +7,12 @@ import storage from 'redux-persist/lib/storage';
 // 기존 코드 유지
 const rootReducer = combineReducers({
     auth: authReducer,
-    user: userReducer,
 });
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['auth', 'user'], // auth만 저장
+    whitelist: ['auth'], // auth만 저장
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
