@@ -3,7 +3,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-// ✅ 추가: Redux Provider와 PersistGate
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store/store';
@@ -20,13 +19,18 @@ import NoticeCreatePage from './pages/notice/NoticeCreatePage';
 import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
-import Calendar from './pages/calendar/Calendar';
+// import Calendar from './pages/calendar/Calendar';
 
 import ChatMainPage from "./pages/chat/ChatMainPage";
 import MyChatListPage from "./pages/chat/MyChatListPage";
 import ChatPage from "./pages/chat/ChatPage";
 import MemberListPage from "./pages/chat/MemberListPage";
 import NewsPage from "./pages/board/NewsPage";
+import MainPage from "./pages/main/MainPage";
+import SupportListPage from "./pages/support/SupportListPage";
+import SupportDetailPage from "./pages/support/SupportDetailPage";
+import SupportCreatePage from "./pages/support/SupportCreatePage";
+import SupportEditPage from "./pages/support/SupportEditPage";
 
 
 function App() {
@@ -36,6 +40,7 @@ function App() {
             <Layout>
               <Routes>
                 <Route path="/health-report" element={<HealthReportPage />} />
+                <Route path="/" element={<MainPage />} />
 
                 {/* 로그인 */}
                 <Route path="/login" element={<LoginPage />} />
@@ -58,6 +63,14 @@ function App() {
                 <Route path="/chat/my/rooms" element={<MyChatListPage />} />
                 <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
                 <Route path="/chat/member/list" element={<MemberListPage />} />
+
+                  {/* 문의하기 */}
+                <Route path="/support" element={<SupportListPage />} />
+                <Route path="/support/:supportId" element={<SupportDetailPage />} />
+                <Route path="/support/create" element={<SupportCreatePage />} />
+                <Route path="/support/edit/:supportId" element={<SupportEditPage />} />
+
+
               </Routes>
             </Layout>
         </PersistGate>
