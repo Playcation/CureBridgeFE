@@ -4,7 +4,7 @@ import { createBoard } from '../../api/NoticeApi'; // API 경로 수정
 import { useSelector } from 'react-redux';
 import { selectIsAdmin, selectCurrentUserId } from '../../store/slices/authSlice';
 import { BoardRequest } from "../../types/board";
-import styles from './NoticeCreatePage.module.css';
+import styles from './NoticeCreatePage.module.css'; 
 
 function NoticeCreatePage() {
     const [title, setTitle] = useState('');

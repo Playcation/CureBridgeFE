@@ -20,12 +20,7 @@ import NoticeCreatePage from './pages/notice/NoticeCreatePage';
 import NoticeEditPage from './pages/notice/NoticeEditPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
-import AdminMainPage from "./pages/admin/AdminMainPage";
-import AdminCompanyListPage from "./pages/admin/AdminCompanyListPage";
-import AdminCompanyCreatePage from "./pages/admin/AdminCompanyCreatePage";
 import Calendar from './pages/calendar/Calendar';
-import ManagerHealthReportPage from "./pages/health-report/manager/ManagerHealthReportPage";
-import OcrPage from './pages/ocr/OcrPage';
 
 import ChatMainPage from "./pages/chat/ChatMainPage";
 import MyChatListPage from "./pages/chat/MyChatListPage";
@@ -36,50 +31,37 @@ import NewsPage from "./pages/board/NewsPage";
 
 function App() {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Layout>
-          <Routes>
-            <Route path="/health-report" element={<HealthReportPage />} />
-            <Route path="/manager/health-report" element={<ManagerHealthReportPage />} />
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <Layout>
+              <Routes>
+                <Route path="/health-report" element={<HealthReportPage />} />
 
-            {/* 로그인 */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
+                {/* 로그인 */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
 
-            {/* 공지사항 목록,상세,등록,수정 페이지 */}
-            <Route path="/notice" element={<NoticeListPage />} />
-            <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
-            <Route path="/notice/create" element={<NoticeCreatePage />} />
-            <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
+                {/* 공지사항 목록,상세,등록,수정 페이지 */}
+                <Route path="/notice" element={<NoticeListPage />} />
+                <Route path="/notice/:noticeId" element={<NoticeDetailPage />} />
+                <Route path="/notice/create" element={<NoticeCreatePage />} />
+                <Route path="/notice/edit/:noticeId" element={<NoticeEditPage />} />
 
-            <Route path="/news" element={<NewsPage/>}/>
+              <Route path="/news" element={<NewsPage/>}/>
 
-            {/* 캘린더 */}
-            <Route path="/calendar" element={<Calendar />} />
+              {/* 마이페이지 */}
+              <Route path="/mypage/manager" element={<ManagerMyPage/>}/>
+              <Route path="/mypage/org_admin" element={<OrgAdminMyPage/>}/>
 
-            {/* OCR/보고서 페이지 */}
-            <Route path="/ocr" element={<OcrPage />} />
-            <Route path="/ocr/:reportId" element={<OcrPage />} />
-
-            {/* 마이페이지 */}
-            <Route path="/mypage/manager" element={<ManagerMyPage />} />
-            <Route path="/mypage/org-admin" element={<OrgAdminMyPage />}/>
-
-            {/* 어드민 페이지 */}
-            <Route path="/admin" element={<AdminMainPage />} />
-            <Route path="/admin/list" element={<AdminCompanyListPage />} />
-            <Route path="/admin/create" element={<AdminCompanyCreatePage />} />
-
-            {/* 채팅 */}
-            <Route path="/chat/groupchatting/list" element={<ChatMainPage />} />
-            <Route path="/chat/my/rooms" element={<MyChatListPage />} />
-            <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
-            <Route path="/chat/member/list" element={<MemberListPage />} />
-          </Routes>
-        </Layout>
-      </PersistGate>
-    </Provider>
+                {/* 채팅 */}
+                <Route path="/chat/groupchatting/list" element={<ChatMainPage />} />
+                <Route path="/chat/my/rooms" element={<MyChatListPage />} />
+                <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
+                <Route path="/chat/member/list" element={<MemberListPage />} />
+              </Routes>
+            </Layout>
+        </PersistGate>
+      </Provider>
   );
 }
 
