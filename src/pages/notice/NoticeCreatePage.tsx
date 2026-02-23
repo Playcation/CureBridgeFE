@@ -1,100 +1,10 @@
-// // src/pages/NoticeCreatePage.tsx
-
-// import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { createBoard } from '../../api/NoticeApi';
-// import { useSelector } from 'react-redux';
-// import { selectIsAdmin } from '../../store/slices/authSlice';
-// import { selectCurrentUserId } from '../../store/slices/authSlice';
-// import './NoticeCreatePage.module.css';
-
-// function NoticeCreatePage() {
-//     const [title, setTitle] = useState('');
-//     const [content, setContent] = useState('');
-//     const [loading, setLoading] = useState(false);
-//     const isAdmin = useSelector(selectIsAdmin);
-//     const currentUserId = useSelector(selectCurrentUserId); // 작성자 ID
-//     const navigate = useNavigate();
-
-//     // 💡 권한 체크: 관리자가 아니면 목록 페이지로 리다이렉트
-//     useEffect(() => {
-//         if (!isAdmin) {
-//             alert("공지사항 작성 권한이 없습니다.");
-//             navigate('/notice');
-//         }
-//     }, [isAdmin, navigate]);
-
-//     const handleSubmit = async (e: React.FormEvent) => {
-//         e.preventDefault();
-//         if (!isAdmin || !currentUserId) return alert("권한이 없거나 로그인 정보가 유효하지 않습니다.");
-
-//         if (!title.trim() || !content.trim()) {
-//             return alert("제목과 내용을 모두 입력해주세요.");
-//         }
-
-//         setLoading(true);
-//         try {
-//             // 💡 현재 로그인한 User ID와 데이터 전송
-//             const newPost = await createBoard(currentUserId, { title, content });
-//             alert("게시글이 성공적으로 작성되었습니다.");
-//             navigate(`/notice/${newPost.noticeId}`);
-//         } catch (error) {
-//             alert("게시글 작성에 실패했습니다.");
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-//     if (!isAdmin) return null;
-
-//     return (
-//         <div className="notice-form-container">
-//             <h2 className="form-title">공지사항 작성</h2>
-//             <form onSubmit={handleSubmit}>
-//                 <div className="form-group">
-//                     <label htmlFor="title">제목:</label>
-//                     <input 
-//                         id="title"
-//                         type="text" 
-//                         value={title} 
-//                         onChange={(e) => setTitle(e.target.value)} 
-//                         disabled={loading}
-//                     />
-//                 </div>
-//                 <div className="form-group">
-//                     <label htmlFor="content">내용:</label>
-//                     <textarea 
-//                         id="content"
-//                         value={content} 
-//                         onChange={(e) => setContent(e.target.value)} 
-//                         rows={10}
-//                         disabled={loading}
-//                     />
-//                 </div>
-//                 <div className="form-actions">
-//                     <button type="button" onClick={() => navigate('/notice')} disabled={loading}>
-//                         취소
-//                     </button>
-//                     <button type="submit" disabled={loading} className="btn-primary">
-//                         {loading ? '작성 중...' : '작성 완료'}
-//                     </button>
-//                 </div>
-//             </form>
-//         </div>
-//     );
-// }
-
-// export default NoticeCreatePage;
-
-// src/pages/NoticeCreatePage.tsx (수정 완료)
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createBoard } from '../../api/NoticeApi'; // API 경로 수정
 import { useSelector } from 'react-redux';
 import { selectIsAdmin, selectCurrentUserId } from '../../store/slices/authSlice';
 import { BoardRequest } from "../../types/board";
-import styles from './NoticeCreatePage.module.css';
+import styles from './NoticeCreatePage.module.css'; 
 
 function NoticeCreatePage() {
     const [title, setTitle] = useState('');
@@ -108,7 +18,7 @@ function NoticeCreatePage() {
     useEffect(() => {
         if (!isAdmin) {
             alert("공지사항 작성 권한이 없습니다.");
-            navigate('/notice');
+            navigate('/notices');
         }
     }, [isAdmin, navigate]);
 
@@ -124,7 +34,7 @@ function NoticeCreatePage() {
         try {
             const newPost = await createBoard({title, content});
             alert("게시글이 성공적으로 작성되었습니다.");
-            navigate(`/notice/${newPost.noticeId}`);
+            navigate(`/notices/${newPost.noticeId}`);
         } catch (error) {
             alert("게시글 작성에 실패했습니다.");
         } finally {

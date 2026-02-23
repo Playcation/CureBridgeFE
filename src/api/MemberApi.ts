@@ -43,7 +43,6 @@ export const getAllOrganization = async ()=>{
 export const getMember = async ()=>{
     return await axiosInstance.get(`${API_BASE_URL}/user`)
 }
-
 /**
  * 특정 유저의 상세 정보(이름 등) 조회
  * @param userId 조회할 유저의 ID

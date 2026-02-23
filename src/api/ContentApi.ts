@@ -61,10 +61,13 @@ export const searchNewsByTitle = (params: {
 
 // ------------------------ HealthReport 페이지
 /**
- * Report 단건 조회
+ * Ocr 단건 조회
  *
  * @param id Ocr 아이디
  */
+export const getOcr = async (id: number) => {
+  return await axiosInstance.get(`${API_BASE_URL}/health-report/${id}`);
+};
 export const getHealthReportsByUserId = async (id: number) => {
   return await axiosInstance.get(`${API_BASE_URL}/health-report/user/${id}`);
 };

@@ -3,14 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface UserState {
   name: string;   
   email: string;
-  profileUrl: string;
   role: 'admin' | 'user';  
 }
 
 const initialState: UserState = {
     name: '', // 빈 문자열로 초기화
     email: '', // 빈 문자열로 초기화
-    profileUrl: '',
     role: 'user', // 기본적으로 'user'로 초기화
 };
 
@@ -27,15 +25,11 @@ const userSlice = createSlice({
         clearUser: (state) => {
             state.name = '';
             state.email = '';
-            state.profileUrl = '';
         },
-        setProfile:(state, action: PayloadAction<UserState>) =>{
-            state.profileUrl = action.payload.profileUrl;
-        }
     },
 });
 
 
-export const { setUserDetails, clearUser, setProfile } = userSlice.actions;
+export const { setUserDetails, clearUser } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -6,9 +6,6 @@ import { login as loginAction } from '../../store/slices/authSlice';
 import styles from './Login.module.css';
 
 // asset 폴더에 아이콘
-import KakaoIcon from '../../asset/kakao.png';
-import GoogleIcon from '../../asset/google.png';
-import NaverIcon from '../../asset/naver.png';
 import EyeIcon from '../../asset/eye-icon.png';
 
 // api
@@ -151,20 +148,6 @@ const LoginPage: React.FC = () => {
           </form>
 
           {/* 소셜 로그인 버튼 영역 */}
-          <div className={styles.socialLoginContainer}>
-            <button className={`${styles.socialButton} ${styles.kakaoButton}`}>
-              <img src={KakaoIcon} alt="kakao login" className={styles.socialIcon}/>
-              카카오 로그인
-            </button>
-            <button className={`${styles.socialButton} ${styles.googleButton}`}>
-              <img src={GoogleIcon} alt="google login" className={styles.socialIcon}/>
-              구글 로그인
-            </button>
-            <button className={`${styles.socialButton} ${styles.naverButton}`}>
-              <img src={NaverIcon} alt="naver login" className={styles.socialIcon}/>
-              네이버 로그인
-            </button>
-          </div>
 
           {/* 하단 링크 영역 */}
           <div className={styles.linksContainer}>
