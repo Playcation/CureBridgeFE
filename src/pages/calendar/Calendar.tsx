@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import './Calendar.css';
-import { getMonthlySchedules, createSchedule } from '../../api/Api';
+import { getMonthlySchedules, createSchedule } from '../../api/ScheduleApi';
 import {ScheduleResponseDto} from '../../types/calendar'
 
 // Helper to get days in a month

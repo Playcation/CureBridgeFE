@@ -4,7 +4,7 @@ import {
   Container, Paper, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Button, Typography, Box
 } from '@mui/material';
-import { chatApi } from '../../api/ChatApi';
+import * as chatApi from '../../api/ChatApi';
 import { ChatRoom } from '../../types/chat';
 import CreateRoomModal from '../../component/chat/CreateRoomModal';
 
@@ -18,6 +18,7 @@ const ChatRoomListPage = () => {
   const loadChatRooms = async () => {
     try {
       const data = await chatApi.fetchRooms();
+      console.log("Loaded Data: ", data)
       setChatRoomList(data);
     } catch (error) {
       console.error("Failed to load rooms:", error);

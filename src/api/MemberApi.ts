@@ -1,4 +1,5 @@
 import axiosInstance from './Api';
+import axios from "axios";
 
 // /api/{모듈}/{권한}
 const API_BASE_URL = '/member';
@@ -16,4 +17,11 @@ export const getOrganizationInfo = async () => {
  */
 export const getManagerInfo = async () => {
     return await axiosInstance.get(`${API_BASE_URL}/org-manager`);
+};
+
+// ------------------------ MemberListPage
+export const fetchMembers = async () => {
+    // 회원 목록은 별도의 axiosInstance가 있다면 그것을 사용해도 좋습니다.
+    const response = await axiosInstance.get(`${API_BASE_URL}/list`);
+    return response.data;
 };

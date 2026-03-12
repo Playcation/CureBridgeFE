@@ -2,8 +2,8 @@
 import axiosInstance from "./Api";
 import { SupportRequest } from "../types/support";
 
-const SUPPORT_PUBLIC = "/api/anonymous/support"; // ✅ 비로그인 허용
-const SUPPORT_USER = "/api/user/support";       // ✅ 로그인 필요
+const SUPPORT_PUBLIC = "/content/support"; // ✅ 비로그인 허용
+const SUPPORT_USER = "/content/support";       // ✅ 로그인 필요
 
 export const fetchSupports = (page = 0, size = 10) =>
     axiosInstance

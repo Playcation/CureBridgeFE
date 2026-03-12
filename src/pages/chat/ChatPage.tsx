@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Paper, Typography, TextField, Button, Box } from '@mui/material';
-import axios from 'axios';
+import * as chatApi from '../../api/ChatApi';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import './ChatPage.css';
+import {RoomId} from "../../types/chat";
 
 const ChatPage: React.FC = () => {
   const { roomId } = useParams<{ roomId: string }>();
@@ -37,18 +38,16 @@ const ChatPage: React.FC = () => {
 
   useEffect(() => {
     const { token } = getAuthData();
-    const fetchHistory = async () => {
-      if (!token) return;
-      try {
-        const response = await axios.get(`http://localhost:8085/chat/history/${roomId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setMessages(response.data);
-      } catch (error) {
-        console.error("이력 로드 실패:", error);
+    try {
+      const response = chatApi.fetchHistory(roomId as string)
+      if (Array.isArray((response))) {
+        setMessages(response as any);
+      } else {
+        setMessages([]);
       }
-    };
-    fetchHistory();
+    } catch (error) {
+      console.error("이력 로드 실패:", error);
+    }
     connect();
     return () => {
       if (stompClient.current) {

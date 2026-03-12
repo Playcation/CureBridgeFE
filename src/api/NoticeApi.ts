@@ -2,7 +2,7 @@ import axiosInstance from './Api';
 import {BoardDetail, BoardRequest} from '../types/board';
 
 
-const API_BASE_URL = '/content/notice';
+const API_BASE_URL = '/content/notices';
 
 // 1. 다건 조회 (목록)
 export const fetchBoardList = async (page = 0, size = 10) => {

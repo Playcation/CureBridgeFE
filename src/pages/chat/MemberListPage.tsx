@@ -11,9 +11,9 @@ import {
   TableRow,
   Button
 } from '@mui/material';
-import axios from 'axios';
+import {fetchMembers} from "../../api/MemberApi";
 import { useNavigate } from 'react-router-dom';
-import { chatApi } from '../../api/ChatApi'; // 💡 이미 가지고 계신 ChatApi 적용
+import * as chatApi from '../../api/ChatApi'; // 💡 이미 가지고 계신 ChatApi 적용
 import './MemberListPage.css';
 
 interface Member {
@@ -28,16 +28,12 @@ const MemberListPage: React.FC = () => {
 
   // 1. 회원 목록 조회 (유저 관리 서버 8081)
   useEffect(() => {
-    const fetchMembers = async () => {
       try {
-        // 회원 목록은 별도의 axiosInstance가 있다면 그것을 사용해도 좋습니다.
-        const response = await axios.get(`http://localhost:8081/user/list`);
-        setMemberList(response.data);
+        const response = fetchMembers()
+        setMemberList(response as any);
       } catch (error) {
         console.error("회원 목록 로드 실패:", error);
       }
-    };
-    fetchMembers();
   }, []);
 
   // 2. 채팅 시작하기 버튼 핸들러

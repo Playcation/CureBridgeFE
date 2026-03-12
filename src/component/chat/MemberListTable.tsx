@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { chatApi } from '../../api/ChatApi'; // 💡 만든 API 컴포넌트 임포트
+import * as chatApi from '../../api/ChatApi'; // 💡 만든 API 컴포넌트 임포트
 import './MemberListPage.css';
 
 interface Member {

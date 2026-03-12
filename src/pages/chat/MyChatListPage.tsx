@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Card, CardContent, CardHeader } from '@mui/material';
-import { chatApi } from '../../api/ChatApi';
+import * as chatApi from '../../api/ChatApi';
 import { MyChatRoom } from '../../types/chat';
 import MyChatTable from '../../component/chat/MyChatTable';
 
