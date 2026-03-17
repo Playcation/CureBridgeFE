@@ -1,7 +1,7 @@
 // src/App.tsx
 
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -31,6 +31,7 @@ import SupportListPage from "./pages/support/SupportListPage";
 import SupportDetailPage from "./pages/support/SupportDetailPage";
 import SupportCreatePage from "./pages/support/SupportCreatePage";
 import SupportEditPage from "./pages/support/SupportEditPage";
+import ErrorPage from "./pages/error/ErrorPage";
 
 
 function App() {
@@ -70,6 +71,14 @@ function App() {
                 <Route path="/support/create" element={<SupportCreatePage />} />
                 <Route path="/support/edit/:supportId" element={<SupportEditPage />} />
 
+                {/* 에러 */}
+                <Route path="/error" element={<ErrorPage />} />
+
+                {/* 등록되지 않은 url 관리 */}
+                <Route
+                  path="*"
+                  element={<Navigate to="/error?status=404&msg=존재하지 않는 페이지입니다." replace />}
+                />
 
               </Routes>
             </Layout>

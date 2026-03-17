@@ -1,9 +1,4 @@
-import axios, {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig
-} from 'axios';
+import axios, {AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 
 // 💡 DTO 및 타입 Import (ESLint import/first 규칙 준수)
 import {toPath, UserRole} from "../types/auth";
@@ -11,51 +6,51 @@ import {toPath, UserRole} from "../types/auth";
 
 // ------------------- API 기본 설정 -------------------
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8084/api', // 또는 배포용 주소
-  withCredentials: true,
+    baseURL: 'http://localhost:8084/api', // 또는 배포용 주소
+    withCredentials: true,
 });
 
 let refreshSubscribers: ((token: string) => void)[] = [];
 
 const addSubscriber = (callback: (token: string) => void) => {
-  refreshSubscribers.push(callback);
+    refreshSubscribers.push(callback);
 };
 
 const onRefreshed = (newToken: string) => {
-  refreshSubscribers.forEach((callback) => callback(newToken));
-  refreshSubscribers = [];
+    refreshSubscribers.forEach((callback) => callback(newToken));
+    refreshSubscribers = [];
 };
 
 axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
 
-      const url = (config.url || '').toLowerCase();
-      const storedRole = localStorage.getItem('userRole') as UserRole | undefined;
-      const rolePath = storedRole ? toPath(storedRole) : 'anonymous';
+        const url = (config.url || '').toLowerCase();
+        const storedRole = localStorage.getItem('userRole') as UserRole | undefined;
+        const rolePath = storedRole ? toPath(storedRole) : 'anonymous';
 
-      // baseURL 에 권한 정보 추가
-      config.baseURL = `http://localhost:8080/api/${rolePath}`
+        // baseURL 에 권한 정보 추가
+        config.baseURL = `http://localhost:8080/api/${rolePath}`
 
-      if (url.startsWith('/api/anonymous/')) {
-        return config; // 익명 API는 토큰 안 붙임
-      }
-      // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
-      const skipAuth = [
-        'member/user/sign-in',
-        'member/user/login',
-        'member/auth/refresh'
-      ];
+        if (url.startsWith('/api/anonymous/')) {
+            return config; // 익명 API는 토큰 안 붙임
+        }
+        // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
+        const skipAuth = [
+            'member/user/sign-in',
+            'member/user/login',
+            'member/auth/refresh'
+        ];
 
-      if (skipAuth.some(path => url.endsWith(path))) {
+        if (skipAuth.some(path => url.endsWith(path))) {
+            return config;
+        }
+
+        const accessToken = localStorage.getItem('Authorization');
+        if (accessToken) {
+            config.headers = config.headers || {};
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
         return config;
-      }
-
-      const accessToken = localStorage.getItem('Authorization');
-      if (accessToken) {
-        config.headers = config.headers || {};
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-      return config;
     },
     (error: AxiosError) => Promise.reject(error)
 );
@@ -63,45 +58,69 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error: AxiosError) => {
-      const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+        const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-        let isRefreshing = false;
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            let isRefreshing = false;
 
-        if (!isRefreshing) {
-          isRefreshing = true;
+            if (!isRefreshing) {
+                isRefreshing = true;
 
-          try {
-            const response = await axios.post<{ token: string }>(
-                '/member/auth/refresh',
-                {},
-                {withCredentials: true}
-            );
-            const newToken = response.data.token;
-            localStorage.setItem('Authorization', newToken);
-            onRefreshed(newToken);
-            isRefreshing = false;
-          } catch (refreshError) {
-            isRefreshing = false;
-            localStorage.removeItem('Authorization');
-            // useNavigate는 훅이므로 여기에서 직접 호출 불가 → App 단에서 catch 후 redirect 해야 함
-            window.location.href = '/';
-            return Promise.reject(refreshError);
-          }
+                try {
+                    const response = await axios.post<{ token: string }>(
+                        '/member/auth/refresh',
+                        {},
+                        {withCredentials: true}
+                    );
+                    const newToken = response.data.token;
+                    localStorage.setItem('Authorization', newToken);
+                    onRefreshed(newToken);
+                    isRefreshing = false;
+                } catch (refreshError) {
+                    isRefreshing = false;
+                    localStorage.removeItem('Authorization');
+                    // useNavigate는 훅이므로 여기에서 직접 호출 불가 → App 단에서 catch 후 redirect 해야 함
+                    window.location.href = '/';
+                    return Promise.reject(refreshError);
+                }
+            }
+
+            return new Promise((resolve) => {
+                addSubscriber((newToken: string) => {
+                    if (originalRequest.headers) {
+                        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                    }
+                    resolve(axiosInstance(originalRequest));
+                });
+            });
         }
 
-        return new Promise((resolve) => {
-          addSubscriber((newToken: string) => {
-            if (originalRequest.headers) {
-              originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            }
-            resolve(axiosInstance(originalRequest));
-          });
-        });
-      }
+        // 공통 에러 핸들링
+        if (error.response) {
+            const {status, data} = error.response;
 
-      return Promise.reject(error);
+            const serverMessage = (data as any)?.message || "알 수 없는 오류가 발생했습니다."
+
+            switch (status) {
+                case 403:
+                    alert("접근 권한이 없습니다.");
+                    break;
+                case 404:
+                    window.location.href = `/error?status=${status}%msg=${encodeURIComponent(serverMessage)}`
+                    break;
+                case 500:
+                    window.location.href = ` /error?status=${status}&msg=${encodeURIComponent(serverMessage)}`
+                    break;
+            }
+        } else if (error.request) {
+            window.location.href = '/error?status=Network&msg=서버와 연결할 수 없습니다.'
+        }
+        else {
+            console.error('Error', error.message);
+        }
+
+        return Promise.reject(error);
     }
 );
 
