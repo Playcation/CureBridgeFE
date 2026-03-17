@@ -1,5 +1,5 @@
 import axiosInstance from './Api';
-import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/contentTypes";
+import {CreateScheduleRequestDto, ScheduleResponseDto} from "../types/calendar";
 import {BoardDetail, BoardListItem, BoardRequest, PagingDto} from '../types/board';
 
 const API_BASE_URL = "/content"
