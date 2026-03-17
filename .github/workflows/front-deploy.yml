@@ -95,14 +95,6 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             set -e
+            cd ~/curebridge
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/curebridge-frontend:latest
-
-            if docker service ls | grep -q curebridge_frontend; then
-              docker service update --image ${{ secrets.DOCKERHUB_USERNAME }}/curebridge-frontend:latest curebridge_frontend
-            else
-              docker service create \
-                --name curebridge_frontend \
-                --network curebridge-net \
-                -p 3000:80 \
-                ${{ secrets.DOCKERHUB_USERNAME }}/curebridge-frontend:latest
-            fi
+            docker stack deploy -c docker-stack.yml curebridge
