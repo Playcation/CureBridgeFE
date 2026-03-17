@@ -3,10 +3,10 @@ name: frontend-deploy
 on:
   push:
     branches:
-      - feature/boardhb
+      - develop
   pull_request:
     branches:
-      - feature/boardhb
+      - develop
 
 permissions:
   contents: read
