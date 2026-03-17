@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  Container, Paper, Typography, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, Button
+  Button,
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography
 } from '@mui/material';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { chatApi } from '../../api/ChatApi'; // 💡 만든 API 컴포넌트 임포트
+import {useNavigate} from 'react-router-dom';
+import {chatApi} from '../../api/ChatApi'; // 💡 만든 API 컴포넌트 임포트
 import './MemberListPage.css';
 
 interface Member {
@@ -22,7 +30,7 @@ const MemberListPage: React.FC = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/user/list`);
+        const response = await axios.get(`/user/list`);
         setMemberList(response.data);
       } catch (error) {
         console.error("회원 목록 로드 실패:", error);

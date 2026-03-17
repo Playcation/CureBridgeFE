@@ -11,7 +11,7 @@ import {toPath, UserRole} from "../types/auth";
 
 // ------------------- API 기본 설정 -------------------
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8084/api', // 또는 배포용 주소
+  baseURL: '/api',
   withCredentials: true,
 });
 
@@ -34,7 +34,7 @@ axiosInstance.interceptors.request.use(
       const rolePath = storedRole ? toPath(storedRole) : 'anonymous';
 
       // baseURL 에 권한 정보 추가
-      config.baseURL = `http://localhost:8080/api/${rolePath}`
+      config.baseURL = `/api/${rolePath}`
 
       if (url.startsWith('/api/anonymous/')) {
         return config; // 익명 API는 토큰 안 붙임

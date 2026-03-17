@@ -1,8 +1,7 @@
-import axios from 'axios';
-import {RoomId, MyChatRoom} from '../types/chat';
+import {MyChatRoom} from '../types/chat';
 import axiosInstance from "./Api";
 
-const API_BASE_URL = 'http://localhost:8085/chat';
+const API_BASE_URL = '/chat';
 
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token'); // 로그인 시 저장한 키 이름
@@ -13,7 +12,7 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 const getAuthHeader = () => ({
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
 });
 
 export const chatApi = {
@@ -30,7 +29,7 @@ export const chatApi = {
   },
 
   fetchRooms: async () => {
-    const response = await axiosInstance.get(`http://localhost:8085/chat/room/group/list`);
+    const response = await axiosInstance.get(`${API_BASE_URL}/room/group/list`);
     return response.data;
   },
 
