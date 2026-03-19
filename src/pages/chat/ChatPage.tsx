@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Paper, Typography, TextField, Button, Box } from '@mui/material';
+import React, {useEffect, useRef, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {Box, Button, Container, Paper, TextField, Typography} from '@mui/material';
 import axios from 'axios';
-import { Client } from '@stomp/stompjs';
+import {Client} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import './ChatPage.css';
 
 const ChatPage: React.FC = () => {
-  const { roomId } = useParams<{ roomId: string }>();
+  const {roomId} = useParams<{ roomId: string }>();
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
-
+  const API_BASE_URL = '/chat';
   const stompClient = useRef<Client | null>(null);
   const chatBoxRef = useRef<HTMLDivElement>(null);
 
@@ -19,7 +19,7 @@ const ChatPage: React.FC = () => {
   const getAuthData = () => {
     try {
       const persistRoot = localStorage.getItem("persist:root");
-      if (!persistRoot) return { token: null, email: "" };
+      if (!persistRoot) return {token: null, email: ""};
 
       const rootData = JSON.parse(persistRoot);
       const authData = JSON.parse(rootData.auth);
@@ -31,17 +31,17 @@ const ChatPage: React.FC = () => {
         email: (authData.email || "testemail@gamil.com").toLowerCase().trim() // 임시로 확인된 이메일 사용
       };
     } catch (e) {
-      return { token: null, email: "" };
+      return {token: null, email: ""};
     }
   };
 
   useEffect(() => {
-    const { token } = getAuthData();
+    const {token} = getAuthData();
     const fetchHistory = async () => {
       if (!token) return;
       try {
-        const response = await axios.get(`http://localhost:8085/chat/history/${roomId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
+        const response = await axios.get(`${API_BASE_URL}/history/${roomId}`, {
+          headers: {'Authorization': `Bearer ${token}`}
         });
         setMessages(response.data);
       } catch (error) {
@@ -59,11 +59,11 @@ const ChatPage: React.FC = () => {
   }, [roomId]);
 
   const connect = () => {
-    const { token } = getAuthData();
+    const {token} = getAuthData();
     if (!token || stompClient.current?.active) return;
     const client = new Client({
-      webSocketFactory: () => new SockJS("http://localhost:8085/connect"),
-      connectHeaders: { Authorization: `Bearer ${token}` },
+      webSocketFactory: () => new SockJS("/connect"),
+      connectHeaders: {Authorization: `Bearer ${token}`},
       reconnectDelay: 5000,
     });
     client.onConnect = () => {
@@ -81,7 +81,7 @@ const ChatPage: React.FC = () => {
   const sendMessage = () => {
     if (!newMessage.trim() || !isConnected || !stompClient.current?.connected) return;
 
-    const { email } = getAuthData();
+    const {email} = getAuthData();
     const payload = {
       senderEmail: email, // 💡 이메일을 실어서 보냄
       message: newMessage,
@@ -102,15 +102,28 @@ const ChatPage: React.FC = () => {
   }, [messages]);
 
   return (
-      <Container maxWidth="sm" sx={{ mt: 4 }}>
-        <Paper elevation={3} sx={{ height: '80vh', display: 'flex', flexDirection: 'column', p: 2, borderRadius: 3 }}>
-          <Typography variant="h6" sx={{ textAlign: 'center', mb: 2, fontWeight: 'bold' }}>
+      <Container maxWidth="sm" sx={{mt: 4}}>
+        <Paper elevation={3} sx={{
+          height: '80vh',
+          display: 'flex',
+          flexDirection: 'column',
+          p: 2,
+          borderRadius: 3
+        }}>
+          <Typography variant="h6" sx={{textAlign: 'center', mb: 2, fontWeight: 'bold'}}>
             채팅방 #{roomId} {isConnected ? "🟢" : "🔴"}
           </Typography>
 
-          <Box ref={chatBoxRef} sx={{ flexGrow: 1, overflowY: 'auto', mb: 2, bgcolor: '#f0f2f5', p: 2, borderRadius: 2 }}>
+          <Box ref={chatBoxRef} sx={{
+            flexGrow: 1,
+            overflowY: 'auto',
+            mb: 2,
+            bgcolor: '#f0f2f5',
+            p: 2,
+            borderRadius: 2
+          }}>
             {messages.map((msg, i) => {
-              const { email: myEmail } = getAuthData();
+              const {email: myEmail} = getAuthData();
 
               // 💡 [이메일 기반 판별 로직]
               // 양쪽 모두 소문자로 변환하고 공백을 제거한 뒤 비교합니다.
@@ -118,10 +131,15 @@ const ChatPage: React.FC = () => {
                   msg.senderEmail.toLowerCase().trim() === myEmail.toLowerCase().trim();
 
               return (
-                  <Box key={i} sx={{ display: 'flex', justifyContent: isMe ? 'flex-end' : 'flex-start', mb: 1.5 }}>
-                    <Box sx={{ maxWidth: '75%' }}>
+                  <Box key={i} sx={{
+                    display: 'flex',
+                    justifyContent: isMe ? 'flex-end' : 'flex-start',
+                    mb: 1.5
+                  }}>
+                    <Box sx={{maxWidth: '75%'}}>
                       {!isMe && (
-                          <Typography variant="caption" sx={{ ml: 0.5, color: '#65676b', display: 'block', mb: 0.3 }}>
+                          <Typography variant="caption"
+                                      sx={{ml: 0.5, color: '#65676b', display: 'block', mb: 0.3}}>
                             {msg.senderEmail || "상대방"}
                           </Typography>
                       )}
@@ -140,7 +158,7 @@ const ChatPage: React.FC = () => {
             })}
           </Box>
 
-          <Box sx={{ display: 'flex', gap: 1 }}>
+          <Box sx={{display: 'flex', gap: 1}}>
             <TextField
                 fullWidth
                 size="small"
