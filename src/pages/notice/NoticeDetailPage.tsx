@@ -22,7 +22,12 @@ function NoticeDetailPage() {
         // 1. 공지사항 데이터 먼저 로드
         const boardData = await fetchBoardDetail(Number(noticeId));
         setPost(boardData);
+        const accessToken = localStorage.getItem('Authorization');
 
+        if (!accessToken) {
+          setUserName('작성자');
+          return;
+        }
         // 2. 로드된 데이터의 userId를 이용해 유저 모듈에서 이름 조회
         if (boardData.userId) {
           try {
