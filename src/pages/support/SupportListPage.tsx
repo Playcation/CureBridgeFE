@@ -109,26 +109,28 @@ function SupportListPage() {
                         const isOwner = myUserId === it.userId;
                         const canOpen = !isPrivate || isOwner || isAdmin;
 
-                        return (
-                            <tr key={it.supportId}>
-                                <td>{it.supportId}</td>
-                                <td className={styles.titleCell}>
-                                    {canOpen ? (
-                                        <Link to={`/support/${it.supportId}`} className={styles.link}>
-                                            {it.title}
-                                        </Link>
-                                    ) : (
-                                        <span className={styles.locked}>🔒 비공개 문의</span>
-                                    )}
-                                </td>
-                                <td>{it.isRelied ? "답변완료" : "대기중"}</td>
-                                <td>{it.createdAt ? new Date(it.createdAt).toLocaleDateString() : "-"}</td>
-                            </tr>
-                        );
-                    })
-                )}
-                </tbody>
-            </table>
+                const displayNum = totalCount - (page * size) - index;
+
+                return (
+                    <tr key={it.supportId}>
+                      <td>{displayNum}</td>
+                      <td className={styles.titleCell}>
+                        {canOpen ? (
+                            <Link to={`/support/${it.supportId}`} className={styles.link}>
+                              {it.title}
+                            </Link>
+                        ) : (
+                            <span className={styles.locked}>🔒 비공개 문의</span>
+                        )}
+                      </td>
+                      <td>{it.replied ? "답변완료" : "대기중"}</td>
+                      <td>{it.createdAt ? new Date(it.createdAt).toLocaleDateString() : "-"}</td>
+                    </tr>
+                );
+              })
+          )}
+          </tbody>
+        </table>
 
             <div className={styles.paging}>
                 <button className={styles.pageBtn} disabled={page <= 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
