@@ -120,16 +120,16 @@ function SupportDetailPage() {
                 </div>
             </div>
 
-            <ReplyBox
-                supportId={data.id}
-                isReplied={data.isReplied}
-                replyContent={data.replyContent}
-                repliedAt={data.repliedAt}
-                editable={isAdmin}
-                onChanged={load}
-            />
-        </div>
-    );
+        <ReplyBox
+            supportId={data.id}
+            isReplied={data.replied}
+            replyContent={data.replyContent}
+            repliedAt={data.repliedAt}
+            editable={isAdmin}
+            onChanged={load}
+        />
+      </div>
+  );
 }
 
 export default SupportDetailPage;
