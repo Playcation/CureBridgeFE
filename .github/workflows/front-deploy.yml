@@ -82,7 +82,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy-to-ec2:
-    if: github.event_name =='pull_request'
+    if: github.event_name == 'pull_request'
     needs: docker-build-and-push
     runs-on: ubuntu-latest
 
