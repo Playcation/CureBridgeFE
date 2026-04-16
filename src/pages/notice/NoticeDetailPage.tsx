@@ -24,22 +24,26 @@ function NoticeDetailPage() {
         setPost(boardData);
         const accessToken = localStorage.getItem('Authorization');
 
-        if (!accessToken) {
-          setUserName('작성자');
+        // 1. 백엔드가 writerName 내려주면 그걸 우선 사용
+        if (boardData.writerName && boardData.writerName.trim()) {
+          setUserName(boardData.writerName);
           return;
         }
-        // 2. 로드된 데이터의 userId를 이용해 유저 모듈에서 이름 조회
+
+        // 2. writerName이 없을 때만 fallback
         if (boardData.userId) {
           try {
             const userData = await getUserInfoById(boardData.userId);
             setUserName(userData.name || `사용자(${boardData.userId})`);
           } catch (userErr) {
-            console.error("유저 정보를 찾을 수 없습니다.", userErr);
-            setUserName(`작성자(ID: ${boardData.userId})`);
+            console.error('유저 정보를 찾을 수 없습니다.', userErr);
+            setUserName('작성자');
           }
+        } else {
+          setUserName('작성자');
         }
       } catch (err) {
-        setError("게시글 정보를 불러오는 데 실패했습니다.");
+        setError('게시글 정보를 불러오는 데 실패했습니다.');
       } finally {
         setLoading(false);
       }

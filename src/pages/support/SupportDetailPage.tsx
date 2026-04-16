@@ -89,11 +89,11 @@ function SupportDetailPage() {
 
             <div className={styles.sectionLine} />
 
-            <div className={styles.metaRow}>
-                <div>작성자: <b>{data.userId}</b></div>
-                <div>조회수: <b>{data.viewCount}</b></div>
-                <div>{data.isPrivate ? "비공개" : "공개"}</div>
-            </div>
+        <div className={styles.metaRow}>
+          <div>작성자: <b>{data.writerName}</b></div>
+          <div>조회수: <b>{data.viewCount}</b></div>
+          <div>{data.isPrivate ? "비공개" : "공개"}</div>
+        </div>
 
             <div className={styles.field}>
                 <div className={styles.label}>제목</div>

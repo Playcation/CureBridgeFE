@@ -2,6 +2,7 @@
 export interface BoardListItem {
   noticeId: number; // Long -> number
   userId: number;   // Long -> number (작성자 ID)
+  writerName?: string;
   title: string;
   viewCount: number;
   createdAt: string;
