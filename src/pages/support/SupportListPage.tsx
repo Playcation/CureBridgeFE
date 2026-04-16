@@ -91,23 +91,25 @@ function SupportListPage() {
 
             <div className={styles.countRow}>총 {totalCount}건</div>
 
-            <table className={styles.table}>
-                <thead>
-                <tr>
-                    <th style={{ width: "12%" }}>번호</th>
-                    <th style={{ width: "58%" }}>제목</th>
-                    <th style={{ width: "15%" }}>상태</th>
-                    <th style={{ width: "15%" }}>작성일</th>
-                </tr>
-                </thead>
-                <tbody>
-                {items.length === 0 ? (
-                    <tr><td colSpan={4} className={styles.empty}>등록된 문의가 없습니다.</td></tr>
-                ) : (
-                    items.map((it: any) => {
-                        const isPrivate = !!it.isPrivate;
-                        const isOwner = myUserId === it.userId;
-                        const canOpen = !isPrivate || isOwner || isAdmin;
+        <table className={styles.table}>
+          <thead>
+          <tr>
+            <th style={{width: "12%"}}>번호</th>
+            <th style={{width: "58%"}}>제목</th>
+            <th style={{width: "15%"}}>상태</th>
+            <th style={{width: "15%"}}>작성일</th>
+          </tr>
+          </thead>
+          <tbody>
+          {items.length === 0 ? (
+              <tr>
+                <td colSpan={4} className={styles.empty}>등록된 문의가 없습니다.</td>
+              </tr>
+          ) : (
+              items.map((it: any, index: number) => {
+                const isPrivate = !!it.isPrivate;
+                const isOwner = myUserId === it.userId;
+                const canOpen = !isPrivate || isOwner || isAdmin;
 
                 const displayNum = totalCount - (page * size) - index;
 
