@@ -1,7 +1,7 @@
 import {MyChatRoom} from '../types/chat';
 import axiosInstance from "./Api";
 
-const API_BASE_URL = '/chat';
+const API_BASE_URL = '/chat/chat';
 
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token'); // 로그인 시 저장한 키 이름

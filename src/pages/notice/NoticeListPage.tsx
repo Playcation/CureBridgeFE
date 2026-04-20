@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'; 
-import { Link } from 'react-router-dom';
-import { fetchBoardList } from '../../api/NoticeApi';
-import { BoardListItem, PagingDto } from '../../types/board'; 
-import ReusablePagination from '../../component/PagingNation'; 
-import BoardSearch, { SearchParams } from '../../component/BoardSearch/BoardSearch'; 
-import { useSelector } from 'react-redux';
-import { selectIsAdmin } from '../../store/slices/authSlice';
-import styles from './NoticeListPage.module.css'; 
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Link} from 'react-router-dom';
+import {fetchBoardList} from '../../api/NoticeApi';
+import {BoardListItem} from '../../types/board';
+import ReusablePagination from '../../component/PagingNation';
+import BoardSearch, {SearchParams} from '../../component/BoardSearch/BoardSearch';
+import {useSelector} from 'react-redux';
+import {selectIsAdmin} from '../../store/slices/authSlice';
+import styles from './NoticeListPage.module.css';
 
 const ALL_PAGES = 999;
 
@@ -149,16 +149,19 @@ function NoticeListPage() {
               //       <td>{post.viewCount}</td>
               //     </tr>
               // ))
-              visibleNoticeList.map((post) => (
-                  <tr key={post.noticeId}>
-                    <td>{post.noticeId}</td>
-                    <td className={styles.titleCell}>
-                      <Link to={`/notice/${post.noticeId}`}>{post.title}</Link>
-                    </td>
-                    <td>{new Date(post.createdAt).toLocaleDateString()}</td>
-                    <td>{post.viewCount}</td>
-                  </tr>
-              ))
+              visibleNoticeList.map((post, index) => {
+                const displayNum = totalElements - (currentPage * pageSize) - index;
+                return (
+                    <tr key={post.noticeId}>
+                      <td>{displayNum}</td>
+                      <td className={styles.titleCell}>
+                        <Link to={`/notice/${post.noticeId}`}>{post.title}</Link>
+                      </td>
+                      <td>{new Date(post.createdAt).toLocaleDateString()}</td>
+                      <td>{post.viewCount}</td>
+                    </tr>
+                );
+              })
           )}
           </tbody>
         </table>

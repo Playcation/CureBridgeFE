@@ -91,44 +91,48 @@ function SupportListPage() {
 
             <div className={styles.countRow}>총 {totalCount}건</div>
 
-            <table className={styles.table}>
-                <thead>
-                <tr>
-                    <th style={{ width: "12%" }}>번호</th>
-                    <th style={{ width: "58%" }}>제목</th>
-                    <th style={{ width: "15%" }}>상태</th>
-                    <th style={{ width: "15%" }}>작성일</th>
-                </tr>
-                </thead>
-                <tbody>
-                {items.length === 0 ? (
-                    <tr><td colSpan={4} className={styles.empty}>등록된 문의가 없습니다.</td></tr>
-                ) : (
-                    items.map((it: any) => {
-                        const isPrivate = !!it.isPrivate;
-                        const isOwner = myUserId === it.userId;
-                        const canOpen = !isPrivate || isOwner || isAdmin;
+        <table className={styles.table}>
+          <thead>
+          <tr>
+            <th style={{width: "12%"}}>번호</th>
+            <th style={{width: "58%"}}>제목</th>
+            <th style={{width: "15%"}}>상태</th>
+            <th style={{width: "15%"}}>작성일</th>
+          </tr>
+          </thead>
+          <tbody>
+          {items.length === 0 ? (
+              <tr>
+                <td colSpan={4} className={styles.empty}>등록된 문의가 없습니다.</td>
+              </tr>
+          ) : (
+              items.map((it: any, index: number) => {
+                const isPrivate = !!it.isPrivate;
+                const isOwner = myUserId === it.userId;
+                const canOpen = !isPrivate || isOwner || isAdmin;
 
-                        return (
-                            <tr key={it.supportId}>
-                                <td>{it.supportId}</td>
-                                <td className={styles.titleCell}>
-                                    {canOpen ? (
-                                        <Link to={`/support/${it.supportId}`} className={styles.link}>
-                                            {it.title}
-                                        </Link>
-                                    ) : (
-                                        <span className={styles.locked}>🔒 비공개 문의</span>
-                                    )}
-                                </td>
-                                <td>{it.isRelied ? "답변완료" : "대기중"}</td>
-                                <td>{it.createdAt ? new Date(it.createdAt).toLocaleDateString() : "-"}</td>
-                            </tr>
-                        );
-                    })
-                )}
-                </tbody>
-            </table>
+                const displayNum = totalCount - (page * size) - index;
+
+                return (
+                    <tr key={it.supportId}>
+                      <td>{displayNum}</td>
+                      <td className={styles.titleCell}>
+                        {canOpen ? (
+                            <Link to={`/support/${it.supportId}`} className={styles.link}>
+                              {it.title}
+                            </Link>
+                        ) : (
+                            <span className={styles.locked}>🔒 비공개 문의</span>
+                        )}
+                      </td>
+                      <td>{it.replied ? "답변완료" : "대기중"}</td>
+                      <td>{it.createdAt ? new Date(it.createdAt).toLocaleDateString() : "-"}</td>
+                    </tr>
+                );
+              })
+          )}
+          </tbody>
+        </table>
 
             <div className={styles.paging}>
                 <button className={styles.pageBtn} disabled={page <= 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
