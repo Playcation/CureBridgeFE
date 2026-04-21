@@ -42,19 +42,18 @@ function SupportEditPage() {
                     return;
                 }
 
-                setTitle(detail.title || "");
-                setContent(detail.content || "");
-                setIsPrivate(!!detail.isPrivate);
-            } catch (e) {
-                console.error(e);
-                alert("정보를 불러오지 못했습니다.");
-                navigate("/support");
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, [supportId, myUserId, navigate]);
+        setTitle(detail.title || "");
+        setContent(detail.content || "");
         setIsPrivate(detail.private);
+      } catch (e) {
+        console.error(e);
+        alert("정보를 불러오지 못했습니다.");
+        navigate("/support");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [supportId, myUserId, navigate]);
 
     const onSubmit = async () => {
         if (!supportId) return;
