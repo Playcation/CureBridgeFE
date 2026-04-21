@@ -132,6 +132,15 @@ const NewsPage = () => {
     fetchNews(page, rowsPerPage, searchQuery);
   };
 
+  const handleKeywordClick = (keyword: string) => {
+    setPage(0);
+    setSearchInput(keyword);  // 검색창 입력값 업데이트
+    setSearchQuery(keyword); // 실제 검색 쿼리 상태 업데이트
+
+    // 상태 업데이트가 비동기이므로, 즉시 fetchNews를 호출하여 결과를 가져옵니다.
+    fetchNews(0, rowsPerPage, keyword);
+  };
+
   return (
 
       <Container className="news-page-container">
@@ -194,28 +203,25 @@ const NewsPage = () => {
             </Box>
         )}
         {/* 뉴스 리스트 하단 인기 키워드 섹션 추가 */}
-        <Box sx={{mt: 6}}>
-          <Divider sx={{mb: 3}}/>
-          <Typography variant="h6" gutterBottom
-                      sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-            ✨ 최근 주요 의학 키워드
-          </Typography>
-          <Paper elevation={0} sx={{p: 2, bgcolor: '#f8f9fa', borderRadius: 2}}>
-            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
-              {keywords.length > 0 ? (
-                  keywords.map((kw, index) => (
-                      <Chip
-                          key={index}
-                          label={`#${kw.keyword} (${kw.count})`}
-                      />
-                  ))
-              ) : (
-                  <Typography variant="body2" color="textSecondary">
-                    {isKeywordLoading ? "키워드 데이터를 분석 중입니다..." : "분석된 키워드가 없습니다."}
-                  </Typography>
-              )}
-            </Box>
-          </Paper>
+        <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
+          {keywords.length > 0 ? (
+              keywords.map((kw, index) => (
+                  <Chip
+                      key={index}
+                      label={`#${kw.keyword} (${kw.count})`}
+                      // 클릭 이벤트 추가
+                      onClick={() => handleKeywordClick(kw.keyword)}
+                      clickable
+                      color="primary"
+                      variant="outlined"
+                      sx={{'&:hover': {backgroundColor: '#e3f2fd'}}}
+                  />
+              ))
+          ) : (
+              <Typography variant="body2" color="textSecondary">
+                {isKeywordLoading ? "키워드 데이터를 분석 중입니다..." : "분석된 키워드가 없습니다."}
+              </Typography>
+          )}
         </Box>
       </Container>
   );
