@@ -23,22 +23,28 @@ function SupportDetailPage() {
         try {
             const detail = await fetchSupportDetail(Number(supportId));
 
-            // 비공개 글 접근 제한(작성자 or ADMIN)
-            if (detail.isPrivate && !isAdmin && myUserId !== detail.userId) {
-                alert("비공개 문의입니다.");
-                navigate("/support");
-                return;
-            }
-
-            setData(detail);
-        } catch (e) {
-            console.error(e);
-            alert("문의 정보를 불러오지 못했습니다.");
-            navigate("/support");
-        } finally {
-            setLoading(false);
+      // 비공개 글 접근 제한(작성자 or ADMIN)
+      if (detail.isPrivate) {
+        if (!isAdmin && myUserId !== detail.userId) {
+          alert("비공개 문의입니다. 작성자 본인만 열람할 수 있습니다.");
+          navigate("/support");
+          return;
         }
-    }, [supportId, isAdmin, myUserId, navigate]);
+      }
+
+      setData(detail);
+    } catch (e: any) {
+      // 백엔드에서 권한 에러(403 등)를 던지면 이리로 옵니다.
+      if (e.response?.status === 403 || e.response?.status === 401) {
+        alert("비공개 문의입니다.");
+      } else {
+        alert("문의 정보를 불러오지 못했습니다.");
+      }
+      navigate("/support");
+    } finally {
+      setLoading(false);
+    }
+  }, [supportId, isAdmin, myUserId, navigate]);
 
     useEffect(() => {
         load();
@@ -92,7 +98,7 @@ function SupportDetailPage() {
         <div className={styles.metaRow}>
           <div>작성자: <b>{data.writerName}</b></div>
           <div>조회수: <b>{data.viewCount}</b></div>
-          <div>{data.isPrivate ? "비공개" : "공개"}</div>
+          <div>{data.private ? "비공개" : "공개"}</div>
         </div>
 
             <div className={styles.field}>

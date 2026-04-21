@@ -54,6 +54,7 @@ function SupportEditPage() {
             }
         })();
     }, [supportId, myUserId, navigate]);
+        setIsPrivate(detail.private);
 
     const onSubmit = async () => {
         if (!supportId) return;
