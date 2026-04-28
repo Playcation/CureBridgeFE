@@ -29,7 +29,7 @@ const NewsPage = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const fetchNews = async (p = 0, size = 10, query?: string) => {
+  const fetchNews = async (p = 0, size = 50, query?: string) => {
     try {
 
       const effectiveQuery = query !== undefined ? query : searchQuery;
@@ -57,8 +57,8 @@ const NewsPage = () => {
   const fetchKeywords = async () => {
     setIsKeywordLoading(true);
     try {
-      const data = await getTopKeywords(undefined, undefined, 10);
-      setKeywords(data);
+      const data = await getTopKeywords(undefined, undefined, 50);
+      setKeywords(data || []);
     } catch (e) {
       console.error('fetchKeywords failed', e);
       setKeywords([]);
