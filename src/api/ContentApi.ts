@@ -39,8 +39,10 @@ export const deleteNews = async (id: number) => {
  * @param size 가져올 키워드 개수
  */
 export type TopKeywordDto = { keyword: string; count: number };
-export const getTopKeywords = (gte?: string, lt?: string, size: number = 10) => {
-  return axiosInstance.get(`${API_BASE_URL}/news/top-keywords`, {
+export const getTopKeywords = (gte?: string, lt?: string, size: number = 50): Promise<TopKeywordDto[]> => {
+
+  return axiosInstance.get<TopKeywordDto[]>(`${API_BASE_URL}/news/top-keywords`, {
+
     params: {gte, lt, size},
   }).then(res => res.data); // [{ keyword: "의료", count: 123 }, ...]
 };
