@@ -1,54 +1,73 @@
+// src/pages/health-report/HealthReportPage.tsx
 import React, { useEffect, useState } from 'react';
-import { TextField, Button } from '@mui/material';
+import { useSelector } from 'react-redux';
 import ReportTable from '../../component/health-report/ReportTable';
-import { getOcr } from '../../api/ContentApi'; // 이 API 함수가 실제로는 getHealthReports를 호출한다고 가정합니다.
+import { getHealthReportsByUserId } from '../../api/ContentApi';
+import { selectCurrentUserId } from '../../store/slices/authSlice';
+import styles from './HealthReportPage.module.css';
 
 const HealthReportPage = () => {
-  const [reports, setReports] = useState([]);
+    const userId = useSelector(selectCurrentUserId);
+    const [reports, setReports] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [searchDate, setSearchDate] = useState('');
 
-  useEffect(() => {
     const fetchReports = async () => {
-      try {
-        // API 응답 데이터가 HealthReportResponseDto[] 형태라고 가정합니다.
-        const response = await getOcr(1);
-        if (response && response.data) {
-          // response.data 배열을 직접 매핑합니다.
-          const processedReports = response.data.map((report: any) => ({
-            id: report.id,
-            title: report.title, // 'type' -> 'title'
-            reportDate: report.reportDate, // 'date' -> 'reportDate'
-            summery: report.summery,
-            rate: report.rate, // 'rating' -> 'rate'
-            ocrResults: report.ocrResults, // 'details' -> 'ocrResults'
-          }));
-          setReports(processedReports);
+        if (!userId) return;
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await getHealthReportsByUserId(userId);
+            if (response && response.data) {
+                const processedReports = response.data.map((report: any) => ({
+                    id: report.id,
+                    title: report.title,
+                    reportDate: report.reportDate,
+                    summery: report.summery,
+                    rate: report.rate,
+                    ocrResults: report.ocrResults,
+                }));
+                setReports(processedReports);
+            }
+        } catch (error) {
+            setError('건강 보고서를 불러오는 데 실패했습니다.');
+        } finally {
+            setLoading(false);
         }
-      } catch (error) {
-        console.error("Failed to fetch reports:", error);
-      }
     };
-    fetchReports();
-  }, []);
 
-  return (
-      <div className="pageWrapper">
-        <main className="pageWrapper">
-          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            <h4 style={{ marginBottom: '0.35em' }}>건강 보고서 조회</h4>
-            <div className="pageWrapper">
-              <TextField
-                  type="date"
-                  variant="outlined"
-                  size="small"
-                  defaultValue="2025-08-20"
-              />
-              <Button variant="contained">검색</Button>
+    useEffect(() => {
+        fetchReports();
+    }, [userId]);
+
+    return (
+        <div className={styles.container}>
+            <h2 className={styles.pageMainTitle}>건강 보고서 조회</h2>
+
+            {/* 날짜 검색 */}
+            <div className={styles.searchRow}>
+                <input
+                    type="date"
+                    className={styles.dateInput}
+                    value={searchDate}
+                    onChange={e => setSearchDate(e.target.value)}
+                />
+                <button className={styles.searchButton} onClick={fetchReports}>
+                    검색
+                </button>
             </div>
-            <ReportTable reports={reports} />
-          </div>
-        </main>
-      </div>
-  );
+
+            {/* 결과 */}
+            {loading ? (
+                <div className={styles.statusMessage}>불러오는 중...</div>
+            ) : error ? (
+                <div className={styles.statusMessage} style={{ color: 'red' }}>{error}</div>
+            ) : (
+                <ReportTable reports={reports} />
+            )}
+        </div>
+    );
 };
 
 export default HealthReportPage;

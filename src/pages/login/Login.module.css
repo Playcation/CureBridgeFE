@@ -1,4 +1,4 @@
-/* src/pages/login/Login.module.css (전체 비율 80%로 축소) */
+/* src/pages/login/Login.module.css */
 
 .pageContainer {
   display: flex;
@@ -6,12 +6,11 @@
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  /* background-color: #000; */ 
 }
 
 .loginForm {
   width: 100%;
-  max-width: 570px; 
+  max-width: 570px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,16 +19,57 @@
 .title {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
-  font-size: 20px;      
+  font-size: 20px;
   color: #616BE3;
-  margin-bottom: 48px;  
+  margin-bottom: 32px;
 }
 
+/* ── 로그인 유형 토글 ── */
+.togleContainer {
+  display: flex;
+  align-items: center;
+  background: #f4f5ff;
+  border-radius: 12px;
+  padding: 4px;
+  gap: 0;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+/* 라디오 버튼 숨기기 */
+.togleContainer input[type="radio"] {
+  display: none;
+}
+
+/* 라디오 label = 탭 버튼 */
+.togleContainer label {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #667085;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+/* 선택된 탭 강조 */
+.togleContainer input[type="radio"]:checked + label {
+  background: #ffffff;
+  color: #616BE3;
+  font-weight: 700;
+  box-shadow: 0 1px 6px rgba(97, 107, 227, 0.15);
+}
+
+/* ── 폼 ── */
 .form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;            
+  gap: 16px;
 }
 
 .inputGroup {
@@ -40,9 +80,9 @@
 
 .label {
   font-family: 'Poppins', sans-serif;
-  font-size: 13px;      
-  color: #344054;      /* 어두운 색으로 유지 */
-  margin-bottom: 8px;   
+  font-size: 13px;
+  color: #344054;
+  margin-bottom: 8px;
   text-transform: capitalize;
 }
 
@@ -51,13 +91,20 @@
   display: flex;
   align-items: center;
   width: 100%;
-  height: 48px;         
+  height: 48px;
   padding: 12px 16px;
   background-color: transparent;
   border: 1px solid #D0D5DD;
   border-radius: 8px;
   font-size: 14px;
   color: #111111;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #616BE3;
+  box-shadow: 0 0 0 3px rgba(97, 107, 227, 0.1);
 }
 
 .input::placeholder {
@@ -76,39 +123,45 @@
   color: #111111;
   font-size: 14px;
 }
+
 .passwordInput::placeholder {
   color: #98A2B3;
 }
 
 .eyeIcon {
   cursor: pointer;
-  width: 20px; /* 아이콘 크기도 살짝 조절 */
+  width: 20px;
   height: 20px;
 }
 
 .loginButton {
   width: 100%;
-  height: 42px;         
-  background: #616BE3;
+  height: 46px;
+  background: linear-gradient(223.53deg, #6671e5 3.65%, #4852d9 102.22%);
   border-radius: 8px;
   border: none;
-  margin-top: 16px;     
-  
+  margin-top: 8px;
   color: #FFFFFF;
   font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  font-size: 14px;      
+  font-weight: 600;
+  font-size: 14px;
   text-align: center;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.loginButton:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .socialLoginContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;            
-  margin-top: 32px;     
+  gap: 12px;
+  margin-top: 32px;
 }
 
 .socialButton {
@@ -117,70 +170,39 @@
   align-items: center;
   position: relative;
   width: 100%;
-  height: 40px;         
-  border-radius: 8px;  
+  height: 40px;
+  border-radius: 8px;
   border: none;
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;      
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  /* gap: 8px; */
-}
-
-.kakaoButton {
-  background: #FEE500;
-  color: #000000;
-}
-
-.googleButton {
-  background: #F2F2F2;
-  color: #1F1F1F;
-}
-
-.naverButton {
-  background: #03C75A;
-  color: #FFFFFF;
 }
 
 .linksContainer {
   display: flex;
   justify-content: center;
-  gap: 32px;            
+  gap: 32px;
   width: 100%;
-  margin-top: 32px;     
+  margin-top: 32px;
 }
 
 .link {
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;      
+  font-size: 14px;
   text-decoration: none;
 }
 
-.forgotPasswordLink {
-  color: #98A2B3;
-}
+.forgotPasswordLink { color: #98A2B3; }
+.signupLink { color: #1570EF; font-weight: 500; }
 
-.signupLink {
-  color: #1570EF;
-  font-weight: 500;
-}
-
-/* 버튼 안에 있는 img 태그에만 적용될 스타일 */
-.naverButton img {
-  width: 25px; 
-  height: 25px; 
-
-}
-
+.naverButton img  { width: 25px; height: 25px; }
 .kakaoButton img,
-.googleButton img {
-  width: 17px; 
-  height: 17px; 
-}
+.googleButton img { width: 17px; height: 17px; }
 
 .socialIcon {
-  position: absolute; /* 부모(.socialButton)를 기준으로 위치 고정 */
-  left: 20px;         /* 왼쪽에서 20px 떨어진 곳에 위치 */
-  top: 50%;           /* 위에서 50% 지점 */
-  transform: translateY(-50%); /* 세로 중앙 정렬을 위한 트릭 */
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
