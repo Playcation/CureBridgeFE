@@ -25,11 +25,12 @@ function SupportListPage() {
 
     const totalPages = useMemo(() => Math.ceil(totalCount / size), [totalCount, size]);
 
-    const normalizePaging = (res: any) => {
-        const content = res?.content ?? res?.data ?? res?.list ?? [];
-        const total = res?.totalElements ?? res?.totalCount ?? res?.total ?? content.length;
-        return { content, total };
-    };
+  const normalizePaging = (res: any) => {
+    const target = res?.data ? res.data : res;
+    const content = target?.list ?? target?.content ?? [];
+    const total = target?.count ?? target?.totalCount ?? target?.totalElements ?? target?.total ?? content.length;
+    return {content, total};
+  };
 
     const load = useCallback(async () => {
         setLoading(true);
