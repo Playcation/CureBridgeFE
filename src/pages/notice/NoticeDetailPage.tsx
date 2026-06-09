@@ -59,6 +59,9 @@ function NoticeDetailPage() {
 
   const formattedDate = new Date(post.createdAt).toLocaleDateString();
 
+  const getFileName = (path: string) => {
+    return path.substring(path.lastIndexOf('/') + 1);
+  };
   return (
       <div className={styles.detailContainer}>
         <div className={styles.boardWrapper}>
@@ -81,6 +84,39 @@ function NoticeDetailPage() {
 
           {/* 3. 본문 내용 (사각형 테두리 적용) */}
           <div className={styles.postContent} dangerouslySetInnerHTML={{__html: post.content}}/>
+
+          {post.attachedFilePaths && post.attachedFilePaths.length > 0 && (
+              <div style={{
+                margin: '20px 0',
+                padding: '15px',
+                border: '1px solid #e0e0e0',
+                borderRadius: '4px',
+                backgroundColor: '#f9f9f9',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <span style={{
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  color: '#555'
+                }}>📁 첨부파일 ({post.attachedFilePaths.length})</span>
+                {post.attachedFilePaths.map((path, index) => (
+                    <div key={index}
+                         style={{display: 'flex', alignItems: 'center', fontSize: '14px'}}>
+                      <a
+                          href={path}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                          style={{color: '#007bff', textDecoration: 'none', fontWeight: '500'}}
+                      >
+                        📎 {getFileName(path)} [다운로드]
+                      </a>
+                    </div>
+                ))}
+              </div>
+          )}
 
           {/* 4. 액션 바 */}
           <div className={styles.actionBar}>
