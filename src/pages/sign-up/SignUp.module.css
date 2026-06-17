@@ -1,164 +1,199 @@
-/* src/pages/signup/Signup.module.css */
+/* src/pages/sign-up/SignUp.module.css */
 
 .pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
 }
 
 .signupForm {
   width: 100%;
-  max-width: 624px;
+  max-width: 570px;   /* 로그인과 동일한 너비 */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* 40px → 20px (로그인과 동일) */
 .title {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
-  font-size: 40px;
+  font-size: 20px;
   color: #616BE3;
-  margin-bottom: 60px;
+  margin-bottom: 36px;
 }
 
 .form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 24px; /* 각 입력 그룹 사이의 간격 */
+  gap: 16px;          /* 24px → 16px */
 }
 
 .formRow {
   display: flex;
-  gap: 24px;
+  gap: 16px;          /* 24px → 16px */
   width: 100%;
 }
 
 .inputGroup {
   display: flex;
   flex-direction: column;
-  flex: 1; /* .formRow 안에서 공간을 균등하게 차지 */
+  flex: 1;
 }
 
+/* 16px → 13px (로그인과 동일) */
 .label {
   font-family: 'Poppins', sans-serif;
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 500;
   color: #344054;
-  margin-bottom: 8px;
-  text-transform: capitalize;
+  margin-bottom: 6px;
 }
 
-/* 일반 input과 select 태그에 공통으로 적용될 스타일 */
+/* 52px → 46px */
 .input, .select {
   box-sizing: border-box;
   width: 100%;
-  height: 52px;
-  padding: 0 16px;
-  background-color: #FFFFFF;
+  height: 46px;
+  padding: 0 14px;
+  background-color: #ffffff;
   border: 1px solid #D0D5DD;
   border-radius: 8px;
   font-size: 14px;
   font-family: 'Poppins', sans-serif;
-  color: #333;
+  color: #111;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
-.input::placeholder, .select {
+.input:focus, .select:focus {
+  border-color: #616BE3;
+  box-shadow: 0 0 0 3px rgba(97, 107, 227, 0.1);
+}
+
+.input::placeholder {
   color: #98A2B3;
 }
 
-/* input 옆에 버튼이 붙는 형태를 위한 컨테이너 */
+.select {
+  color: #667085;
+  cursor: pointer;
+  appearance: auto;
+}
+
+/* 버튼 붙는 input 컨테이너 */
 .inputWithButton {
   display: flex;
-  gap: 16px;
+  gap: 10px;
 }
 
-.inputWithButton .inputField  {
-  flex-grow: 1; /* 버튼을 제외한 나머지 공간을 모두 차지 */
-  max-width: calc(100% - 120px - 16px);
+.inputWithButton .input {
+  flex: 1;
 }
 
+/* 16px → 13px */
 .inlineButton {
-  width: 120px; /* 버튼 너비 고정 */
-  height: 52px;
-  background: #616BE3;
+  height: 46px;
+  padding: 0 16px;
+  background: linear-gradient(223.53deg, #6671e5 3.65%, #4852d9 102.22%);
   border-radius: 8px;
   border: none;
-  color: #FFFFFF;
-  font-weight: 500;
-  font-size: 16px;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
   cursor: pointer;
-  flex-shrink: 0; /* 창이 줄어도 버튼 크기가 줄어들지 않도록 */
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: opacity 0.2s, transform 0.15s;
 }
 
+.inlineButton:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* 비밀번호 */
 .passwordInputWrapper {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
+  height: 46px;
   border: 1px solid #D0D5DD;
   border-radius: 8px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.passwordInputWrapper:focus-within {
+  border-color: #616BE3;
+  box-shadow: 0 0 0 3px rgba(97, 107, 227, 0.1);
 }
 
 .passwordInput {
-  flex-grow: 1;
-  height: 50px;
+  flex: 1;
+  height: 100%;
   border: none;
   outline: none;
   font-size: 14px;
-  padding: 0 16px;
+  font-family: 'Poppins', sans-serif;
+  padding: 0 40px 0 14px;
   border-radius: 8px;
-  padding-right: 40px;
+  background: transparent;
+  color: #111;
 }
+
 .passwordInput::placeholder {
   color: #98A2B3;
 }
 
 .eyeIcon {
   cursor: pointer;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   position: absolute;
-  right: 16px; /* 오른쪽 끝에서 16px 떨어진 곳에 위치 */
+  right: 14px;
   top: 50%;
-  transform: translateY(-50%); /* 세로 중앙 정렬 */
+  transform: translateY(-50%);
+  opacity: 0.5;
+  transition: opacity 0.2s;
 }
 
+.eyeIcon:hover {
+  opacity: 1;
+}
+
+/* 구분선 색상도 연하게 */
 .divider {
   width: 100%;
   height: 1px;
-  background-color: #3D68DE;
+  background-color: #e4e7ec;
   border: none;
-  margin: 20px 0;
+  margin: 8px 0;
 }
 
+/* 16px → 14px */
 .submitButton {
   width: 100%;
-  height: 52px;
-  background: #616BE3;
+  height: 46px;
+  background: linear-gradient(223.53deg, #6671e5 3.65%, #4852d9 102.22%);
   border-radius: 8px;
   border: none;
-  margin-top: 20px;
-  
-  color: #FFFFFF;
+  margin-top: 8px;
+  color: #ffffff;
   font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.05em;
   cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
 }
 
-.nameInputGroup {
-  flex: 0.6; /* 60% 비율 */
-}
-
-.genderInputGroup {
-  flex: 0.4; /* 40% 비율 */
-}
-
-/* 생년월일 (년, 월, 일)은 균등하게 나누도록 flex: 1 유지 */
-.birthSelectGroup {
-  flex: 1;
+.submitButton:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
