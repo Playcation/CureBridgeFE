@@ -33,7 +33,6 @@ import ChatPage from "./pages/chat/ChatPage";
 import MemberListPage from "./pages/chat/MemberListPage";
 import NewsPage from "./pages/board/NewsPage";
 
-
 function App() {
   return (
     <Provider store={store}>
@@ -76,6 +75,7 @@ function App() {
             <Route path="/chat/my/rooms" element={<MyChatListPage />} />
             <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
             <Route path="/chat/member/list" element={<MemberListPage />} />
+
           </Routes>
         </Layout>
       </PersistGate>
