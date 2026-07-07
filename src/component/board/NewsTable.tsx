@@ -66,14 +66,15 @@ const NewsTable: React.FC<Props> = ({
                       />
                     </TableCell>
                 )}
-                <TableCell>ID</TableCell>
+                <TableCell>번호</TableCell>
                 <TableCell>기사 제목</TableCell>
                 <TableCell>게시일자</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {news.map((n) => {
+              {news.map((n, index) => {
                 const isItemSelected = selectedIds.includes(n.id);
+                const displayNum = total - (page * rowsPerPage) - index;
                 return (
                     <TableRow key={n.id}
                               hover
@@ -96,7 +97,7 @@ const NewsTable: React.FC<Props> = ({
                             />
                           </TableCell>
                       )}
-                      <TableCell>{n.id}</TableCell>
+                      <TableCell>{displayNum}</TableCell>
                       <TableCell>
                         {n.link ? (
                             <MuiLink

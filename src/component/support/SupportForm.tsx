@@ -45,32 +45,34 @@ function SupportForm({
 
             <div className={styles.sectionLine} />
 
-            <div className={styles.formGrid}>
-                {/* 공개여부 */}
-                <div className={styles.row}>
-                    <div className={styles.label}>공개</div>
-                    <div className={styles.value}>
-                        <label className={styles.checkboxLabel}>
-                            <input
-                                type="checkbox"
-                                checked={!isPrivate}
-                                onChange={(e) => onPrivateChange(!e.target.checked)}
-                                disabled={!!loading}
-                            />
-                            공개
-                        </label>
+        <div className={styles.formGrid}>
+          {/* 공개여부 */}
+          <div className={styles.row}>
+            <div className={styles.label}>공개 여부</div>
+            <div className={styles.value}>
+              <label className={styles.checkboxLabel}>
+                <input
+                    type="radio"
+                    name="privacy"
+                    checked={isPrivate === false}
+                    onChange={() => onPrivateChange(false)}
+                    disabled={!!loading}
+                />
+                공개
+              </label>
 
-                        <label className={styles.checkboxLabel}>
-                            <input
-                                type="checkbox"
-                                checked={isPrivate}
-                                onChange={(e) => onPrivateChange(e.target.checked)}
-                                disabled={!!loading}
-                            />
-                            비공개
-                        </label>
-                    </div>
-                </div>
+              <label className={styles.checkboxLabel}>
+                <input
+                    type="radio"
+                    name="privacy"
+                    checked={isPrivate === true}
+                    onChange={(e) => onPrivateChange(true)}
+                    disabled={!!loading}
+                />
+                비공개
+              </label>
+            </div>
+          </div>
 
                 {/* 제목 */}
                 <div className={styles.row}>

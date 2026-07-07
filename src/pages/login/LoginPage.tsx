@@ -33,16 +33,8 @@ const LoginPage: React.FC = () => {
       role: userType  // USER, ORG_MANAGER, ORG_ADMIN 중 하나
     };
 
-    console.log('로그인 요청 데이터:', loginData); // 디버깅용
-
     try {
       const response = await userLogin(loginData);
-
-      console.log('로그인 응답:', response.data); // 디버깅용
-      console.log('로그인 전체 응답:', response);
-      console.log('로그인 응답 data:', response.data);
-      console.log('로그인 응답 data 타입:', typeof response.data);
-      console.log('로그인 응답 data keys:', Object.keys(response.data)); // 👈 어떤 키들이 있는지 확인
 
       const { accessToken, userId, userRole } = response.data;
 

@@ -31,7 +31,7 @@ const MemberListPage: React.FC = () => {
     const fetchMembers = async () => {
       try {
         // 회원 목록은 별도의 axiosInstance가 있다면 그것을 사용해도 좋습니다.
-        const response = await axios.get(`http://localhost:8081/user/list`);
+        const response = await axios.get(`http://www.curebridge.site/api/user/member/user/list`);
         setMemberList(response.data);
       } catch (error) {
         console.error("회원 목록 로드 실패:", error);

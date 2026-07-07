@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Chip, Container, Divider, Paper, Typography} from '@mui/material';
 import NewsTable from '../../component/board/NewsTable';
-import {deleteNews, getNews, getTopKeywords} from '../../api/ContentApi';
+import {deleteNews, getNews, getTopKeywords, searchNewsByTitle} from '../../api/ContentApi';
+import './NewsPage.css';
 
 type NewsItem = {
   id: number;
@@ -25,14 +26,28 @@ const NewsPage = () => {
   const [topKeywords, setTopKeywords] = useState<{ keyword: string; count: number }[]>([]);
   const [keywords, setKeywords] = useState<TopKeywordDto[]>([]);
   const [isKeywordLoading, setIsKeywordLoading] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const fetchNews = async (p = 0, size = 10) => {
-
+  const fetchNews = async (p = 0, size = 50, query?: string) => {
     try {
-      const data = await getNews(p, size, 'id,desc');
-      const items = data?.list ?? [];
+
+      const effectiveQuery = query !== undefined ? query : searchQuery;
+
+      const data = effectiveQuery
+          ? await searchNewsByTitle({
+            page: p,
+            size,
+            sort: 'publishedAt,desc',
+            keyword: effectiveQuery
+          })
+          : await getNews(p, size, 'publishedAt,desc');
+
+      const items = data?.content ?? data?.list ?? [];
+      const total = data?.totalElements ?? data?.count ?? items.length;
+
       setNews(items);
-      setTotalElements(data?.count ?? items.length); // ← 추가
+      setTotalElements(total);
       setSelectedIds([]);
     } catch (e) {
       console.error('fetchNews failed', e);
@@ -42,8 +57,8 @@ const NewsPage = () => {
   const fetchKeywords = async () => {
     setIsKeywordLoading(true);
     try {
-      const data = await getTopKeywords(undefined, undefined, 10);
-      setKeywords(data);
+      const data = await getTopKeywords(undefined, undefined, 50);
+      setKeywords(data || []);
     } catch (e) {
       console.error('fetchKeywords failed', e);
       setKeywords([]);
@@ -52,10 +67,22 @@ const NewsPage = () => {
     }
   };
   useEffect(() => {
-    fetchNews(page, rowsPerPage);
+    fetchNews(page, rowsPerPage, searchQuery);
     fetchKeywords();
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, searchQuery]);
 
+  const handleSearch = async () => {
+    setPage(0);
+    setSearchQuery(searchInput); // 상태 업데이트 (비동기)
+
+    await fetchNews(0, rowsPerPage, searchInput);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
   const handleSelect = (id: number, isSelected: boolean) => {
     if (isSelected) {
       //  (수정) 이미 목록에 ID가 없으면 추가합니다. (중복 방지)
@@ -74,6 +101,8 @@ const NewsPage = () => {
       setSelectedIds((prev) => prev.filter((id) => !currentNewsIds.includes(id)));
     }
   };
+
+  // 기존 handleDelete 함수는 더 이상 사용되지 않습니다.
   const handleBatchDelete = async () => {
     if (selectedIds.length === 0) return;
 
@@ -86,32 +115,66 @@ const NewsPage = () => {
 
     for (const id of selectedIds) {
       try {
-        await deleteNews(id); // 단건 삭제 API 반복 호출
+        await deleteNews(id);
         successCount++;
       } catch (e) {
-        console.error(`deleteNews for ID ${id} failed, e`);
+        console.error(`deleteNews for ID ${id} failed`, e);
         failCount++;
       }
     }
 
     if (failCount > 0) {
-      alert(`일괄 삭제 완료. ${successCount}개 성공, ${failCount}개 실패했습니다. (관리자 권한 확인 필요)`);
+      alert(`일괄 삭제 완료. ${successCount}개 성공, ${failCount}개 실패했습니다.`);
     } else {
       alert(`게시물 ${successCount}개가 성공적으로 삭제되었습니다.`);
     }
 
-    // 삭제 후 목록 새로고침 및 선택 항목 초기화
-    fetchNews(page, rowsPerPage);
-  }
+    fetchNews(page, rowsPerPage, searchQuery);
+  };
 
-  // 기존 handleDelete 함수는 더 이상 사용되지 않습니다.
-  const handleDelete = (id: number) => {
-    console.warn("handleDelete is no longer used for single delete.");
-  }
+  const handleKeywordClick = (keyword: string) => {
+    setPage(0);
+    setSearchInput(keyword);  // 검색창 입력값 업데이트
+    setSearchQuery(keyword); // 실제 검색 쿼리 상태 업데이트
+
+    // 상태 업데이트가 비동기이므로, 즉시 fetchNews를 호출하여 결과를 가져옵니다.
+    fetchNews(0, rowsPerPage, keyword);
+  };
 
   return (
-      <Container>
-        <Typography variant="h4" gutterBottom>의학 뉴스</Typography>
+
+      <Container className="news-page-container">
+        <h2 className="news-page-title">의학 뉴스</h2>
+
+        {/* 💡 Notice의 검색부 스타일로 변경 (옵션 제외) */}
+        <form
+            className="news-search-section"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSearch();
+            }}
+        >
+          <input
+              type="text"
+              placeholder="뉴스 제목을 검색하세요"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="news-search-input-field"
+          />
+          <button
+              type="submit"
+              className="news-search-submit-button"
+          >
+            검색
+          </button>
+        </form>
+
+        {searchQuery && (
+            <Typography variant="body2" sx={{mb: 2, textAlign: 'center', color: '#666'}}>
+              "{searchQuery}" 검색 결과 (총 {totalElements}건)
+            </Typography>
+        )}
         <NewsTable
             news={news}
             total={totalElements}
@@ -140,28 +203,25 @@ const NewsPage = () => {
             </Box>
         )}
         {/* 뉴스 리스트 하단 인기 키워드 섹션 추가 */}
-        <Box sx={{mt: 6}}>
-          <Divider sx={{mb: 3}}/>
-          <Typography variant="h6" gutterBottom
-                      sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-            ✨ 최근 주요 의학 키워드
-          </Typography>
-          <Paper elevation={0} sx={{p: 2, bgcolor: '#f8f9fa', borderRadius: 2}}>
-            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
-              {keywords.length > 0 ? (
-                  keywords.map((kw, index) => (
-                      <Chip
-                          key={index}
-                          label={`#${kw.keyword} (${kw.count})`}
-                      />
-                  ))
-              ) : (
-                  <Typography variant="body2" color="textSecondary">
-                    {isKeywordLoading ? "키워드 데이터를 분석 중입니다..." : "분석된 키워드가 없습니다."}
-                  </Typography>
-              )}
-            </Box>
-          </Paper>
+        <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
+          {keywords.length > 0 ? (
+              keywords.map((kw, index) => (
+                  <Chip
+                      key={index}
+                      label={`#${kw.keyword} (${kw.count})`}
+                      // 클릭 이벤트 추가
+                      onClick={() => handleKeywordClick(kw.keyword)}
+                      clickable
+                      color="primary"
+                      variant="outlined"
+                      sx={{'&:hover': {backgroundColor: '#e3f2fd'}}}
+                  />
+              ))
+          ) : (
+              <Typography variant="body2" color="textSecondary">
+                {isKeywordLoading ? "키워드 데이터를 분석 중입니다..." : "분석된 키워드가 없습니다."}
+              </Typography>
+          )}
         </Box>
       </Container>
   );

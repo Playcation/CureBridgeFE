@@ -1,56 +1,53 @@
-/* src/pages/NoticeListPage.module.css (80% 축소) */
+/* src/pages/notice/NoticeListPage.module.css */
 
-/* --- 1. 페이지 전체 컨테이너 및 제목 --- */
 .noticeListContainer {
-    max-width: 1192px; /* 1490px * 0.8 */
-    margin: 40px auto 80px; /* 50px * 0.8, 100px * 0.8 */
-    padding: 16px; /* 20px * 0.8 */
-    background: #FFFFFF;
+    max-width: 900px;
+    margin: 40px auto 80px;
+    padding: 0 16px;
 }
 
 .pageMainTitle {
     text-align: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    font-size: 33.6px; /* 42px * 0.8 */
-    line-height: 110%;
-    color: #000000;
-    margin-bottom: 40px; /* 50px * 0.8 */
+    font-size: 20px;
+    color: #111;
+    margin-bottom: 24px;
 }
-
-
-/* --- 3. 글쓰기 버튼 및 목록 헤더 --- */
 
 .listHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px; /* 15px * 0.8 */
+    margin-bottom: 8px;
     font-family: 'Poppins', sans-serif;
-    font-size: 16px; /* 20px * 0.8 */
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
 }
 
 .writeButtonLink {
-    width: 80px; 
-    height: 25px;
-    padding: 8px 16px; /* 10px * 0.8, 20px * 0.8 */
-    text-align: center;
-    line-height: 24.8px; /* (height - 2*padding) 에 맞춰 텍스트 중앙 정렬 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding: 0 14px;
     background: linear-gradient(223.53deg, #6671E5 3.65%, #4852D9 102.22%);
-    border-radius: 11.2px; /* 14px * 0.8 */
+    border-radius: 6px;
     border: none;
-    color: #FFFFFF;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 16px; /* 20px * 0.8 */
+    font-size: 12px;
     text-decoration: none;
-    transition: opacity 0.2s;
-}
-.writeButtonLink:hover {
-    opacity: 0.9;
+    transition: opacity 0.2s, transform 0.15s;
+    white-space: nowrap;
 }
 
-/* --- 4. 게시판 테이블 --- */
+.writeButtonLink:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
 
 .noticeTable {
     width: 100%;
@@ -59,43 +56,50 @@
 }
 
 .noticeTable th {
-    color: #373F41;
+    color: #374151;
     font-weight: 600;
-    font-size: 16px; /* 20px * 0.8 */
-    line-height: 14.4px; /* 18px * 0.8 */
-    padding: 12px 0; /* 15px * 0.8 */
+    font-size: 13px;
+    padding: 10px 8px;
     text-align: center;
-    border-top: 1px solid #616CE3;
-    border-bottom: 1px solid #616CE3;
-    height: 38.4px; /* 48px * 0.8 */
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
 }
 
 .noticeTable td {
-    padding: 12.8px 6.4px; /* 16px * 0.8, 8px * 0.8 */
+    padding: 11px 8px;
     text-align: center;
-    color: #737B7D;
-    font-weight: 500;
-    font-size: 12.8px; /* 16px * 0.8 */
-    border-bottom: 1px solid #E0E0E0;
+    color: #6b7280;
+    font-size: 13px;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.15s;
 }
 
-/* 제목 셀 */
+.noticeTable tbody tr:hover td {
+    background: #f9fafb;
+}
+
 .titleCell {
-    text-align: left;
-    padding-left: 16px; /* 20px * 0.8 */
+    text-align: left !important;
+    padding-left: 16px !important;
 }
 
 .titleCell a {
-    color: inherit;
+    color: #111827;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 13px;
     transition: color 0.2s;
 }
 
-/* --- 5. 상태/메시지 --- */
+.titleCell a:hover {
+    color: #4b5563;
+}
+
 .statusMessage {
     text-align: center;
-    padding: 40px; /* 50px * 0.8 */
-    font-size: 14.4px; /* 18px * 0.8 */
-    color: #6c757d;
+    padding: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: #9ca3af;
 }
