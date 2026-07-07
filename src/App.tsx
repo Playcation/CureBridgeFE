@@ -42,12 +42,6 @@ import ChatMainPage from "./pages/chat/ChatMainPage";
 import MyChatListPage from "./pages/chat/MyChatListPage";
 import ChatPage from "./pages/chat/ChatPage";
 import MemberListPage from "./pages/chat/MemberListPage";
-import NewsPage from "./pages/board/NewsPage";
-
-import ChatMainPage from './pages/chat/ChatMainPage';
-import MyChatListPage from './pages/chat/MyChatListPage';
-import ChatPage from './pages/chat/ChatPage';
-import MemberListPage from './pages/chat/MemberListPage';
 
 function App() {
     return (
