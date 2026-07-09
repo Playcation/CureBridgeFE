@@ -13,13 +13,10 @@ function SupportListPage() {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
     const [page, setPage] = useState(0);
     const [size] = useState(10);
-
     const [totalCount, setTotalCount] = useState(0);
     const [items, setItems] = useState<any[]>([]);
-
     const [searchType, setSearchType] = useState<"title" | "all" | null>(null);
     const [keyword, setKeyword] = useState("");
 
@@ -41,12 +38,10 @@ function SupportListPage() {
                     ? await searchSupportByTitle(keyword, page, size)
                     : await searchSupportByAll(keyword, page, size)
                 : await fetchSupports(page, size);
-
             const normalized = normalizePaging(res);
             setItems(normalized.content);
             setTotalCount(normalized.total);
         } catch (e) {
-            console.error(e);
             setError("문의 목록을 불러오지 못했습니다.");
         } finally {
             setLoading(false);
@@ -70,79 +65,89 @@ function SupportListPage() {
         setPage(0);
     };
 
-    if (loading) return <div className={styles.status}>불러오는 중...</div>;
-    if (error) return <div className={styles.status} style={{ color: "red" }}>{error}</div>;
-
     return (
         <div className={styles.container}>
-            <div className={styles.topRow}>
-                <h2 className={styles.title}>문의하기</h2>
+            {/* ✅ 공지사항처럼 제목 중앙 정렬 */}
+            <h2 className={styles.pageMainTitle}>문의하기</h2>
 
-                {/* ✅ 작성은 로그인 유저만 */}
+            <SupportSearchBar onSearch={onSearch} loading={loading} />
+
+            {/* ✅ 공지사항처럼 총 건수 + 버튼 한 줄 */}
+            <div className={styles.listHeader}>
+                <div>총 {totalCount}건</div>
                 {myUserId ? (
-                    <Link to="/support/create" className={styles.writeButton}>문의 작성</Link>
+                    <Link to="/support/create" className={styles.writeButton}>
+                        문의 작성
+                    </Link>
                 ) : (
-                    <button className={styles.writeButtonDisabled} onClick={() => alert("로그인 후 작성할 수 있어요.")}>
+                    <button
+                        className={styles.writeButtonDisabled}
+                        onClick={() => alert("로그인 후 작성할 수 있어요.")}
+                    >
                         문의 작성
                     </button>
                 )}
             </div>
 
-            <SupportSearchBar onSearch={onSearch} loading={loading} />
-
-            <div className={styles.countRow}>총 {totalCount}건</div>
-
-        <table className={styles.table}>
-          <thead>
-          <tr>
-            <th style={{width: "12%"}}>번호</th>
-            <th style={{width: "58%"}}>제목</th>
-            <th style={{width: "15%"}}>상태</th>
-            <th style={{width: "15%"}}>작성일</th>
-          </tr>
-          </thead>
-          <tbody>
-          {items.length === 0 ? (
-              <tr>
-                <td colSpan={4} className={styles.empty}>등록된 문의가 없습니다.</td>
-              </tr>
-          ) : (
-              items.map((it: any, index: number) => {
-                const isPrivate = !!it.isPrivate;
-                const isOwner = myUserId === it.userId;
-                const canOpen = !isPrivate || isOwner || isAdmin;
-
-                const displayNum = totalCount - (page * size) - index;
-
-                return (
-                    <tr key={it.supportId}>
-                      <td>{displayNum}</td>
-                      <td className={styles.titleCell}>
-                        {canOpen ? (
-                            <Link to={`/support/${it.supportId}`} className={styles.link}>
-                              {it.title}
-                            </Link>
-                        ) : (
-                            <span className={styles.locked}>🔒 비공개 문의</span>
-                        )}
-                      </td>
-                      <td>{it.replied ? "답변완료" : "대기중"}</td>
-                      <td>{it.createdAt ? new Date(it.createdAt).toLocaleDateString() : "-"}</td>
+            <table className={styles.table}>
+                <thead>
+                    <tr>
+                        <th style={{ width: "12%" }}>번호</th>
+                        <th style={{ width: "58%" }}>제목</th>
+                        <th style={{ width: "15%" }}>상태</th>
+                        <th style={{ width: "15%" }}>작성일</th>
                     </tr>
-                );
-              })
-          )}
-          </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {loading ? (
+                        <tr>
+                            <td colSpan={4} className={styles.empty}>불러오는 중...</td>
+                        </tr>
+                    ) : error ? (
+                        <tr>
+                            <td colSpan={4} className={styles.empty} style={{ color: "red" }}>{error}</td>
+                        </tr>
+                    ) : items.length === 0 ? (
+                        <tr>
+                            <td colSpan={4} className={styles.empty}>등록된 문의가 없습니다.</td>
+                        </tr>
+                    ) : (
+                        items.map((it: any, index: number) => {
+                            const isPrivate = !!it.isPrivate;
+                            const isOwner = myUserId === it.userId;
+                            const canOpen = !isPrivate || isOwner || isAdmin;
+                            const displayNum = totalCount - page * size - index;
+                            return (
+                                <tr key={it.supportId}>
+                                    <td>{displayNum}</td>
+                                    <td className={styles.titleCell}>
+                                        {canOpen ? (
+                                            <Link to={`/support/${it.supportId}`} className={styles.link}>
+                                                {it.title}
+                                            </Link>
+                                        ) : (
+                                            <span className={styles.locked}>🔒 비공개 문의</span>
+                                        )}
+                                    </td>
+                                    <td>{it.replied ? "답변완료" : "대기중"}</td>
+                                    <td>{it.createdAt ? new Date(it.createdAt).toLocaleDateString() : "-"}</td>
+                                </tr>
+                            );
+                        })
+                    )}
+                </tbody>
+            </table>
 
             <div className={styles.paging}>
-                <button className={styles.pageBtn} disabled={page <= 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
+                <button className={styles.pageBtn} disabled={page <= 0}
+                    onClick={() => setPage((p) => Math.max(0, p - 1))}>
                     이전
                 </button>
                 <span className={styles.pageInfo}>
-          {totalPages === 0 ? 1 : page + 1} / {totalPages === 0 ? 1 : totalPages}
-        </span>
-                <button className={styles.pageBtn} disabled={page >= totalPages - 1} onClick={() => setPage((p) => p + 1)}>
+                    {totalPages === 0 ? 1 : page + 1} / {totalPages === 0 ? 1 : totalPages}
+                </span>
+                <button className={styles.pageBtn} disabled={page >= totalPages - 1}
+                    onClick={() => setPage((p) => p + 1)}>
                     다음
                 </button>
             </div>
