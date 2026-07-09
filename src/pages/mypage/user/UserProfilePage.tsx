@@ -105,6 +105,12 @@ const UserProfilePage: React.FC = () => {
                     회원정보 수정
                 </button>
                 <button
+                    className={styles.btnPrimary}
+                    onClick={() => navigate('/mypage/user/calendar')}
+                >
+                    일정 확인
+                </button>
+                <button
                     className={styles.btnOutline}
                     onClick={() => navigate('/mypage/user/password')}
                 >
