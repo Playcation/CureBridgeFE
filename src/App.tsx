@@ -1,10 +1,14 @@
 // src/App.tsx
+
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+
+// ✅ 추가: Redux Provider와 PersistGate
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store/store';
 
+// layout 컴포넌트 안에, 헤더 푸터 포함되어있음
 import Layout from './component/layout/Layout';
 import MyPageLayout from './component/layout/MyPageLayout';
 import PrivateRoute from './component/PrivateRoute';
@@ -34,10 +38,11 @@ import UserWithdrawPage from './pages/mypage/user/UserWithdrawPage';
 import ManagerMyPage from './pages/mypage/manager/ManagerMyPage';
 import OrgAdminMyPage from './pages/mypage/org_admin/OrgAdminMyPage';
 
-import ChatMainPage from './pages/chat/ChatMainPage';
-import MyChatListPage from './pages/chat/MyChatListPage';
-import ChatPage from './pages/chat/ChatPage';
-import MemberListPage from './pages/chat/MemberListPage';
+import ChatMainPage from "./pages/chat/ChatMainPage";
+import MyChatListPage from "./pages/chat/MyChatListPage";
+import ChatPage from "./pages/chat/ChatPage";
+import MemberListPage from "./pages/chat/MemberListPage";
+import Calendar from "./pages/calendar/Calendar";
 
 function App() {
     return (
@@ -84,6 +89,10 @@ function App() {
                             <Route path="/chat/my/rooms" element={<MyChatListPage />} />
                             <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
                             <Route path="/chat/member/list" element={<MemberListPage />} />
+
+                            {/*캘린더*/}
+                            <Route path="/calendar" element={<Calendar />}/>
+
                         </Route>
                     </Routes>
                 </Layout>
