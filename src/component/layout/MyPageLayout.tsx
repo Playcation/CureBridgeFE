@@ -18,6 +18,7 @@ export default function MyPageLayout() {
                 { label: "비밀번호 변경", to: "/mypage/user/password" },
                 { label: "회원 탈퇴", to: "/mypage/user/withdraw" },
                 { label: "건강보고서 조회", to: "/health-report", desc: "바로가기" }, // 외부/다른 페이지 라우트
+                { label: "일정 확인", to: "/calendar"},
             ];
         }
 

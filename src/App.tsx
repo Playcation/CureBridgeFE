@@ -77,8 +77,7 @@ function App() {
                                 <Route path="password" element={<UserPasswordPage />} />
                                 <Route path="withdraw" element={<UserWithdrawPage />} />
 
-                                {/*캘린더*/}
-                                <Route path="/calendar" element={<Calendar />}/>
+
                             </Route>
                             <Route path="/mypage/manager" element={<MyPageLayout />}>
                                 <Route index element={<ManagerMyPage />} />
@@ -92,6 +91,9 @@ function App() {
                             <Route path="/chat/my/rooms" element={<MyChatListPage />} />
                             <Route path="/chat/chatPage/:roomId" element={<ChatPage />} />
                             <Route path="/chat/member/list" element={<MemberListPage />} />
+
+                            {/*캘린더*/}
+                            <Route path="/calendar" element={<Calendar />}/>
 
                         </Route>
                     </Routes>
