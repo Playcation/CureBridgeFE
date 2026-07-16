@@ -17,8 +17,8 @@ export const getUserInfo = async (userId: number): Promise<any> => {
  * GET /user/check + body { password }
  */
 export const checkUserPassword = async (password: string): Promise<any> => {
-    const response = await axiosInstance.get(`${API_BASE_URL}/check`, {
-        data: { password },
+    const response = await axiosInstance.post(`${API_BASE_URL}/check`, {
+        password : password,
     });
     return response.data;
 };
